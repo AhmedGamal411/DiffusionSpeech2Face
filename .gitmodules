@@ -1,0 +1,3 @@
+[submodule "voxceleb_trainer"]
+	path = voxceleb_trainer
+	url = https://github.com/AhmedGamal411/voxceleb_trainer
