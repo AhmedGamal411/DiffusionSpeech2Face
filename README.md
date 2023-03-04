@@ -1,9 +1,11 @@
-# DiffusionSpeech2Face
+# DiffusionSpeech2Facereproduce
 
 ## Steps to reproduce
 
 Ubuntu 
-```https://ubuntu.com/download/desktop```
+```
+https://ubuntu.com/download/desktop
+```
 
 Anaconda Environment
 ```https://www.anaconda.com/products/distribution```
