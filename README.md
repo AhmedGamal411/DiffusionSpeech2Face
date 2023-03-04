@@ -8,16 +8,24 @@ https://ubuntu.com/download/desktop
 ```
 
 Anaconda Environment
-```https://www.anaconda.com/products/distribution```
+```
+https://www.anaconda.com/products/distribution
+```
 
 Git (obviously)
-```sudo apt-get install git-all```
+```
+sudo apt-get install git-all
+```
 
 Visual Studio Code (Can use any development enviroment or none if you want)
-```On Ubuntu Software --> Visual Studio Code --> Install```
+```
+On Ubuntu Software --> Visual Studio Code --> Install
+```
 
 In a folder of your choosing run this in a terminal
-```git clone --recurse-submodules https://github.com/AhmedGamal411/DiffusionSpeech2Face_Preprocessing```
+```
+git clone --recurse-submodules https://github.com/AhmedGamal411/DiffusionSpeech2Face_Preprocessing
+```
 This clones this repo with all its submodules
 
 Open that folder with Visual Studio Code
@@ -28,7 +36,9 @@ View the readme of every submodule to download and configure its depedencies.
 
 ### Voxceleb Trainer
 
-```https://github.com/AhmedGamal411/voxceleb_trainer```
+```
+https://github.com/AhmedGamal411/voxceleb_trainer
+```
 
 To download VoxCeleb2 Dataset
 
@@ -36,7 +46,9 @@ Progress: Started - Close to finishing
 
 ### DiffusionSpeech2Face_Preprocessing
 
-```https://github.com/AhmedGamal411/DiffusionSpeech2Face_Preprocessing```
+```
+https://github.com/AhmedGamal411/DiffusionSpeech2Face_Preprocessing
+```
 
 To preprocess the dataset.
 
@@ -44,7 +56,9 @@ Progress: Started but unfinished
 
 ### DiffusionSpeech2Face_DiffusionModel
 
-```Unstarted```
+```
+Unstarted
+```
 
 Builds and runs the diffusion model on the preprocessed dataset.
 
@@ -52,7 +66,9 @@ Progress: Unstarted
 
 ### DiffusionSpeech2Face_Evaluation
 
-```Unstarted```
+```
+Unstarted
+```
 
 Evaluates the model.
 
@@ -63,7 +79,9 @@ Progress: Unstarted
 
 ### Voxceleb Trainer
 
-```https://github.com/clovaai/voxceleb_trainer```
+```
+https://github.com/clovaai/voxceleb_trainer
+```
 
 [1] In defence of metric learning for speaker recognition
 ```
