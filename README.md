@@ -44,6 +44,14 @@ To download VoxCeleb2 Dataset
 
 Progress: Started - Close to finishing
 
+### AVSpeechDownloader (Not included in project)
+
+```
+https://github.com/naba89/AVSpeechDownloader
+```
+
+Downloads AVSpeech dataset.
+
 ### DiffusionSpeech2Face_Preprocessing
 
 ```
