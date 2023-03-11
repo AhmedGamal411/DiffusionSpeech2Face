@@ -4,3 +4,6 @@
 [submodule "DiffusionSpeech2Face_Preprocessing"]
 	path = DiffusionSpeech2Face_Preprocessing
 	url = https://github.com/AhmedGamal411/DiffusionSpeech2Face_Preprocessing
+[submodule "DiffusionSpeech2Face_Model_Imagen"]
+	path = DiffusionSpeech2Face_Model_Imagen
+	url = https://github.com/AhmedGamal411/DiffusionSpeech2Face_Model_Imagen
