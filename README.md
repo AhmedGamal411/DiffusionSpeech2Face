@@ -25,7 +25,7 @@ On Ubuntu Software --> Visual Studio Code --> Install
 
 In a folder of your choosing run this in a terminal
 ```
-git clone --recurse-submodules https://github.com/AhmedGamal411/DiffusionSpeech2Face_Preprocessing
+git clone --recurse-submodules https://github.com/AhmedGamal411/DiffusionSpeech2Face
 ```
 This clones this repo with all its submodules
 
