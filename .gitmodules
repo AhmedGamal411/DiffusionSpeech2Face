@@ -1,6 +1,3 @@
 [submodule "voxceleb_trainer"]
 	path = voxceleb_trainer
 	url = https://github.com/AhmedGamal411/voxceleb_trainer
-[submodule "DiffusionSpeech2Face_Model_Imagen"]
-	path = DiffusionSpeech2Face_Model_Imagen
-	url = https://github.com/AhmedGamal411/DiffusionSpeech2Face_Model_Imagen
