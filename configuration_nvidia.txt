@@ -1,0 +1,19 @@
+[COMMON]
+datasetPathVideo = /home/gamal/vsc/DiffusionSpeech2Face/DiffusionSpeech2Face_Preprocessing/VoxCelebTest/Video
+cuda=1
+cpus=8
+
+[extractAudio]
+datasetPathAudio = /home/gamal/vsc/DiffusionSpeech2Face/DiffusionSpeech2Face_Preprocessing/VoxCelebTest/Audio
+dbChunk = 10000
+time_to_wait_before_deleting_files = 5
+
+
+[extractFaces]
+expandFaceVerticalRatio = 0.4
+expandFaceHorizontalRatio=0.5
+faceDetectionDeepFaceBackend=4
+parallelism = 5
+parallelismFrames = 3
+datasetPathFrames = /home/gamal/vsc/DiffusionSpeech2Face/DiffusionSpeech2Face_Preprocessing/VoxCelebTest/Frames
+datasetPathFaces = /home/gamal/vsc/DiffusionSpeech2Face/DiffusionSpeech2Face_Preprocessing/VoxCelebTest/Faces

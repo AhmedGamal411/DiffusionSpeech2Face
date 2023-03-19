@@ -1,0 +1,10 @@
+# This file may be used to create an environment using:
+# $ conda create --name <env> --file <this file>
+# platform: linux-64
+deepface=0.0.79=py38h578d9bd_0
+matplotlib=3.7.0=py38h578d9bd_0
+numpy=1.22.3=py38h99721a1_2
+opencv=4.6.0=py38h417a72b_3
+pandas=1.4.4=py38h6a678d5_0
+pillow=9.4.0=py38h6a678d5_0
+scipy=1.8.1=py38h1ee437e_0

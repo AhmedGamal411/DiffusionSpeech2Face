@@ -1,0 +1,8 @@
+conda create -n ds2f_pre python=3.8
+conda activate ds2f_pre
+conda install --yes --file requirements.txt
+
+
+conda list -e > requirements.txt
+
+conda activate ds2f_pre

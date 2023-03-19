@@ -1,0 +1,24 @@
+[COMMON]
+datasetPathVideo = /home/gamal/Datasets/Dataset1/Video
+datasetPathDatabase = /home/gamal/Datasets/Dataset1/Database
+cuda=1
+cpus=8
+
+[dbCreateAndPopulate]
+recreateDb=0
+
+[extractAudio]
+datasetPathAudio = /home/gamal/Datasets/Dataset1/Audio
+dbChunk = 240
+time_to_wait_before_deleting_files = 60
+
+
+[extractFaces]
+expandFaceVerticalRatio = 0.4
+expandFaceHorizontalRatio=0.5
+faceDetectionDeepFaceBackend=4
+resizeImageTo = 128
+parallelism = 5
+parallelismFrames = 3
+datasetPathFrames = /home/gamal/Datasets/Dataset1/Frames
+datasetPathFaces = /home/gamal/Datasets/Dataset1/Faces
