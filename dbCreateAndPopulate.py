@@ -55,7 +55,8 @@ if(recreateDb != 0):
             ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
             FACE_PATH TEXT,
             VIDEO_ID INTEGER,
-            FACE_NORM_PATH TEXT
+            FACE_NORM_PATH TEXT,
+            LATENT_REP BLOB
         );
     """)
 

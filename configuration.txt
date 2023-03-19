@@ -1,7 +1,7 @@
 [COMMON]
 datasetPathVideo = /home/gamal/Datasets/Dataset1/Video
 datasetPathDatabase = /home/gamal/Datasets/Dataset1/Database
-cuda=1
+cuda=0
 cpus=8
 
 [dbCreateAndPopulate]
@@ -22,3 +22,6 @@ parallelism = 5
 parallelismFrames = 3
 datasetPathFrames = /home/gamal/Datasets/Dataset1/Frames
 datasetPathFaces = /home/gamal/Datasets/Dataset1/Faces
+
+[extractFacesLatents]
+dbChunk = 1000
