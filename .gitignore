@@ -4,3 +4,4 @@
 /checkpoints
 /aclImdb
 *.gz
+finetuned_stable_diffusion.h5
