@@ -1,0 +1,5 @@
+Dr Zaki
+1- Finish Documentation untill this point (The software layers in details)
+2- Dataflow (How data is inserted and proceeded) and Controlflow (Start - Processing - Finish)
+3- Training with much higher dataset
+Being a product
