@@ -1,19 +1,40 @@
 # DiffusionSpeech2Facereproduce
 
-## Steps to reproduce
+## Requirments
+
+** Note: I used 2 different machines but only the second machine was able to produce all results due to VRAM requirements (VRAM >= 24 GB). **
+
+### CPU:
+1. AMD Ryzen 9 6900HS CPU.
+2. 
+
+### GPU:
+1. AMD Radeon RX 6700S, VRAM = 8GB
+2. Quadro RTX 6000, VRAM = 24GB
+
+### RAM:
+1. 16 GB
+2. 32 GB
 
 
-Ubuntu 
+### Ubuntu 
 ```
 https://ubuntu.com/download/desktop
 ```
+1. Ubuntu 22.04.2 LTS, Kernal: 5.15.0-67-generic
+2. Ubuntu 22.04.2
 
-Anaconda Environment
+### CUDA (Nvidia GPU) or ROCM (AMD GPU)
+** Note: This will dictate a certain version of kernal that you will have to install. Please review requirements carefully.**
+1. ROCM 5.4.3 ``` https://docs.amd.com/bundle/ROCm-Installation-Guide-v5.4.3/page/How_to_Install_ROCm.html ```
+2. CUDA 12 ``` https://developer.nvidia.com/cuda-downloads ```
+
+### Anaconda Environment
 ```
 https://www.anaconda.com/products/distribution
 ```
 
-Git (obviously)
+### Git (obviously)
 ```
 sudo apt-get install git-all
 ```
@@ -43,7 +64,6 @@ https://github.com/AhmedGamal411/voxceleb_trainer
 
 To download VoxCeleb2 Dataset
 
-Progress: Started - Close to finishing
 
 ### AVSpeechDownloader (Not included in project)
 
@@ -53,30 +73,29 @@ https://github.com/naba89/AVSpeechDownloader
 
 Downloads AVSpeech dataset.
 
-### DiffusionSpeech2Face_Preprocessing
-
+## Python Environment
 ```
-https://github.com/AhmedGamal411/DiffusionSpeech2Face_Preprocessing
+conda create -n ds2f python=3.8
+conda activate ds2f
 ```
+Install the modules listed in requirements.txt either using conda or pip
 
-# DiffusionSpeech2Face_Preprocessing
+## Configuration
 
-## Requirments
-```
-conda create -n ds2f_pre python=3.8
-conda activate ds2f_pre
-conda install --yes --file requirements.txt
-```
+Open `configuration.txt`. change the path of the dataset (datasetPathVideo). It doesn't matter what structure it is, as long as it's videos only. Then change datasetPathDatabase, datasetPathAudio, datasetPathFrames and datasetPathFaces to where you want the data to be extracted.
 
-## Steps to run
+The 'configuration.txt' file is divided into parts 
 
-Open `configuration.txt`. change the path of the dataset (datasetPathVideo). it doesn't matter what structure it is, as long as it's videos only. Then change datasetPathAudio, datasetPathFrames and datasetPathFaces to where you want the data to be extracted.
+## Running files
 
-Make sure you run `conda activate ds2f_pre`
+Make sure you run `conda activate ds2f`
 
-Run:
-[1] python dbCreateAndPopulate.py
-[2] python extractAudio.py
+### dbCreateAndPopulate.py
+Creates a database file at "datasetPathDatabase" to hold paths to videos. This database file is used by other scripts to hold other information like paths to face images and results to various analysises.
+
+### extractAudio.py
+Extracts audio from videos then creates 3, 6, 12 and 24 versions of these audio either by trimming the audio or looping it, then extracts speaker embeddings  
+
 [3] python extractFaces.py
 
 Will make a script to run all those later
