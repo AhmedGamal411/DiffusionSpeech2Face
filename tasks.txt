@@ -5,3 +5,6 @@ Dr Zaki
 2- Dataflow (How data is inserted and proceeded) and Controlflow (Start - Processing - Finish)
 3- Training with much higher dataset
 Being a product
+
+17/05/2022
+get normalization factor min max normaliztion

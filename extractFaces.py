@@ -13,6 +13,7 @@ import math
 import threading
 import time
 from multiprocessing import Process
+from threading import Thread
 
 # TODO Make parrallizm
 
@@ -36,6 +37,15 @@ datasetPathDatabase =  configParser.get('COMMON', 'datasetPathDatabase') + '/dat
 con = sl.connect(datasetPathDatabase)
 
 print('about to start')
+
+backends = [
+  'opencv', 
+  'ssd', 
+  'dlib', 
+  'mtcnn', 
+  'retinaface', 
+  'mediapipe'
+]
 
 
 def resizeImage(im, size=resizeImageTo):
@@ -82,15 +92,9 @@ def extractFrames(absPathVideo,videoId,frameNo):
   count = 1
   cv2.imwrite(absPathFrame, image)     # save frame as PNG file
 
+  vidcap.release()
 
-  backends = [
-    'opencv', 
-    'ssd', 
-    'dlib', 
-    'mtcnn', 
-    'retinaface', 
-    'mediapipe'
-  ]
+
   face_objs = DeepFace.extract_faces(img_path = absPathFrame, 
         target_size = (resizeImageTo, resizeImageTo),
        detector_backend = backends[fddfb]
@@ -128,7 +132,7 @@ def extractFrames(absPathVideo,videoId,frameNo):
   # TODO Encode ethnicity and gender in system
   
 
-
+  #print(crop_img_start_row)
   # Gets a crop of the image that is a little bigger than the image of the face only (hair, chin ... etc)
   crop_img_start_row = facial_area['y'] - int(efvr * facial_area['h'])
   if(crop_img_start_row < 0):
@@ -228,13 +232,16 @@ with con:
     cont = True
         
     while(cont):
-        data = con.execute("SELECT * FROM VIDEO WHERE FACES_PRE = 0 ORDER BY ID LIMIT "+str(p)+" OFFSET " + str(index))
+        data = con.execute("SELECT * FROM VIDEO WHERE FACES_PRE = 0 and AUDIO_PRE = 1 ORDER BY ID LIMIT "+str(p)+" OFFSET " + str(index))
         cont = False
         for row in data:
           cont=True
           for frameNo in range(1,pf + 1):
             try:
+              #proc = Thread(target=extractFrames, args=(row[1],row[0],frameNo,))   # spawn a process
               extractFrames(row[1],row[0],frameNo)
+              #proc.start()
+              #proc.join(60)
             except:
                pass
 

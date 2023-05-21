@@ -5,3 +5,4 @@
 /aclImdb
 *.gz
 *.h5
+/pretrained_models

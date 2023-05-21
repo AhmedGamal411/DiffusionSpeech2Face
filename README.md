@@ -6,7 +6,7 @@
 
 ### CPU:
 1. AMD Ryzen 9 6900HS CPU.
-2. 
+2. 12th Gen Intel(R) Core(TM) i9-12900KF
 
 ### GPU:
 1. AMD Radeon RX 6700S, VRAM = 8GB
@@ -22,24 +22,33 @@
 https://ubuntu.com/download/desktop
 ```
 1. Ubuntu 22.04.2 LTS, Kernal: 5.15.0-67-generic
-2. Ubuntu 22.04.2
+2. Ubuntu 22.04.2 LTS, Kernal: 5.15.0-25-generic
 
 ### CUDA (Nvidia GPU) or ROCM (AMD GPU)
 ** Note: This will dictate a certain version of kernal that you will have to install. Please review requirements carefully.**
 1. ROCM 5.4.3 ``` https://docs.amd.com/bundle/ROCm-Installation-Guide-v5.4.3/page/How_to_Install_ROCm.html ```
 2. CUDA 12 ``` https://developer.nvidia.com/cuda-downloads ```
 
+### Python
+1.
+2. v3.10.6
 ### Anaconda Environment
+1.
+2. v22.9.0
 ```
 https://www.anaconda.com/products/distribution
 ```
 
 ### Git (obviously)
+1.
+2. v2.34.1
 ```
 sudo apt-get install git-all
 ```
 
-Visual Studio Code (Can use any development enviroment or none if you want)
+### Visual Studio Code (Can use any development enviroment or none if you want)
+1.
+2. v1.77.0
 ```
 On Ubuntu Software --> Visual Studio Code --> Install
 ```

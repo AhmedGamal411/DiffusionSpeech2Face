@@ -10,6 +10,7 @@ import uuid
 
 # TODO document how to set up the needed folders and paths in configuration.txt
 # TODO document how to use recreateDb
+# TODO indices
 configParser = configparser.RawConfigParser()   
 configFilePath = r'configuration.txt'
 configParser.read(configFilePath)

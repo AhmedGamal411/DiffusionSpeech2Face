@@ -1,14 +1,14 @@
 [COMMON]
-datasetPathVideo = /home/gamal/Datasets/Dataset1/Video
-datasetPathDatabase = /home/gamal/Datasets/Dataset1/Database
-cuda=0
+datasetPathVideo = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Video
+datasetPathDatabase = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Database
+cuda=1
 cpus=8
 
 [dbCreateAndPopulate]
-recreateDb=0
+recreateDb=1
 
 [extractAudio]
-datasetPathAudio = /home/gamal/Datasets/Dataset1/Audio
+datasetPathAudio = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Audio
 dbChunk = 240
 time_to_wait_before_deleting_files = 60
 
@@ -20,8 +20,8 @@ faceDetectionDeepFaceBackend=4
 resizeImageTo = 128
 parallelism = 5
 parallelismFrames = 3
-datasetPathFrames = /home/gamal/Datasets/Dataset1/Frames
-datasetPathFaces = /home/gamal/Datasets/Dataset1/Faces
+datasetPathFrames = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Frames
+datasetPathFaces = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Faces
 
 [extractFacesLatents]
 dbChunk = 1000
