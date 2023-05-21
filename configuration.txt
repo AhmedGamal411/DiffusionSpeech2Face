@@ -25,3 +25,11 @@ datasetPathFaces = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Faces
 
 [extractFacesLatents]
 dbChunk = 1000
+
+[fineTuneStableDiffusionTraining]
+db_chunk = 100
+dev_mode = 1
+continue_from_epoch = 4
+continue_from_offset = 200
+continue_from_epoch_and_offset = 0
+unconditional_guidance_scale = 40

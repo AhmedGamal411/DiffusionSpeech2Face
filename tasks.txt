@@ -1,10 +1,26 @@
-29/03/2022
+29/03/2023
 
 Dr Zaki
 1- Finish Documentation untill this point (The software layers in details)
 2- Dataflow (How data is inserted and proceeded) and Controlflow (Start - Processing - Finish)
 3- Training with much higher dataset
 Being a product
+
+08/04/2032
+
+Dr Walid
+
+1- Training with much higher dataset
+2- Test on test dataset (unseen data)
+3- Face recognition but with nearest 5 or 10 with VGG, Resnet and others.
+4- Maybe use craniofacial or descriptions of the face. (https://github.com/dsabarinathan/Facial-Attribute-Recognition-from-face-images)
+5- Contact Shaimaa
+6- Make testing easier.
+7- Test on the AMD machine.
+
+-------------
+
+
 
 17/05/2022
 get normalization factor min max normaliztion
