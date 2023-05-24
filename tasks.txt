@@ -22,5 +22,9 @@ Dr Walid
 
 
 
-17/05/2022
+17/05/2023 Dr Zaki  
 get normalization factor min max normaliztion
+
+24/05/2023 Dr Zaki
+use openl3
+input ( 0words - some words - all words)

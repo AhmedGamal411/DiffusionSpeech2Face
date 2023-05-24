@@ -33,3 +33,8 @@ continue_from_epoch = 1
 continue_from_offset = 0
 continue_from_epoch_and_offset = 0
 unconditional_guidance_scale = 40
+
+[extractOpenL3]
+datasetPathAudio = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Audio
+dbChunk = 240
+time_to_wait_before_deleting_files = 60

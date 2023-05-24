@@ -47,7 +47,8 @@ if(recreateDb != 0):
             VIDEO_ID INTEGER NOT NULL,
             AUDIO_LENGTH INTEGER,
             SPEAKER_EMB BLOB,
-            LANG TEXT
+            LANG TEXT,
+            AUDIO_EMB BLOB
         );
     """)
 
@@ -71,6 +72,9 @@ if(recreateDb != 0):
         );
     """)
 
+    con.execute("""
+        CREATE INDEX AUDIO_VIDEO_ID_IDX ON AUDIO (VIDEO_ID);
+    """)
 
 
 

@@ -428,11 +428,16 @@ def trainBatch(epoch,offset,return_var):
 
     if(dev_mode == 0):
 
+        weights_path = "finetuned_stable_diffusion.h5"
+
+        diffusion_ft_trainer.diffusion_model.load_weights(weights_path)
+
+
         print("Live Mode: Training: epoch:" + str(epoch) + " offset:" + str(offset))
 
         diffusion_ft_trainer.fit(training_dataset, epochs=1, callbacks=[ckpt_callback])
 
-
+        diffusion_ft_trainer.diffusion_model.save_weights(weights_path)
 
         
 
