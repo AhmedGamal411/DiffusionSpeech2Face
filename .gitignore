@@ -5,4 +5,5 @@
 /aclImdb
 *.gz
 *.h5
+/fineTuneStableDiffusionTestingFolder
 /pretrained_models

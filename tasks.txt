@@ -20,7 +20,11 @@ Dr Walid
 
 -------------
 
-
+Dr Mohamed Zaki 03/05/2023
+- VGG Features Extraction.
+- (Later on) Rather than using time-domain, use frequency domain.
+- See: VIT (Vision Transformer - FNet - SpectFormer)
+- 
 
 17/05/2023 Dr Zaki  
 get normalization factor min max normaliztion
