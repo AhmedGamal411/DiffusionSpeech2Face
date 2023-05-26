@@ -48,7 +48,8 @@ if(recreateDb != 0):
             AUDIO_LENGTH INTEGER,
             SPEAKER_EMB BLOB,
             LANG TEXT,
-            AUDIO_EMB BLOB
+            AUDIO_EMB BLOB,
+            AUDIO_EMB2 BLOB
         );
     """)
 
