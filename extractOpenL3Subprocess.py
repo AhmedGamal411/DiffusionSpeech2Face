@@ -2,6 +2,8 @@
 import openl3
 
 
+
+
 def extractOpenL3Subprocess(audio,hop_size,sr):
     model = openl3.models.load_audio_embedding_model(input_repr="mel128", content_type="music",
                                                  embedding_size=512)

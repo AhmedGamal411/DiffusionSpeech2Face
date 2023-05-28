@@ -1,15 +1,15 @@
 [COMMON]
-datasetPathVideo = /home/gamal/Datasets/Dataset1/Video
-datasetPathDatabase = /home/gamal/Datasets/Dataset1/Database
+datasetPathVideo = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Video
+datasetPathDatabase = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Database
 cuda=1
 cpus=8
-resizeImageTo = 32
+resizeImageTo = 128
 
 [dbCreateAndPopulate]
-recreateDb=1
+recreateDb=0
 
 [extractAudio]
-datasetPathAudio = /home/gamal/Datasets/Dataset1/Audio
+datasetPathAudio = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Audio
 dbChunk = 240
 time_to_wait_before_deleting_files = 60
 
@@ -20,8 +20,8 @@ expandFaceHorizontalRatio=0.5
 faceDetectionDeepFaceBackend=4
 parallelism = 5
 parallelismFrames = 3
-datasetPathFrames = /home/gamal/Datasets/Dataset1/Frames
-datasetPathFaces = /home/gamal/Datasets/Dataset1/Faces
+datasetPathFrames = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Frames
+datasetPathFaces = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Faces
 
 [extractFacesLatents]
 dbChunk = 1000
@@ -35,7 +35,7 @@ continue_from_epoch_and_offset = 0
 unconditional_guidance_scale = 40
 
 [extractOpenL3]
-datasetPathAudio = /home/gamal/Datasets/Dataset1/Audio
+datasetPathAudio = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Audio
 dbChunk = 240
 time_to_wait_before_deleting_files = 60
 openl3_mode_options = stable or imagen
@@ -50,10 +50,10 @@ dev_mode = 0
 [train_imagen]
 model_filename = imagen_two_unets
 audio_length_used = 24
-epochs = 2
-sub_epochs = 2
-sample_every = 1000
-save_model_every = 1000
+epochs = 1
+sub_epochs = 100000
+sample_every = 10000
+save_model_every = 10000
 batch_size = 5
 continue_from_epoch = 1
 continue_from_offset = 0

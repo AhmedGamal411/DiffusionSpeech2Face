@@ -1,0 +1,5 @@
+until python extractOpenL3.py
+do
+    echo "Restarting"
+    sleep 2
+done
