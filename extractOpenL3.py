@@ -181,7 +181,7 @@ def delFiles(filesToDelete):
 contLoop = True # Flag to continue to get chunks of videos from database
 offset = 0
 while(contLoop):
-    data = con.execute("SELECT * FROM VIDEO WHERE AUDIO_PRE = 1 ORDER BY ID ASC LIMIT " + p + " OFFSET " + str(offset))
+    data = con.execute("SELECT * FROM VIDEO WHERE AUDIO_PRE = 1 AND FACES_PRE = 1 ORDER BY ID ASC LIMIT " + p + " OFFSET " + str(offset))
     contLoop = False
     offset = offset + int(p)
     print("Got chunk of videos from database. Extracting audio and audio embeddings...")
