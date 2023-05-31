@@ -43,7 +43,7 @@ openl3_mode = imagen
 
 [fineTuneStableDiffusionTesting]
 use_video_in_configuration = 1
-video_path = /home/gamal/Datasets/Dataset1/Video/blhA_I4zjvE_15.600000_22.333333.mp4
+video_path = /home/gamal/vsc/DiffusionSpeech2Face/v.mp4
 time_to_wait_before_deleting_files = 180
 dev_mode = 0
 
@@ -51,9 +51,9 @@ dev_mode = 0
 model_filename = imagen_two_unets
 audio_length_used = 24
 epochs = 1
-sub_epochs = 100000
-sample_every = 1000
-save_model_every = 10000
+sub_epochs = 5000
+sample_every = 4000
+save_model_every = 4000
 batch_size = 5
 continue_from_epoch = 1
 continue_from_offset = 0
