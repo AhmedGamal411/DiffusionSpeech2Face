@@ -1,15 +1,15 @@
 [COMMON]
-datasetPathVideo = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Video
-datasetPathDatabase = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Database
+datasetPathVideo = /home/gamal/Datasets/Dataset1/Video
+datasetPathDatabase = /home/gamal/Datasets/Dataset1/Database
 cuda=1
 cpus=8
-resizeImageTo = 128
+resizeImageTo = 32
 
 [dbCreateAndPopulate]
-recreateDb=0
+recreateDb=1
 
 [extractAudio]
-datasetPathAudio = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Audio
+datasetPathAudio = /home/gamal/Datasets/Dataset1/Audio
 dbChunk = 240
 time_to_wait_before_deleting_files = 60
 
@@ -20,8 +20,8 @@ expandFaceHorizontalRatio=0.5
 faceDetectionDeepFaceBackend=4
 parallelism = 5
 parallelismFrames = 3
-datasetPathFrames = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Frames
-datasetPathFaces = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Faces
+datasetPathFrames = /home/gamal/Datasets/Dataset1/Frames
+datasetPathFaces = /home/gamal/Datasets/Dataset1/Faces
 
 [extractFacesLatents]
 dbChunk = 1000
@@ -35,27 +35,33 @@ continue_from_epoch_and_offset = 0
 unconditional_guidance_scale = 40
 
 [extractOpenL3]
-datasetPathAudio = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Audio
+datasetPathAudio = /home/gamal/Datasets/Dataset1/Audio
 dbChunk = 240
 time_to_wait_before_deleting_files = 60
 openl3_mode_options = stable or imagen
 openl3_mode = imagen
 
+[extractWavToVec]
+datasetPathAudio = /home/gamal/Datasets/Dataset1/Audio
+dbChunk = 240
+time_to_wait_before_deleting_files = 60
+audio_length_wav2vec = 
+
 [fineTuneStableDiffusionTesting]
 use_video_in_configuration = 1
-video_path = /home/gamal/vsc/DiffusionSpeech2Face/v.mp4
+video_path = /home/gamal/Datasets/Dataset1/Video/blhA_I4zjvE_15.600000_22.333333.mp4
 time_to_wait_before_deleting_files = 180
 dev_mode = 0
 
 [train_imagen]
 model_filename = imagen_two_unets
 audio_length_used = 24
-epochs = 1
-sub_epochs = 5000
-sample_every = 4000
-save_model_every = 4000
+epochs = 2
+sub_epochs = 10000
+sample_every = 1000
+save_model_every = 1000
 batch_size = 5
 continue_from_epoch = 1
 continue_from_offset = 0
 continue_from_epoch_and_offset_flag = 0
-db_chunk = 1000
+db_chunk = 10000

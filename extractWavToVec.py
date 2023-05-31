@@ -14,12 +14,11 @@ import multiprocessing
 from multiprocessing import Process,Queue
 import itertools
 from threading import Thread
-import soundfile as sf
 import extractOpenL3Subprocess as openSb
 from multiprocessing import Queue
 from multiprocessing import Pool
-import openl3
-
+import torch
+import numpy as np
 
 start_time = time.time()    # To measure execution time in seconds
 
@@ -35,22 +34,28 @@ datasetPathVideo =  configParser.get('COMMON', 'datasetPathVideo')
 datasetPathDatabase =  configParser.get('COMMON', 'datasetPathDatabase') + '/dataset.db'
 cpus =  int(configParser.get('COMMON', 'cpus'))
 
-datasetPathAudio =  configParser.get('extractOpenL3', 'datasetPathAudio')
-openl3_mode =  configParser.get('extractOpenL3', 'openl3_mode')
+datasetPathAudio =  configParser.get('extractWavToVec', 'datasetPathAudio')
+audio_length_wav2vec =  int(configParser.get('extractWavToVec', 'audio_length_wav2vec'))
 
-p =  configParser.get('extractOpenL3', 'dbChunk')
-ttwbdf =  int(configParser.get('extractOpenL3', 'time_to_wait_before_deleting_files'))
+p =  configParser.get('extractWavToVec', 'dbChunk')
+ttwbdf =  int(configParser.get('extractWavToVec', 'time_to_wait_before_deleting_files'))
 
 print("Video dataset at " + datasetPathVideo )
-print("Extracting for mode " + openl3_mode)
 
-model = openl3.models.load_audio_embedding_model(input_repr="mel128", content_type="music",
-                                                embedding_size=512)
+import os
+os.environ["HSA_OVERRIDE_GFX_VERSION"] = "10.3.0"
+os.environ["ROCM_PATH"] = "/opt/rocm"
 
 
 con = sl.connect(datasetPathDatabase)  # Connection to databases
 print('------------------- ABOUT TO START --------------------')
 #TODO what if two files have the same name in the same batch
+
+torch.random.manual_seed(0)
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+bundle = torchaudio.pipelines.WAV2VEC2_ASR_BASE_960H
+model = bundle.get_model().to(device)
+print(device)
 
  
 def extractAudio(rows):
@@ -83,7 +88,7 @@ def extractAudio(rows):
 
     
         # Will either truncate or loop the original video to reach audio_length (3,6,12 or 24)
-        audio_length_list = [6,12,24]
+        audio_length_list = [audio_length_wav2vec]
         for audio_length in audio_length_list:
             path_var_len_audio =  absPathAudio_w + "audio" + str(audio_length) + "s.wav"    # path to the variable length audio
             path_var_len_audio_temp =  absPathAudio_w + "audio_temp" + str(audio_length) + "s.wav"  # path to a temp version of the variable length audio
@@ -106,26 +111,35 @@ def extractAudio(rows):
                 subprocess.call(command, shell=True)
 
             # Extract audio embeddings
-            audio, sr = sf.read(path_var_len_audio)
             #emb = []
             #queue = Queue()
             #proc = Process(target=openSb.extractOpenL3Subprocess, args=(audio,sr,queue,))   # spawn a process
             #proc.start()
             #proc.join()
             #emb = queue.get()
-            hop_size = -1
-            if(openl3_mode == 'imagen'):
-                hop_size = audio_length/250
-            elif(openl3_mode == 'stable'):
-                hop_size = 24/50
-            else:
-                raise ValueError('openl3_mode in configuration must either be stable or imagen') 
+            waveform, sample_rate = torchaudio.load(path_var_len_audio)
+            waveform = waveform.to(device)
 
+            if sample_rate != bundle.sample_rate:
+                waveform = torchaudio.functional.resample(waveform, sample_rate, bundle.sample_rate)
+            with torch.inference_mode():
+                features, _ = model.extract_features(waveform)
+
+            #print(features[0].shape)
+
+            tensor =  torch.empty(( 0,features[0].shape[1],768), dtype=torch.float32).cuda()
+            for x in features:
+                tensor = torch.vstack((tensor,x))
+                #print(x.shape)
+
+            array = tensor.detach().cpu().numpy()
+            array = (array/20)
+
+            emb = np.mean(array, axis=0)
 
             #p = Pool(1)
             #emb = p.apply(openSb.extractOpenL3Subprocess, args=(audio,hop_size,sr,))
 
-            emb, ts = openl3.get_audio_embedding(audio, sr,hop_size=hop_size,verbose=0,model=model)
 
             #emb, ts = openl3.get_audio_embedding(audio, sr,embedding_size=512,hop_size=audio_length/50,verbose=0)
             #signal, fs = torchaudio.load(path_var_len_audio)
@@ -137,26 +151,22 @@ def extractAudio(rows):
             #print(audio_length)
             #print(emb.shape)
             #print(emb)
+
             embeddingsPickle = pickle.dumps(emb)
-
-
-            # update audio embeddings into database
-            openl3_mode_db = ''
-            if(openl3_mode == 'imagen'):
-                openl3_mode_db = '2'
-            sql = ''' UPDATE AUDIO SET ''' + '''AUDIO_EMB'''+openl3_mode_db+''' = ? WHERE VIDEO_ID = ? AND AUDIO_LENGTH = ?'''
+            #update audio embeddings into database
+            sql = ''' UPDATE AUDIO SET ''' + '''WAV_TO_VEC  = ? WHERE VIDEO_ID = ?'''
 
             
             cur = con2.cursor()
-            data = [embeddingsPickle,rowId,audio_length]
+            data = [embeddingsPickle,rowId]
             cur.execute(sql, data)
             con2.commit()
 
-             # Will delete those files after a little bit
+            # Will delete those files after a little bit
             ftd = [absPathAudio,path_var_len_audio,os.path.basename(path_var_len_audio),path_var_len_audio_temp]
             tDelete = Thread(target=delFiles, args=(ftd,))   # spawn a process
             tDelete.start()
-
+            
         sql = '''UPDATE VIDEO SET AUDIO_PRE = 2 WHERE ID = ?'''
 
         data = [rowId]
@@ -186,7 +196,7 @@ while(contLoop):
     data = con.execute("SELECT * FROM VIDEO WHERE AUDIO_PRE = 1 AND FACES_PRE = 1 ORDER BY ID ASC LIMIT " + p + " OFFSET " + str(offset))
     contLoop = False
     offset = offset + int(p)
-    print("Got chunk of videos from database. Extracting audio and audio embeddings...")
+    print("Got chunk of videos from database. Extracting audio and wav2vec embeddings...")
     # TODO write time
     
     #print(data.fetchall())

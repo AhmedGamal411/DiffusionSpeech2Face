@@ -41,6 +41,12 @@ time_to_wait_before_deleting_files = 60
 openl3_mode_options = stable or imagen
 openl3_mode = imagen
 
+[extractWavToVec]
+datasetPathAudio = /home/gamal/Datasets/Dataset1/Audio
+dbChunk = 240
+time_to_wait_before_deleting_files = 60
+audio_length_wav2vec = 6
+
 [fineTuneStableDiffusionTesting]
 use_video_in_configuration = 1
 video_path = /home/gamal/Datasets/Dataset1/Video/blhA_I4zjvE_15.600000_22.333333.mp4

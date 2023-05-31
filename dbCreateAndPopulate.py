@@ -49,7 +49,8 @@ if(recreateDb != 0):
             SPEAKER_EMB BLOB,
             LANG TEXT,
             AUDIO_EMB BLOB,
-            AUDIO_EMB2 BLOB
+            AUDIO_EMB2 BLOB,
+            WAV_TO_VEC BLOB
         );
     """)
 
