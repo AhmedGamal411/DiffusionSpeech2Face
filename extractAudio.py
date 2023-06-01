@@ -129,19 +129,21 @@ def extractAudio(rows):
             data = [rowId,audio_length,embeddingsPickle,lang]
             cur.execute(sql, data)
             con2.commit()
-            
-            sql = '''UPDATE VIDEO SET AUDIO_PRE = 1 WHERE ID = ?'''
-
-            data = [rowId]
-            cur.execute(sql, data)
-            con2.commit()
-            cur.close()
 
              # Will delete those files after a little bit
             ftd = [absPathAudio,path_var_len_audio,os.path.basename(path_var_len_audio),path_var_len_audio_temp]
             tDelete = Thread(target=delFiles, args=(ftd,))   # spawn a process
             tDelete.start()
            
+
+        sql = '''UPDATE VIDEO SET AUDIO_PRE = 1 WHERE ID = ?'''
+
+        data = [rowId]
+        cur.execute(sql, data)
+        con2.commit()
+        cur.close()
+
+
             
 # Function to delete audio temp files
 def delFiles(filesToDelete):
