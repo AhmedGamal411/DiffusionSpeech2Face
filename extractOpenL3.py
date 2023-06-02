@@ -15,7 +15,6 @@ from multiprocessing import Process,Queue
 import itertools
 from threading import Thread
 import soundfile as sf
-import extractOpenL3Subprocess as openSb
 from multiprocessing import Queue
 from multiprocessing import Pool
 import openl3
