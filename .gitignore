@@ -8,3 +8,5 @@
 /fineTuneStableDiffusionTestingFolder
 /pretrained_models
 *.pt
+*.mp3
+*.mp4
