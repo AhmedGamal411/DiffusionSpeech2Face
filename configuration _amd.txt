@@ -4,6 +4,8 @@ datasetPathDatabase = /home/gamal/Datasets/Dataset1/Database
 cuda=1
 cpus=8
 resizeImageTo = 32
+audio_embs_options = wav2vec or openl3
+audio_embs = openl3
 
 [dbCreateAndPopulate]
 recreateDb=1
@@ -23,8 +25,6 @@ parallelismFrames = 3
 datasetPathFrames = /home/gamal/Datasets/Dataset1/Frames
 datasetPathFaces = /home/gamal/Datasets/Dataset1/Faces
 
-[extractFacesLatents]
-dbChunk = 1000
 
 [fineTuneStableDiffusionTraining]
 db_chunk = 50000

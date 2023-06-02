@@ -14,7 +14,6 @@ import multiprocessing
 from multiprocessing import Process,Queue
 import itertools
 from threading import Thread
-import extractOpenL3Subprocess as openSb
 from multiprocessing import Queue
 from multiprocessing import Pool
 import torch
@@ -53,7 +52,7 @@ print('------------------- ABOUT TO START --------------------')
 
 torch.random.manual_seed(0)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-bundle = torchaudio.pipelines.WAV2VEC2_ASR_BASE_960H
+bundle = torchaudio.pipelines.WAV2VEC2_XLSR_300M
 model = bundle.get_model().to(device)
 print(device)
 
