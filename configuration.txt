@@ -4,8 +4,8 @@ datasetPathDatabase = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Database
 cuda=1
 cpus=8
 resizeImageTo = 128
-audio_embs_options = wav2vec or openl3
-audio_embs = openl3
+audio_embs_options = wav2vec or openl3 or pyannote
+audio_embs = pyannote
 
 [dbCreateAndPopulate]
 recreateDb=0

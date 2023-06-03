@@ -36,7 +36,7 @@ cpus =  int(configParser.get('COMMON', 'cpus'))
 datasetPathAudio =  configParser.get('extractPyannote', 'datasetPathAudio')
 
 p =  configParser.get('extractPyannote', 'dbChunk')
-ttwbdf =  int(configParser.get('extractWavToVec', 'time_to_wait_before_deleting_files'))
+ttwbdf =  int(configParser.get('extractPyannote', 'time_to_wait_before_deleting_files'))
 
 print("Video dataset at " + datasetPathVideo )
 
