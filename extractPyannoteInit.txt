@@ -1,0 +1,5 @@
+until python extractPyannote.py
+do
+    echo "Restarting"
+    sleep 2
+done
