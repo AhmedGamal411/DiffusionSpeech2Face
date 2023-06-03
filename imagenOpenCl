@@ -1,0 +1,839 @@
+Training in epoch 1
+Training in offset 0
+Training Unet No. 1
+2023-06-02 16:45:31.130080: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  SSE3 SSE4.1 SSE4.2 AVX AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+The base dimension of your u-net should ideally be no smaller than 128, as recommended by a professional DDPM trainer https://nonint.com/2022/05/04/friends-dont-let-friends-train-small-diffusion-models/
+training with dataset of 119 samples and validating with randomly splitted 4 samples
+valid loss: 0.9096983671188354
+unet 2 has not been trained
+when sampling, you can pass stop_at_unet_number to stop early in the cascade, so it does not try to generate with untrained unets
+0/? [00:35<?, ?it/s]
+sampling loop time step: 100%
+1000/1000 [00:34<00:00, 28.96it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.47944894433021545
+valid loss: 0.14211294054985046
+valid loss: 0.08672899007797241
+valid loss: 0.0889650285243988
+valid loss: 0.09491430222988129
+valid loss: 0.06426114588975906
+valid loss: 0.05766018480062485
+valid loss: 0.06123866140842438
+valid loss: 0.058552488684654236
+valid loss: 0.04882922023534775
+valid loss: 0.04975848272442818
+valid loss: 0.05032500997185707
+valid loss: 0.05004582554101944
+valid loss: 0.03637395054101944
+valid loss: 0.047787223011255264
+valid loss: 0.034603267908096313
+valid loss: 0.032971397042274475
+valid loss: 0.028263747692108154
+valid loss: 0.03650066256523132
+unet 2 has not been trained
+when sampling, you can pass stop_at_unet_number to stop early in the cascade, so it does not try to generate with untrained unets
+0/? [00:35<?, ?it/s]
+sampling loop time step: 100%
+1000/1000 [00:35<00:00, 28.35it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.03491586819291115
+valid loss: 0.0358964204788208
+valid loss: 0.03406229987740517
+valid loss: 0.03627704828977585
+valid loss: 0.028871506452560425
+valid loss: 0.025478990748524666
+valid loss: 0.031240712851285934
+valid loss: 0.028272349387407303
+valid loss: 0.025658652186393738
+valid loss: 0.02720777690410614
+valid loss: 0.025574710220098495
+valid loss: 0.03156530112028122
+valid loss: 0.030408354476094246
+valid loss: 0.01672002486884594
+valid loss: 0.02381821721792221
+valid loss: 0.017517125234007835
+valid loss: 0.027468912303447723
+valid loss: 0.032878316938877106
+valid loss: 0.017656954005360603
+valid loss: 0.03461730480194092
+unet 2 has not been trained
+when sampling, you can pass stop_at_unet_number to stop early in the cascade, so it does not try to generate with untrained unets
+0/? [00:36<?, ?it/s]
+sampling loop time step: 100%
+1000/1000 [00:35<00:00, 25.82it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.028469733893871307
+valid loss: 0.023009421303868294
+valid loss: 0.01680045761168003
+valid loss: 0.022512376308441162
+valid loss: 0.019625108689069748
+valid loss: 0.023711664602160454
+valid loss: 0.022860638797283173
+valid loss: 0.02045883983373642
+valid loss: 0.024313300848007202
+valid loss: 0.02005157619714737
+valid loss: 0.01915973611176014
+valid loss: 0.020783884450793266
+valid loss: 0.00869736634194851
+valid loss: 0.011609925888478756
+valid loss: 0.015418725088238716
+valid loss: 0.012102868407964706
+valid loss: 0.022145720198750496
+valid loss: 0.021820899099111557
+valid loss: 0.012513497844338417
+valid loss: 0.02109689638018608
+unet 2 has not been trained
+when sampling, you can pass stop_at_unet_number to stop early in the cascade, so it does not try to generate with untrained unets
+0/? [00:36<?, ?it/s]
+sampling loop time step: 100%
+1000/1000 [00:36<00:00, 26.72it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.01677003689110279
+valid loss: 0.018213586881756783
+valid loss: 0.02081942930817604
+valid loss: 0.021101374179124832
+valid loss: 0.026802897453308105
+valid loss: 0.02457842417061329
+valid loss: 0.02385164052248001
+valid loss: 0.019847936928272247
+valid loss: 0.02685246244072914
+valid loss: 0.01883501186966896
+valid loss: 0.023041976615786552
+valid loss: 0.021362755447626114
+valid loss: 0.02189505472779274
+valid loss: 0.012840012088418007
+valid loss: 0.013141980394721031
+valid loss: 0.021244503557682037
+valid loss: 0.01226283609867096
+valid loss: 0.016959114000201225
+valid loss: 0.022598091512918472
+valid loss: 0.015095364302396774
+unet 2 has not been trained
+when sampling, you can pass stop_at_unet_number to stop early in the cascade, so it does not try to generate with untrained unets
+0/? [00:37<?, ?it/s]
+sampling loop time step: 100%
+1000/1000 [00:36<00:00, 28.82it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.02123040333390236
+valid loss: 0.018554287031292915
+valid loss: 0.023365333676338196
+valid loss: 0.014299321919679642
+valid loss: 0.012772109359502792
+valid loss: 0.02032497711479664
+valid loss: 0.018527351319789886
+valid loss: 0.025328924879431725
+valid loss: 0.018097683787345886
+valid loss: 0.02928527072072029
+valid loss: 0.018372152000665665
+valid loss: 0.008749932050704956
+valid loss: 0.024620570242404938
+valid loss: 0.025602027773857117
+valid loss: 0.02392536588013172
+valid loss: 0.015175413340330124
+valid loss: 0.015123598277568817
+valid loss: 0.01189393550157547
+valid loss: 0.013320104219019413
+valid loss: 0.030802858993411064
+unet 2 has not been trained
+when sampling, you can pass stop_at_unet_number to stop early in the cascade, so it does not try to generate with untrained unets
+0/? [00:36<?, ?it/s]
+sampling loop time step: 100%
+1000/1000 [00:35<00:00, 27.50it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+Training Unet No. 2
+2023-06-02 16:59:48.799322: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  SSE3 SSE4.1 SSE4.2 AVX AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+The base dimension of your u-net should ideally be no smaller than 128, as recommended by a professional DDPM trainer https://nonint.com/2022/05/04/friends-dont-let-friends-train-small-diffusion-models/
+training with dataset of 119 samples and validating with randomly splitted 4 samples
+Using model file imagen_two_unets_openl3_test_24s.pt
+checkpoint loaded from imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.7747401595115662
+2/? [01:19<00:00, 40.13s/it]
+sampling loop time step: 100%
+1000/1000 [00:35<00:00, 28.02it/s]
+sampling loop time step: 100%
+1000/1000 [00:41<00:00, 22.53it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.4375028610229492
+valid loss: 0.20614860951900482
+valid loss: 0.11391933262348175
+valid loss: 0.15183623135089874
+valid loss: 0.11151827871799469
+valid loss: 0.1195191740989685
+valid loss: 0.09172897785902023
+valid loss: 0.0862874686717987
+valid loss: 0.0719202309846878
+valid loss: 0.06810732185840607
+valid loss: 0.07156054675579071
+valid loss: 0.044817544519901276
+valid loss: 0.04855304956436157
+valid loss: 0.04680820181965828
+valid loss: 0.039434704929590225
+valid loss: 0.045956600457429886
+valid loss: 0.0534241646528244
+valid loss: 0.05224767327308655
+valid loss: 0.04385710507631302
+2/? [01:18<00:00, 39.92s/it]
+sampling loop time step: 100%
+1000/1000 [00:36<00:00, 29.37it/s]
+sampling loop time step: 100%
+1000/1000 [00:41<00:00, 23.41it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.03589203581213951
+valid loss: 0.03917514160275459
+valid loss: 0.029703199863433838
+valid loss: 0.041177891194820404
+valid loss: 0.042384613305330276
+valid loss: 0.039914436638355255
+valid loss: 0.029407823458313942
+valid loss: 0.03647712618112564
+valid loss: 0.03187389671802521
+valid loss: 0.03823667764663696
+valid loss: 0.03740367665886879
+valid loss: 0.02811138890683651
+valid loss: 0.022214211523532867
+valid loss: 0.04303063452243805
+valid loss: 0.029845383018255234
+valid loss: 0.040609534829854965
+valid loss: 0.02197025902569294
+valid loss: 0.022207168862223625
+valid loss: 0.02881496399641037
+valid loss: 0.03585999459028244
+2/? [01:18<00:00, 39.76s/it]
+sampling loop time step: 100%
+1000/1000 [00:35<00:00, 27.94it/s]
+sampling loop time step: 100%
+1000/1000 [00:41<00:00, 24.83it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.026168478652834892
+valid loss: 0.023648692294955254
+valid loss: 0.02519639953970909
+valid loss: 0.024131527170538902
+valid loss: 0.021511662751436234
+valid loss: 0.024521013721823692
+valid loss: 0.0238276906311512
+valid loss: 0.0218737181276083
+valid loss: 0.025168970227241516
+valid loss: 0.017806468531489372
+valid loss: 0.024958565831184387
+valid loss: 0.023962516337633133
+valid loss: 0.02152377739548683
+valid loss: 0.029751231893897057
+valid loss: 0.008396236225962639
+valid loss: 0.01956152729690075
+valid loss: 0.021231070160865784
+valid loss: 0.012405137531459332
+valid loss: 0.02456258051097393
+valid loss: 0.03055310621857643
+2/? [01:18<00:00, 39.86s/it]
+sampling loop time step: 100%
+1000/1000 [00:36<00:00, 28.15it/s]
+sampling loop time step: 100%
+1000/1000 [00:41<00:00, 23.58it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.02836693450808525
+valid loss: 0.01231272891163826
+valid loss: 0.020711973309516907
+valid loss: 0.015331466682255268
+valid loss: 0.033069636672735214
+valid loss: 0.019221916794776917
+valid loss: 0.014964248985052109
+valid loss: 0.0263346116989851
+valid loss: 0.020804136991500854
+valid loss: 0.01464218832552433
+valid loss: 0.01943153701722622
+valid loss: 0.01591154746711254
+valid loss: 0.012509636580944061
+valid loss: 0.03289051353931427
+valid loss: 0.018028486520051956
+valid loss: 0.016090836375951767
+valid loss: 0.02581329271197319
+valid loss: 0.015086062252521515
+valid loss: 0.02424347586929798
+valid loss: 0.02926071360707283
+2/? [01:18<00:00, 40.05s/it]
+sampling loop time step: 100%
+1000/1000 [00:35<00:00, 27.67it/s]
+sampling loop time step: 100%
+1000/1000 [00:42<00:00, 24.43it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.026785671710968018
+valid loss: 0.028413603082299232
+valid loss: 0.02210521325469017
+valid loss: 0.01973291113972664
+valid loss: 0.02048392966389656
+valid loss: 0.02431795559823513
+valid loss: 0.021364204585552216
+valid loss: 0.02088129334151745
+valid loss: 0.019155286252498627
+valid loss: 0.01747366599738598
+valid loss: 0.01540592685341835
+valid loss: 0.013575103133916855
+valid loss: 0.013542410917580128
+valid loss: 0.015010581351816654
+valid loss: 0.02239643782377243
+valid loss: 0.017271269112825394
+valid loss: 0.017370743677020073
+valid loss: 0.007792837917804718
+valid loss: 0.012558842077851295
+valid loss: 0.01684880256652832
+Training in epoch 1
+Training in offset 0
+Training Unet No. 1
+2023-06-02 17:25:53.816816: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  SSE3 SSE4.1 SSE4.2 AVX AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+The base dimension of your u-net should ideally be no smaller than 128, as recommended by a professional DDPM trainer https://nonint.com/2022/05/04/friends-dont-let-friends-train-small-diffusion-models/
+training with dataset of 119 samples and validating with randomly splitted 4 samples
+Using model file imagen_two_unets_openl3_test_24s.pt
+checkpoint loaded from imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.023688174784183502
+0/? [00:35<?, ?it/s]
+sampling loop time step: 100%
+1000/1000 [00:34<00:00, 28.52it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.019378330558538437
+valid loss: 0.01793942227959633
+valid loss: 0.021825922653079033
+valid loss: 0.025313612073659897
+valid loss: 0.008875846862792969
+valid loss: 0.00910976342856884
+valid loss: 0.023119015619158745
+valid loss: 0.009668597020208836
+valid loss: 0.013739634305238724
+valid loss: 0.01835288666188717
+valid loss: 0.014469273388385773
+valid loss: 0.011656969785690308
+valid loss: 0.019156455993652344
+valid loss: 0.008693285286426544
+valid loss: 0.0247015543282032
+valid loss: 0.009022977203130722
+valid loss: 0.02769160456955433
+valid loss: 0.016340941190719604
+valid loss: 0.021166006103157997
+0/? [00:35<?, ?it/s]
+sampling loop time step: 100%
+1000/1000 [00:34<00:00, 28.83it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.022844713181257248
+valid loss: 0.019085120409727097
+valid loss: 0.022925421595573425
+valid loss: 0.026376280933618546
+valid loss: 0.020070306956768036
+valid loss: 0.020714858546853065
+valid loss: 0.021220991387963295
+valid loss: 0.02736365795135498
+valid loss: 0.016889408230781555
+valid loss: 0.02152484841644764
+valid loss: 0.02380937524139881
+valid loss: 0.031089652329683304
+valid loss: 0.016020655632019043
+valid loss: 0.013188962824642658
+valid loss: 0.01833345741033554
+valid loss: 0.01362576149404049
+valid loss: 0.0069799115881323814
+valid loss: 0.006737318821251392
+valid loss: 0.015728117898106575
+valid loss: 0.03090345486998558
+0/? [00:36<?, ?it/s]
+sampling loop time step: 100%
+1000/1000 [00:35<00:00, 29.37it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.020515184849500656
+valid loss: 0.024899553507566452
+valid loss: 0.027744757011532784
+valid loss: 0.009767599403858185
+valid loss: 0.018612802028656006
+valid loss: 0.026192881166934967
+valid loss: 0.012943346984684467
+valid loss: 0.028307009488344193
+valid loss: 0.008615436032414436
+valid loss: 0.01944914646446705
+valid loss: 0.016880981624126434
+valid loss: 0.01912643387913704
+valid loss: 0.0177238117903471
+valid loss: 0.02486599050462246
+valid loss: 0.01659751869738102
+valid loss: 0.026166733354330063
+valid loss: 0.01781047321856022
+valid loss: 0.02118706703186035
+valid loss: 0.02134193852543831
+valid loss: 0.005475714802742004
+0/? [00:35<?, ?it/s]
+sampling loop time step: 100%
+1000/1000 [00:34<00:00, 29.39it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.014920451678335667
+valid loss: 0.02933467924594879
+valid loss: 0.0285903662443161
+valid loss: 0.03468233346939087
+valid loss: 0.020198751240968704
+valid loss: 0.023083049803972244
+valid loss: 0.01882481388747692
+valid loss: 0.027076002210378647
+valid loss: 0.01777053251862526
+valid loss: 0.02827533707022667
+valid loss: 0.011956313624978065
+valid loss: 0.01615932583808899
+valid loss: 0.03318930044770241
+valid loss: 0.028347929939627647
+valid loss: 0.022808652371168137
+valid loss: 0.02789776213467121
+valid loss: 0.02616439200937748
+valid loss: 0.01621745154261589
+valid loss: 0.008818369358778
+valid loss: 0.024968605488538742
+0/? [00:35<?, ?it/s]
+sampling loop time step: 100%
+1000/1000 [00:34<00:00, 29.95it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.008419962599873543
+valid loss: 0.004844482056796551
+valid loss: 0.019192060455679893
+valid loss: 0.007829117588698864
+valid loss: 0.02429865300655365
+valid loss: 0.012904666364192963
+valid loss: 0.016213735565543175
+valid loss: 0.016254885122179985
+valid loss: 0.026113124564290047
+valid loss: 0.01771938055753708
+valid loss: 0.007064532022923231
+valid loss: 0.030912423506379128
+valid loss: 0.03842128813266754
+valid loss: 0.024296246469020844
+valid loss: 0.028804484754800797
+valid loss: 0.030627073720097542
+valid loss: 0.013326609507203102
+valid loss: 0.018484069034457207
+valid loss: 0.013513924553990364
+valid loss: 0.027389848604798317
+0/? [00:36<?, ?it/s]
+sampling loop time step: 100%
+1000/1000 [00:36<00:00, 27.67it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+Training Unet No. 2
+2023-06-02 17:43:51.131013: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  SSE3 SSE4.1 SSE4.2 AVX AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+The base dimension of your u-net should ideally be no smaller than 128, as recommended by a professional DDPM trainer https://nonint.com/2022/05/04/friends-dont-let-friends-train-small-diffusion-models/
+training with dataset of 119 samples and validating with randomly splitted 4 samples
+Using model file imagen_two_unets_openl3_test_24s.pt
+checkpoint loaded from imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.02597101964056492
+2/? [01:21<00:00, 41.07s/it]
+sampling loop time step: 100%
+1000/1000 [00:36<00:00, 26.91it/s]
+sampling loop time step: 100%
+1000/1000 [00:42<00:00, 22.68it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.02402394823729992
+valid loss: 0.03063785657286644
+valid loss: 0.015730291604995728
+valid loss: 0.01618874818086624
+valid loss: 0.01757919043302536
+valid loss: 0.015134213492274284
+valid loss: 0.01759178936481476
+valid loss: 0.01587653160095215
+valid loss: 0.01620352640748024
+valid loss: 0.012135768309235573
+valid loss: 0.012022625654935837
+valid loss: 0.022904574871063232
+valid loss: 0.026600416749715805
+valid loss: 0.019137024879455566
+valid loss: 0.028785446658730507
+valid loss: 0.012762116268277168
+valid loss: 0.023015545681118965
+valid loss: 0.013672806322574615
+valid loss: 0.03376435488462448
+2/? [01:19<00:00, 40.10s/it]
+sampling loop time step: 100%
+1000/1000 [00:36<00:00, 27.45it/s]
+sampling loop time step: 100%
+1000/1000 [00:41<00:00, 22.98it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.019754327833652496
+valid loss: 0.026262428611516953
+valid loss: 0.02413109689950943
+valid loss: 0.01897941157221794
+valid loss: 0.024374011904001236
+valid loss: 0.0206034854054451
+valid loss: 0.017175786197185516
+valid loss: 0.014566684141755104
+valid loss: 0.02306252345442772
+valid loss: 0.017448052763938904
+valid loss: 0.02162746526300907
+valid loss: 0.015035278163850307
+valid loss: 0.041323475539684296
+valid loss: 0.01100631058216095
+valid loss: 0.02618258073925972
+valid loss: 0.015562977641820908
+valid loss: 0.00621796352788806
+valid loss: 0.032509349286556244
+valid loss: 0.01820995658636093
+valid loss: 0.034407466650009155
+2/? [01:20<00:00, 40.57s/it]
+sampling loop time step: 100%
+1000/1000 [00:36<00:00, 27.47it/s]
+sampling loop time step: 100%
+1000/1000 [00:42<00:00, 24.59it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.014588318765163422
+valid loss: 0.017958426848053932
+valid loss: 0.03183477744460106
+valid loss: 0.02536958083510399
+valid loss: 0.015335089527070522
+valid loss: 0.021328266710042953
+valid loss: 0.023867297917604446
+valid loss: 0.012966186739504337
+valid loss: 0.018243692815303802
+valid loss: 0.017828520387411118
+valid loss: 0.024568859487771988
+valid loss: 0.032895490527153015
+valid loss: 0.012689374387264252
+valid loss: 0.016615357249975204
+valid loss: 0.015766527503728867
+valid loss: 0.018927359953522682
+valid loss: 0.010134554468095303
+valid loss: 0.014199149794876575
+valid loss: 0.03160998970270157
+valid loss: 0.009632334113121033
+2/? [01:22<00:00, 41.70s/it]
+sampling loop time step: 100%
+1000/1000 [00:38<00:00, 27.56it/s]
+sampling loop time step: 100%
+1000/1000 [00:42<00:00, 24.01it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.024495743215084076
+valid loss: 0.0165940523147583
+valid loss: 0.019474903121590614
+valid loss: 0.011564946733415127
+valid loss: 0.03216033801436424
+valid loss: 0.0297527052462101
+valid loss: 0.02959541790187359
+valid loss: 0.018407687544822693
+valid loss: 0.007426050491631031
+valid loss: 0.007344776764512062
+valid loss: 0.028114628046751022
+valid loss: 0.016144152730703354
+valid loss: 0.02134370431303978
+valid loss: 0.01686248742043972
+valid loss: 0.018911246210336685
+valid loss: 0.010656628757715225
+valid loss: 0.013782023452222347
+valid loss: 0.011477144435048103
+valid loss: 0.009700080379843712
+valid loss: 0.009677485562860966
+2/? [01:21<00:00, 41.17s/it]
+sampling loop time step: 100%
+1000/1000 [00:36<00:00, 28.04it/s]
+sampling loop time step: 100%
+1000/1000 [00:42<00:00, 24.18it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.00890702661126852
+valid loss: 0.01353384181857109
+valid loss: 0.016577158123254776
+valid loss: 0.02569168619811535
+valid loss: 0.0203417781740427
+valid loss: 0.021443355828523636
+valid loss: 0.018155496567487717
+valid loss: 0.025107786059379578
+valid loss: 0.03343401104211807
+valid loss: 0.016942761838436127
+valid loss: 0.01293862983584404
+valid loss: 0.02021692506968975
+valid loss: 0.015936164185404778
+valid loss: 0.028523286804556847
+valid loss: 0.01963871903717518
+valid loss: 0.02098606526851654
+valid loss: 0.006345285102725029
+valid loss: 0.03509736433625221
+valid loss: 0.021407978609204292
+valid loss: 0.022001508623361588
+2/? [01:20<00:00, 40.66s/it]
+sampling loop time step: 100%
+1000/1000 [00:36<00:00, 29.05it/s]
+sampling loop time step: 100%
+1000/1000 [00:42<00:00, 23.89it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+Training in offset 10000
+Training in epoch 2
+Training in offset 0
+Training Unet No. 1
+2023-06-02 18:09:45.814812: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  SSE3 SSE4.1 SSE4.2 AVX AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+The base dimension of your u-net should ideally be no smaller than 128, as recommended by a professional DDPM trainer https://nonint.com/2022/05/04/friends-dont-let-friends-train-small-diffusion-models/
+training with dataset of 119 samples and validating with randomly splitted 4 samples
+Using model file imagen_two_unets_openl3_test_24s.pt
+checkpoint loaded from imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.012121520936489105
+0/? [00:36<?, ?it/s]
+sampling loop time step: 100%
+1000/1000 [00:35<00:00, 27.67it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.02489408105611801
+valid loss: 0.027490003034472466
+valid loss: 0.015745237469673157
+valid loss: 0.011479893699288368
+valid loss: 0.02716819755733013
+valid loss: 0.025535039603710175
+valid loss: 0.005981037858873606
+valid loss: 0.03616832196712494
+valid loss: 0.019177693873643875
+valid loss: 0.01275660190731287
+valid loss: 0.025135338306427002
+valid loss: 0.024500254541635513
+valid loss: 0.03511873632669449
+valid loss: 0.014457928948104382
+valid loss: 0.024665452539920807
+valid loss: 0.012807419523596764
+valid loss: 0.025335989892482758
+valid loss: 0.014238343574106693
+valid loss: 0.02173681929707527
+0/? [00:35<?, ?it/s]
+sampling loop time step: 100%
+1000/1000 [00:35<00:00, 28.03it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.038757629692554474
+valid loss: 0.02632685750722885
+valid loss: 0.02516455575823784
+valid loss: 0.016523048281669617
+valid loss: 0.01188025064766407
+valid loss: 0.02349983900785446
+valid loss: 0.01640493981540203
+valid loss: 0.012892939150333405
+valid loss: 0.03566615283489227
+valid loss: 0.009871207177639008
+valid loss: 0.011936184950172901
+valid loss: 0.009405593387782574
+valid loss: 0.042716942727565765
+valid loss: 0.027256306260824203
+valid loss: 0.00962274894118309
+valid loss: 0.016988957300782204
+valid loss: 0.025838475674390793
+valid loss: 0.01608908176422119
+valid loss: 0.026733040809631348
+valid loss: 0.023974839597940445
+0/? [00:37<?, ?it/s]
+sampling loop time step: 100%
+1000/1000 [00:36<00:00, 25.86it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.03354340419173241
+valid loss: 0.018126562237739563
+valid loss: 0.022646145895123482
+valid loss: 0.018335580825805664
+valid loss: 0.014026407152414322
+valid loss: 0.00565655343234539
+valid loss: 0.02959003672003746
+valid loss: 0.022561263293027878
+valid loss: 0.014724809676408768
+valid loss: 0.005407784599810839
+valid loss: 0.015025995671749115
+valid loss: 0.022082071751356125
+valid loss: 0.013251619413495064
+valid loss: 0.01678718999028206
+valid loss: 0.017879672348499298
+valid loss: 0.02026291936635971
+valid loss: 0.04097386822104454
+valid loss: 0.022173624485731125
+valid loss: 0.008256628178060055
+valid loss: 0.030669813975691795
+0/? [00:37<?, ?it/s]
+sampling loop time step: 100%
+1000/1000 [00:37<00:00, 26.90it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.019802335649728775
+valid loss: 0.0230430755764246
+valid loss: 0.018732644617557526
+valid loss: 0.021322913467884064
+valid loss: 0.024577312171459198
+valid loss: 0.03632785379886627
+valid loss: 0.02387901581823826
+valid loss: 0.008768899366259575
+valid loss: 0.027455490082502365
+valid loss: 0.04008433595299721
+valid loss: 0.02819754183292389
+valid loss: 0.03067317232489586
+valid loss: 0.030992282554507256
+valid loss: 0.007389174774289131
+valid loss: 0.028925932943820953
+valid loss: 0.01850583218038082
+valid loss: 0.017747243866324425
+valid loss: 0.02376171201467514
+valid loss: 0.031778886914253235
+valid loss: 0.015447753481566906
+0/? [00:37<?, ?it/s]
+sampling loop time step: 100%
+1000/1000 [00:36<00:00, 27.94it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.007146311923861504
+valid loss: 0.0071092466823756695
+valid loss: 0.023055126890540123
+valid loss: 0.03333691880106926
+valid loss: 0.021848049014806747
+valid loss: 0.01631745882332325
+valid loss: 0.018220975995063782
+valid loss: 0.02601173147559166
+valid loss: 0.03308926522731781
+valid loss: 0.023632720112800598
+valid loss: 0.02338925190269947
+valid loss: 0.023280547931790352
+valid loss: 0.01574913039803505
+valid loss: 0.018788475543260574
+valid loss: 0.03472408652305603
+valid loss: 0.0076537905260920525
+valid loss: 0.012000680901110172
+valid loss: 0.024859897792339325
+valid loss: 0.009954042732715607
+valid loss: 0.006169593892991543
+0/? [00:37<?, ?it/s]
+sampling loop time step: 100%
+1000/1000 [00:36<00:00, 28.36it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+Training Unet No. 2
+2023-06-02 18:28:15.590582: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  SSE3 SSE4.1 SSE4.2 AVX AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+The base dimension of your u-net should ideally be no smaller than 128, as recommended by a professional DDPM trainer https://nonint.com/2022/05/04/friends-dont-let-friends-train-small-diffusion-models/
+training with dataset of 119 samples and validating with randomly splitted 4 samples
+Using model file imagen_two_unets_openl3_test_24s.pt
+checkpoint loaded from imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.025988467037677765
+2/? [01:18<00:00, 39.98s/it]
+sampling loop time step: 100%
+1000/1000 [00:35<00:00, 26.82it/s]
+sampling loop time step: 100%
+1000/1000 [00:41<00:00, 23.28it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.009134028106927872
+valid loss: 0.02242918126285076
+valid loss: 0.01733296364545822
+valid loss: 0.005507565103471279
+valid loss: 0.016967372968792915
+valid loss: 0.01959478110074997
+valid loss: 0.02478032186627388
+valid loss: 0.032292649149894714
+valid loss: 0.02098933421075344
+valid loss: 0.033870212733745575
+valid loss: 0.026050198823213577
+valid loss: 0.028355754911899567
+valid loss: 0.021731585264205933
+valid loss: 0.023327140137553215
+valid loss: 0.013014700263738632
+valid loss: 0.02131427265703678
+valid loss: 0.01788357086479664
+valid loss: 0.02588939294219017
+valid loss: 0.022113995626568794
+2/? [01:19<00:00, 40.34s/it]
+sampling loop time step: 100%
+1000/1000 [00:35<00:00, 26.33it/s]
+sampling loop time step: 100%
+1000/1000 [00:42<00:00, 22.68it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.020278383046388626
+valid loss: 0.012920147739350796
+valid loss: 0.015216512605547905
+valid loss: 0.010936085134744644
+valid loss: 0.028331981971859932
+valid loss: 0.01942649856209755
+valid loss: 0.028862373903393745
+valid loss: 0.016334611922502518
+valid loss: 0.021198898553848267
+valid loss: 0.009851769544184208
+valid loss: 0.03368234634399414
+valid loss: 0.015105745755136013
+valid loss: 0.0119672492146492
+valid loss: 0.0046080551110208035
+valid loss: 0.024017900228500366
+valid loss: 0.01480480283498764
+valid loss: 0.02349909022450447
+valid loss: 0.017399322241544724
+valid loss: 0.02177831158041954
+valid loss: 0.021789783611893654
+2/? [01:19<00:00, 40.41s/it]
+sampling loop time step: 100%
+1000/1000 [00:36<00:00, 28.25it/s]
+sampling loop time step: 100%
+1000/1000 [00:42<00:00, 23.44it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.012466833926737309
+valid loss: 0.025710027664899826
+valid loss: 0.014974137768149376
+valid loss: 0.012383059598505497
+valid loss: 0.012120942585170269
+valid loss: 0.007302616722881794
+valid loss: 0.015429171733558178
+valid loss: 0.009246950037777424
+valid loss: 0.027051161974668503
+valid loss: 0.027486003935337067
+valid loss: 0.01362131629139185
+valid loss: 0.019283387809991837
+valid loss: 0.022446490824222565
+valid loss: 0.032200004905462265
+valid loss: 0.02204834669828415
+valid loss: 0.02196326106786728
+valid loss: 0.0117561686784029
+valid loss: 0.025165459141135216
+valid loss: 0.0052492390386760235
+valid loss: 0.02418515458703041
+2/? [01:19<00:00, 40.17s/it]
+sampling loop time step: 100%
+1000/1000 [00:36<00:00, 26.85it/s]
+sampling loop time step: 100%
+1000/1000 [00:41<00:00, 24.60it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.020018188282847404
+valid loss: 0.012124720960855484
+valid loss: 0.025850603356957436
+valid loss: 0.013033205643296242
+valid loss: 0.019707122817635536
+valid loss: 0.01274154894053936
+valid loss: 0.037411801517009735
+valid loss: 0.009020665660500526
+valid loss: 0.021549204364418983
+valid loss: 0.018899083137512207
+valid loss: 0.008706636726856232
+valid loss: 0.009493685327470303
+valid loss: 0.021631043404340744
+valid loss: 0.008642279542982578
+valid loss: 0.01788301020860672
+valid loss: 0.023551786318421364
+valid loss: 0.011348378844559193
+valid loss: 0.02513478882610798
+valid loss: 0.027526939287781715
+valid loss: 0.02114131674170494
+2/? [01:17<00:00, 39.10s/it]
+sampling loop time step: 100%
+1000/1000 [00:34<00:00, 28.20it/s]
+sampling loop time step: 100%
+1000/1000 [00:40<00:00, 24.50it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+valid loss: 0.007803473621606827
+valid loss: 0.02068425342440605
+valid loss: 0.011142926290631294
+valid loss: 0.017383012920618057
+valid loss: 0.030690627172589302
+valid loss: 0.024584278464317322
+valid loss: 0.018187522888183594
+valid loss: 0.04385291785001755
+valid loss: 0.024799276143312454
+valid loss: 0.02607491984963417
+valid loss: 0.01966598629951477
+valid loss: 0.019079051911830902
+valid loss: 0.02720235288143158
+valid loss: 0.017604868859052658
+valid loss: 0.02094315178692341
+valid loss: 0.02113100327551365
+valid loss: 0.01530873030424118
+valid loss: 0.030559541657567024
+valid loss: 0.023158488795161247
+valid loss: 0.021747669205069542
+2/? [01:17<00:00, 39.39s/it]
+sampling loop time step: 100%
+1000/1000 [00:34<00:00, 28.11it/s]
+sampling loop time step: 100%
+1000/1000 [00:41<00:00, 24.58it/s]
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+checkpoint saved to imagen_two_unets_openl3_test_24s.pt
+Training in offset 10000

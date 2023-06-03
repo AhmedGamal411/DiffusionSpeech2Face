@@ -15,7 +15,6 @@ from multiprocessing import Process,Queue
 import itertools
 from threading import Thread
 import soundfile as sf
-import extractOpenL3Subprocess as openSb
 from multiprocessing import Queue
 from multiprocessing import Pool
 import openl3
@@ -44,7 +43,7 @@ ttwbdf =  int(configParser.get('extractOpenL3', 'time_to_wait_before_deleting_fi
 print("Video dataset at " + datasetPathVideo )
 print("Extracting for mode " + openl3_mode)
 
-model = openl3.models.load_audio_embedding_model(input_repr="mel128", content_type="music",
+model = openl3.models.load_audio_embedding_model(input_repr="mel256", content_type="env",
                                                 embedding_size=512)
 
 

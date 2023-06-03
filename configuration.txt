@@ -4,6 +4,8 @@ datasetPathDatabase = /home/gamal/Datasets/Dataset1/Database
 cuda=1
 cpus=8
 resizeImageTo = 32
+audio_embs_options = wav2vec or openl3
+audio_embs = openl3
 
 [dbCreateAndPopulate]
 recreateDb=1
@@ -22,9 +24,6 @@ parallelism = 5
 parallelismFrames = 3
 datasetPathFrames = /home/gamal/Datasets/Dataset1/Frames
 datasetPathFaces = /home/gamal/Datasets/Dataset1/Faces
-
-[extractFacesLatents]
-dbChunk = 1000
 
 [fineTuneStableDiffusionTraining]
 db_chunk = 50000
@@ -45,7 +44,7 @@ openl3_mode = imagen
 datasetPathAudio = /home/gamal/Datasets/Dataset1/Audio
 dbChunk = 240
 time_to_wait_before_deleting_files = 60
-audio_length_wav2vec = 
+audio_length_wav2vec = 5
 
 [fineTuneStableDiffusionTesting]
 use_video_in_configuration = 1
@@ -54,10 +53,10 @@ time_to_wait_before_deleting_files = 180
 dev_mode = 0
 
 [train_imagen]
-model_filename = imagen_two_unets
+model_filename = imagen_two_unets_openl3_env_256_test
 audio_length_used = 24
-epochs = 2
-sub_epochs = 10000
+epochs = 3
+sub_epochs = 5000
 sample_every = 1000
 save_model_every = 1000
 batch_size = 5
@@ -65,3 +64,13 @@ continue_from_epoch = 1
 continue_from_offset = 0
 continue_from_epoch_and_offset_flag = 0
 db_chunk = 10000
+
+[test_imagen]
+age=30
+ethnicity=black
+gender=man
+language=0
+video_path = /home/gamal/Datasets/Dataset1/Video/blhA_I4zjvE_15.600000_22.333333.mp4
+time_to_wait_before_deleting_files = 180
+audio_length_used_options = 6 or 12 or 24
+audio_length_used = 24

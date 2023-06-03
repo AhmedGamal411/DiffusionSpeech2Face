@@ -4,6 +4,8 @@ datasetPathDatabase = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Database
 cuda=1
 cpus=8
 resizeImageTo = 128
+audio_embs_options = wav2vec or openl3
+audio_embs = openl3
 
 [dbCreateAndPopulate]
 recreateDb=0
@@ -22,9 +24,6 @@ parallelism = 5
 parallelismFrames = 3
 datasetPathFrames = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Frames
 datasetPathFaces = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Faces
-
-[extractFacesLatents]
-dbChunk = 1000
 
 [fineTuneStableDiffusionTraining]
 db_chunk = 50000
