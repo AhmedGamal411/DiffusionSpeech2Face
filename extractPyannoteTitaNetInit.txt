@@ -1,4 +1,4 @@
-until python extractPyannote.py
+until python extractPyannoteTitaNet.py
 do
     echo "Restarting"
     sleep 2

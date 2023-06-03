@@ -67,6 +67,9 @@ inference4 = Inference(model, window="sliding",
 inference5 = Inference(model, window="sliding",
                       duration=24, step=8 ,device=torch.device(0))
 
+import nemo.collections.asr as nemo_asr
+speaker_model = nemo_asr.models.EncDecSpeakerLabelModel.from_pretrained("nvidia/speakerverification_en_titanet_large")
+
  
 def extractAudio(rows):
     con2 = sl.connect(datasetPathDatabase)
@@ -140,6 +143,11 @@ def extractAudio(rows):
             emb = np.vstack((emb,emb4))
             emb = np.vstack((emb,emb5))
 
+            embTitaNet = speaker_model.get_embedding(path_var_len_audio)
+            c = embTitaNet.detach().cpu().numpy()
+            c = c.squeeze()
+            c = np.pad(c, (160), 'constant', constant_values=(0))
+            emb = np.vstack((emb,c))
 
 
             #p = Pool(1)
