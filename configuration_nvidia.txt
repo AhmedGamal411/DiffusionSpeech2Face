@@ -41,6 +41,12 @@ time_to_wait_before_deleting_files = 60
 openl3_mode_options = stable or imagen
 openl3_mode = imagen
 
+[extractWavToVec]
+datasetPathAudio = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Audio
+dbChunk = 240
+time_to_wait_before_deleting_files = 60
+audio_length_wav2vec = 5
+
 [fineTuneStableDiffusionTesting]
 use_video_in_configuration = 1
 video_path = /home/gamal/vsc/DiffusionSpeech2Face/v.mp4
@@ -48,7 +54,7 @@ time_to_wait_before_deleting_files = 180
 dev_mode = 0
 
 [train_imagen]
-model_filename = imagen_two_unets
+model_filename = imagen_two_unets_wav_to_vec
 audio_length_used = 24
 epochs = 1
 sub_epochs = 5000

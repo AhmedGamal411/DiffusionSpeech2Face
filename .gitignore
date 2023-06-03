@@ -8,3 +8,4 @@
 /fineTuneStableDiffusionTestingFolder
 /pretrained_models
 *.pt
+*.png
