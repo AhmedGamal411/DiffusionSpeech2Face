@@ -33,10 +33,10 @@ datasetPathVideo =  configParser.get('COMMON', 'datasetPathVideo')
 datasetPathDatabase =  configParser.get('COMMON', 'datasetPathDatabase') + '/dataset.db'
 cpus =  int(configParser.get('COMMON', 'cpus'))
 
-datasetPathAudio =  configParser.get('extractPyannote', 'datasetPathAudio')
+datasetPathAudio =  configParser.get('extractPyannoteTitaNet', 'datasetPathAudio')
 
-p =  configParser.get('extractPyannote', 'dbChunk')
-ttwbdf =  int(configParser.get('extractPyannote', 'time_to_wait_before_deleting_files'))
+p =  configParser.get('extractPyannoteTitaNet', 'dbChunk')
+ttwbdf =  int(configParser.get('extractPyannoteTitaNet', 'time_to_wait_before_deleting_files'))
 
 print("Video dataset at " + datasetPathVideo )
 
@@ -142,37 +142,29 @@ def extractAudio(rows):
             emb = np.vstack((emb,emb3))
             emb = np.vstack((emb,emb4))
             emb = np.vstack((emb,emb5))
+            emb = emb / 400.0
 
             embTitaNet = speaker_model.get_embedding(path_var_len_audio)
             c = embTitaNet.detach().cpu().numpy()
             c = c.squeeze()
             c = np.pad(c, (160), 'constant', constant_values=(0))
+            c = c * 10.0
             emb = np.vstack((emb,c))
 
-
-            #p = Pool(1)
-            #emb = p.apply(openSb.extractOpenL3Subprocess, args=(audio,hop_size,sr,))
-
-
-            #emb, ts = openl3.get_audio_embedding(audio, sr,embedding_size=512,hop_size=audio_length/50,verbose=0)
-            #signal, fs = torchaudio.load(path_var_len_audio)
-            #embeddings = classifier.encode_batch(signal)
-            #embeddingsPickle = pickle.dumps(embeddings.cpu().detach().numpy()) # pickle embeddings to put in database
-            #print(emb)
-            #print(emb.min())
-            #print(emb.max())
-            #print(audio_length)
-            #print(emb.shape)
-            #print(emb)
             embeddingsPickle = pickle.dumps(emb)
             #update audio embeddings into database
-            sql = ''' UPDATE AUDIO SET ''' + '''PYANNOTE  = ? WHERE VIDEO_ID = ? AND AUDIO_LENGTH = ?'''
-
+            print(1)
+            sql = ''' UPDATE AUDIO SET ''' + '''PYANNOTE_TITANET  = ? WHERE VIDEO_ID = ? AND AUDIO_LENGTH = ?'''
+            print(2)
             
             cur = con2.cursor()
+            print(3)
             data = [embeddingsPickle,rowId,audio_length]
+            print(4)
             cur.execute(sql, data)
+            print(5)
             con2.commit()
+            print(6)
 
             # Will delete those files after a little bit
             ftd = [absPathAudio,path_var_len_audio,os.path.basename(path_var_len_audio),path_var_len_audio_temp]
@@ -208,7 +200,7 @@ while(contLoop):
     data = con.execute("SELECT * FROM VIDEO WHERE AUDIO_PRE = 1 AND FACES_PRE = 1 ORDER BY ID ASC LIMIT " + p + " OFFSET " + str(offset))
     contLoop = False
     offset = offset + int(p)
-    print("Got chunk of videos from database. Extracting audio and pyannote embeddings...")
+    print("Got chunk of videos from database. Extracting audio and Pyannote/Titanet embeddings...")
     # TODO write time
     
     #print(data.fetchall())

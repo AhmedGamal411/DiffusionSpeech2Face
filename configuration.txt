@@ -4,7 +4,7 @@ datasetPathDatabase = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Database
 cuda=1
 cpus=8
 resizeImageTo = 128
-audio_embs_options = wav2vec or openl3 or pyannote
+audio_embs_options = wav2vec or openl3 or pyannoteTitaNet
 audio_embs = pyannote
 
 [dbCreateAndPopulate]
@@ -46,7 +46,7 @@ dbChunk = 240
 time_to_wait_before_deleting_files = 60
 audio_length_wav2vec = 5
 
-[extractPyannote]
+[extractPyannoteTitaNet]
 datasetPathAudio = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Audio
 dbChunk = 240
 time_to_wait_before_deleting_files = 60
@@ -81,3 +81,8 @@ video_path = /home/gamal/Datasets/Dataset1/Video/blhA_I4zjvE_15.600000_22.333333
 time_to_wait_before_deleting_files = 180
 audio_length_used_options = 6 or 12 or 24
 audio_length_used = 24
+model_filename = imagen_two_unets_wav_to_vec
+openl3_mode_options = stable or imagen
+openl3_mode = imagen
+folder = imagen_test
+number_of_images = 10
