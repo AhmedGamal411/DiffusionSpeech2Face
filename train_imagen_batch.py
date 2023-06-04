@@ -2,7 +2,7 @@ import numpy as np
 from PIL import Image
 import torch
 
-def train_batch_unet1(input,output,model_filename,sub_epochs,batch_size,sample_every,save_model_every,image_size):
+def train_batch_unet1(input,output,model_filename,sub_epochs,batch_size,sample_every,save_model_every,image_size,unet_dim):
     from torch.utils.data import TensorDataset, DataLoader
 
     print("Training Unet No. 1")
@@ -46,7 +46,7 @@ def train_batch_unet1(input,output,model_filename,sub_epochs,batch_size,sample_e
 
 
     unet1 = Unet(
-        dim = 32,
+        dim = unet_dim,
         cond_dim = 512,
         dim_mults = (1, 2, 4, 8),
         num_resnet_blocks = 3,
@@ -55,7 +55,7 @@ def train_batch_unet1(input,output,model_filename,sub_epochs,batch_size,sample_e
     )
 
     unet2 = Unet(
-        dim = 32,
+        dim = unet_dim,
         cond_dim = 512,
         dim_mults = (1, 2, 4, 8),
         num_resnet_blocks = (2, 4, 8, 8),
@@ -140,7 +140,7 @@ def train_batch_unet1(input,output,model_filename,sub_epochs,batch_size,sample_e
     trainer.save(model_filename)
 
 
-def train_batch_unet2(input,output,model_filename,sub_epochs,batch_size,sample_every,save_model_every,image_size):
+def train_batch_unet2(input,output,model_filename,sub_epochs,batch_size,sample_every,save_model_every,image_size,unet_dim):
     from torch.utils.data import TensorDataset, DataLoader
 
     print("Training Unet No. 2")
@@ -183,7 +183,7 @@ def train_batch_unet2(input,output,model_filename,sub_epochs,batch_size,sample_e
 
 
     unet1 = Unet(
-        dim = 32,
+        dim = unet_dim,
         cond_dim = 512,
         dim_mults = (1, 2, 4, 8),
         num_resnet_blocks = 3,
@@ -192,7 +192,7 @@ def train_batch_unet2(input,output,model_filename,sub_epochs,batch_size,sample_e
     )
 
     unet2 = Unet(
-        dim = 32,
+        dim = unet_dim,
         cond_dim = 512,
         dim_mults = (1, 2, 4, 8),
         num_resnet_blocks = (2, 4, 8, 8),
