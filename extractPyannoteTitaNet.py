@@ -69,6 +69,9 @@ inference5 = Inference(model, window="sliding",
 
 import nemo.collections.asr as nemo_asr
 speaker_model = nemo_asr.models.EncDecSpeakerLabelModel.from_pretrained("nvidia/speakerverification_en_titanet_large")
+speaker_model2 = nemo_asr.models.EncDecSpeakerLabelModel.from_pretrained(model_name="speakerverification_speakernet")
+
+
 
  
 def extractAudio(rows):
@@ -151,20 +154,22 @@ def extractAudio(rows):
             c = c * 10.0
             emb = np.vstack((emb,c))
 
+            embSpeakerNet = speaker_model2.get_embedding(path_var_len_audio)
+            c = embSpeakerNet.detach().cpu().numpy()
+            c = c.squeeze()
+            c = np.pad(c, (128), 'constant', constant_values=(0))
+            c = c * 1.0
+            emb = np.vstack((emb,c))
+
             embeddingsPickle = pickle.dumps(emb)
             #update audio embeddings into database
-            print(1)
             sql = ''' UPDATE AUDIO SET ''' + '''PYANNOTE_TITANET  = ? WHERE VIDEO_ID = ? AND AUDIO_LENGTH = ?'''
-            print(2)
+            
             
             cur = con2.cursor()
-            print(3)
             data = [embeddingsPickle,rowId,audio_length]
-            print(4)
             cur.execute(sql, data)
-            print(5)
             con2.commit()
-            print(6)
 
             # Will delete those files after a little bit
             ftd = [absPathAudio,path_var_len_audio,os.path.basename(path_var_len_audio),path_var_len_audio_temp]
