@@ -5,7 +5,8 @@ cuda=1
 cpus=8
 resizeImageTo = 32
 audio_embs_options = wav2vec or openl3
-audio_embs = openl3
+audio_embs = pyannoteTitaNet
+unet_dim = 64
 
 [dbCreateAndPopulate]
 recreateDb=1
@@ -47,6 +48,12 @@ dbChunk = 240
 time_to_wait_before_deleting_files = 60
 audio_length_wav2vec = 6
 
+
+[extractPyannoteTitaNet]
+datasetPathAudio = /home/gamal/Datasets/Dataset1/Audio
+dbChunk = 240
+time_to_wait_before_deleting_files = 60
+
 [fineTuneStableDiffusionTesting]
 use_video_in_configuration = 1
 video_path = /home/gamal/Datasets/Dataset1/Video/blhA_I4zjvE_15.600000_22.333333.mp4
@@ -54,13 +61,13 @@ time_to_wait_before_deleting_files = 180
 dev_mode = 0
 
 [train_imagen]
-model_filename = imagen_two_unets
+model_filename = imagen_two_unets_pyannote_nemo
 audio_length_used = 24
-epochs = 2
-sub_epochs = 2
+epochs = 5
+sub_epochs = 10000
 sample_every = 1000
-save_model_every = 1000
-batch_size = 5
+save_model_every = 5000
+batch_size = 50
 continue_from_epoch = 1
 continue_from_offset = 0
 continue_from_epoch_and_offset_flag = 0
