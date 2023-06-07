@@ -6,7 +6,7 @@ cpus=8
 resizeImageTo = 128
 audio_embs_options = wav2vec or openl3
 audio_embs = pyannoteTitaNet
-unet_dim = 64
+unet_dim = 48
 
 [dbCreateAndPopulate]
 recreateDb=0
@@ -59,7 +59,7 @@ time_to_wait_before_deleting_files = 180
 dev_mode = 0
 
 [train_imagen]
-model_filename = imagen_two_unets_pyannote_titanet_7
+model_filename = imagen_two_unets_pyannote_titanet_10
 audio_length_used = 24
 epochs = 1
 sub_epochs = 5000
