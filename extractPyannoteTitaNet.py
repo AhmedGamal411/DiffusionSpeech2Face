@@ -104,7 +104,7 @@ def extractAudio(rows):
 
     
         # Will either truncate or loop the original video to reach audio_length (3,6,12 or 24)
-        audio_length_list = [6,12,24]
+        audio_length_list = [24]
         for audio_length in audio_length_list:
             path_var_len_audio =  absPathAudio_w + "audio" + str(audio_length) + "s.wav"    # path to the variable length audio
             path_var_len_audio_temp =  absPathAudio_w + "audio_temp" + str(audio_length) + "s.wav"  # path to a temp version of the variable length audio

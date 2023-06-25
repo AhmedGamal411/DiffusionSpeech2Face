@@ -96,7 +96,7 @@ def train_batch_unet1(input,output,model_filename,sub_epochs,batch_size,sample_e
 
 
 
-    trainer.add_train_dataset(my_dataset, batch_size = batch_size)
+    trainer.add_train_dataset(my_dataset, batch_size = batch_size * 8)
 
     # working training loop
 
@@ -120,14 +120,14 @@ def train_batch_unet1(input,output,model_filename,sub_epochs,batch_size,sample_e
         print('Using model file ' + model_filename)
         trainer.load(model_filename)
 
-
+    import math
 
     for i in range(sub_epochs):
         loss = trainer.train_step(unet_number = 1, max_batch_size = batch_size)
         #print(f'loss: {loss}')
 
         if not (i % 50):
-            valid_loss = trainer.valid_step(unet_number = 1, max_batch_size = batch_size)
+            valid_loss = trainer.valid_step(unet_number = 1, max_batch_size =  batch_size)
             print(f'valid loss: {valid_loss}')
 
         if not (i % sample_every) and trainer.is_main: # is_main makes sure this can run in distributed
@@ -233,7 +233,7 @@ def train_batch_unet2(input,output,model_filename,sub_epochs,batch_size,sample_e
 
 
 
-    trainer.add_train_dataset(my_dataset, batch_size = batch_size)
+    trainer.add_train_dataset(my_dataset, batch_size = batch_size * 8)
 
     # working training loop
 
@@ -257,9 +257,9 @@ def train_batch_unet2(input,output,model_filename,sub_epochs,batch_size,sample_e
         print('Using model file ' + model_filename)
         trainer.load(model_filename)
 
+    import math
 
-
-    for i in range(sub_epochs):
+    for i in range(sub_epochs): 
         loss = trainer.train_step(unet_number = 2, max_batch_size = batch_size)
         #print(f'loss: {loss}')
 
