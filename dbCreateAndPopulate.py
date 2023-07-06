@@ -76,6 +76,12 @@ if(recreateDb != 0):
 
     con.execute("""
         CREATE INDEX AUDIO_VIDEO_ID_IDX ON AUDIO (VIDEO_ID);
+        
+    """)
+
+    con.execute("""
+        CREATE INDEX FACE_VIDEO_ID_IDX ON FACE (VIDEO_ID);
+        
     """)
 
 
