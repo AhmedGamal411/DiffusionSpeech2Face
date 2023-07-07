@@ -5,7 +5,11 @@ cuda=1
 cpus=8
 resizeImageTo = 128
 audio_embs_options = wav2vec or openl3
-audio_embs = openl3
+audio_embs = pyannoteTitaNet
+unet_dim = 48
+insert_amd_env_vars = 0
+HSA_OVERRIDE_GFX_VERSION = 10.3.0
+ROCM_PATH = /opt/rocm
 
 [dbCreateAndPopulate]
 recreateDb=0
@@ -21,7 +25,7 @@ expandFaceVerticalRatio = 0.4
 expandFaceHorizontalRatio=0.5
 faceDetectionDeepFaceBackend=4
 parallelism = 5
-parallelismFrames = 3
+parallelismFrames = 1
 datasetPathFrames = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Frames
 datasetPathFaces = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Faces
 
@@ -46,6 +50,11 @@ dbChunk = 240
 time_to_wait_before_deleting_files = 60
 audio_length_wav2vec = 5
 
+[extractPyannoteTitaNet]
+datasetPathAudio = /home/gamal/Datasets/Dataset1/Audio
+dbChunk = 240
+time_to_wait_before_deleting_files = 60
+
 [fineTuneStableDiffusionTesting]
 use_video_in_configuration = 1
 video_path = /home/gamal/vsc/DiffusionSpeech2Face/v.mp4
@@ -53,14 +62,28 @@ time_to_wait_before_deleting_files = 180
 dev_mode = 0
 
 [train_imagen]
-model_filename = imagen_two_unets_wav_to_vec
+model_filename = imagen_live
 audio_length_used = 24
 epochs = 1
-sub_epochs = 5000
-sample_every = 4000
-save_model_every = 4000
-batch_size = 5
+sub_epochs = 500
+sample_every = 400
+save_model_every = 400
+batch_size = 4
 continue_from_epoch = 1
-continue_from_offset = 0
-continue_from_epoch_and_offset_flag = 0
+continue_from_offset = 80000
+continue_from_epoch_and_offset_flag = 1
 db_chunk = 1000
+
+[test_imagen]
+video_path = /home/gamal/vsc/DiffusionSpeech2Face/v.mp4
+time_to_wait_before_deleting_files = 180
+audio_length_used = 24
+model_filename = imagen_live
+openl3_mode_options = stable or imagen
+openl3_mode = imagen
+folder = 
+number_of_images = 3
+age = 25
+ethnicity = black 
+gender = man
+language = English

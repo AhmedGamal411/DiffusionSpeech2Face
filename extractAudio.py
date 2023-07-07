@@ -1,3 +1,21 @@
+
+import os
+import configparser
+
+# Loading configurations
+configParser = configparser.RawConfigParser()   
+configFilePath = r'configuration.txt'
+configParser.read(configFilePath)
+
+insert_amd_env_vars =  int(configParser.get('COMMON', 'insert_amd_env_vars'))
+HSA_OVERRIDE_GFX_VERSION =  configParser.get('COMMON', 'HSA_OVERRIDE_GFX_VERSION')
+ROCM_PATH =  configParser.get('COMMON', 'ROCM_PATH')
+
+if(insert_amd_env_vars != 0):
+    os.environ["HSA_OVERRIDE_GFX_VERSION"] = HSA_OVERRIDE_GFX_VERSION
+    os.environ["ROCM_PATH"] = ROCM_PATH
+
+
 import subprocess
 import os
 import pathlib
@@ -20,13 +38,11 @@ from threading import Thread
 
 start_time = time.time()    # To measure execution time in seconds
 
+
 print("PLEASE EDIT configuration.txt BEFORE EXECUTION")
 print(".wav files might be generated in path. The program will automatically delete them. If execuetion stops unexpectedly, please delete them yourself")
 
-# Loading configurations
-configParser = configparser.RawConfigParser()   
-configFilePath = r'configuration.txt'
-configParser.read(configFilePath)
+
 
 datasetPathVideo =  configParser.get('COMMON', 'datasetPathVideo')
 datasetPathAudio =  configParser.get('extractAudio', 'datasetPathAudio')
@@ -40,10 +56,6 @@ datasetPathDatabase =  configParser.get('COMMON', 'datasetPathDatabase') + '/dat
 print("Video dataset at " + datasetPathVideo )
 print("Number of cpus to use for multiprocessing : ", cpus)
 
-if(cuda == 0):
-    print("Not using cuda")
-else:
-    print("Will try to use cuda, if no cuda is present please set cuda = 0 in configuration.txt")
 
 con = sl.connect(datasetPathDatabase)  # Connection to databases
 

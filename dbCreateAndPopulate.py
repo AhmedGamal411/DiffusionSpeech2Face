@@ -50,7 +50,8 @@ if(recreateDb != 0):
             LANG TEXT,
             AUDIO_EMB BLOB,
             AUDIO_EMB2 BLOB,
-            WAV_TO_VEC BLOB
+            WAV_TO_VEC BLOB,
+            PYANNOTE_TITANET BLOB
         );
     """)
 
@@ -84,6 +85,10 @@ if(recreateDb != 0):
         
     """)
 
+    con.execute("""
+        CREATE INDEX AUDIO_AUDIO_LENGTH_IDX ON AUDIO (AUDIO_LENGTH);
+        
+    """)
 
 
 

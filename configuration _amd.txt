@@ -7,6 +7,9 @@ resizeImageTo = 32
 audio_embs_options = wav2vec or openl3
 audio_embs = pyannoteTitaNet
 unet_dim = 64
+insert_amd_env_vars = 1
+HSA_OVERRIDE_GFX_VERSION = 10.3.0
+ROCM_PATH = /opt/rocm
 
 [dbCreateAndPopulate]
 recreateDb=1
@@ -22,10 +25,9 @@ expandFaceVerticalRatio = 0.4
 expandFaceHorizontalRatio=0.5
 faceDetectionDeepFaceBackend=4
 parallelism = 5
-parallelismFrames = 3
+parallelismFrames = 1
 datasetPathFrames = /home/gamal/Datasets/Dataset1/Frames
 datasetPathFaces = /home/gamal/Datasets/Dataset1/Faces
-
 
 [fineTuneStableDiffusionTraining]
 db_chunk = 50000
@@ -48,7 +50,6 @@ dbChunk = 240
 time_to_wait_before_deleting_files = 60
 audio_length_wav2vec = 6
 
-
 [extractPyannoteTitaNet]
 datasetPathAudio = /home/gamal/Datasets/Dataset1/Audio
 dbChunk = 240
@@ -63,7 +64,7 @@ dev_mode = 0
 [train_imagen]
 model_filename = imagen_two_unets_pyannote_nemo
 audio_length_used = 24
-epochs = 5
+epochs = 10
 sub_epochs = 10000
 sample_every = 1000
 save_model_every = 5000
@@ -72,3 +73,17 @@ continue_from_epoch = 1
 continue_from_offset = 0
 continue_from_epoch_and_offset_flag = 0
 db_chunk = 10000
+
+[test_imagen]
+video_path = /home/gamal/vsc/DiffusionSpeech2Face/v.mp4
+time_to_wait_before_deleting_files = 180
+audio_length_used = 24
+model_filename = imagen_live
+openl3_mode_options = stable or imagen
+openl3_mode = imagen
+folder = 
+number_of_images = 3
+age = 25
+ethnicity = black 
+gender = man
+language = English
