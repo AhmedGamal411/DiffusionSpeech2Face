@@ -131,14 +131,19 @@ def extractAudio(rows):
             #emb = queue.get()
 
             [Fs, x] = audioBasicIO.read_audio_file(path_var_len_audio)
-            F, f_names = ShortTermFeatures.feature_extraction(x, Fs, int(0.12*Fs), int(0.12*Fs))
+            F, f_names = ShortTermFeatures.feature_extraction(x, Fs, int(0.5*Fs), int(0.3*Fs))
             
-            x , sr = librosa.load(path_var_len_audio)
-            lff = librosa.feature.melspectrogram(y=x, sr=sr,hop_length=int(0.166*Fs),n_fft=int(0.166*Fs))
+            x3, sr3 = librosa.load(path_var_len_audio)
+            lff = librosa.feature.melspectrogram(y=x3, sr=sr3,n_fft=512,hop_length=int(0.3*Fs))
 
-            emb = np.vstack((F,lff))
+            brick = np.zeros((128-68,79))
+            cc = np.vstack((brick,F))
+            emb = np.hstack((cc,lff))
 
-            #print(emb.shape)
+            emb= np.rot90(emb)
+            # 228 * 128 (note that this is sequenctial 228 timesframes, 128 features)
+
+            print(emb.shape)
 
             embeddingsPickle = pickle.dumps(emb)
             #update audio embeddings into database
