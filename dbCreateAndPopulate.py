@@ -51,7 +51,8 @@ if(recreateDb != 0):
             AUDIO_EMB BLOB,
             AUDIO_EMB2 BLOB,
             WAV_TO_VEC BLOB,
-            PYANNOTE_TITANET BLOB
+            PYANNOTE_TITANET BLOB,
+            AUDIO_FEATURES BLOB
         );
     """)
 
