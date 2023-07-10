@@ -51,12 +51,12 @@ time_to_wait_before_deleting_files = 60
 audio_length_wav2vec = 5
 
 [extractPyannoteTitaNet]
-datasetPathAudio = /home/gamal/Datasets/Dataset1/Audio
+datasetPathAudio = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Audio
 dbChunk = 240
 time_to_wait_before_deleting_files = 60
 
 [extractAudioFeatures]
-datasetPathAudio = /home/gamal/Datasets/Dataset1/Audio
+datasetPathAudio = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Audio
 dbChunk = 240
 time_to_wait_before_deleting_files = 60
 
@@ -76,8 +76,8 @@ save_model_every = 400
 batch_size = 4
 continue_from_epoch = 1
 continue_from_offset = 80000
-continue_from_epoch_and_offset_flag = 1
-db_chunk = 1000
+continue_from_epoch_and_offset_flag = 0
+db_chunk = 500
 
 [test_imagen]
 video_path = /home/gamal/vsc/DiffusionSpeech2Face/v.mp4

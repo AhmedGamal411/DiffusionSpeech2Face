@@ -51,12 +51,12 @@ time_to_wait_before_deleting_files = 60
 audio_length_wav2vec = 5
 
 [extractPyannoteTitaNet]
-datasetPathAudio = /home/gamal/Datasets/Dataset1/Audio
+datasetPathAudio = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Audio
 dbChunk = 240
 time_to_wait_before_deleting_files = 60
 
 [extractAudioFeatures]
-datasetPathAudio = /home/gamal/Datasets/Dataset1/Audio
+datasetPathAudio = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Audio
 dbChunk = 240
 time_to_wait_before_deleting_files = 60
 
