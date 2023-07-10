@@ -135,8 +135,14 @@ def extractAudio(rows):
             [Fs, x] = audioBasicIO.read_audio_file(path_var_len_audio)
             F, f_names = ShortTermFeatures.feature_extraction(x, Fs, int(0.5*Fs), int(0.3*Fs))
             
+            #print(F.max()) 21
+            #print(F.min()) -44
+
             x3, sr3 = librosa.load(path_var_len_audio)
             lff = librosa.feature.melspectrogram(y=x3, sr=sr3,n_fft=512,hop_length=int(0.3*Fs))
+
+            #print(lff.max()) 204
+            #print(lff.min()) 0
 
             brick = np.zeros((128-68,79))
             cc = np.vstack((brick,F))
