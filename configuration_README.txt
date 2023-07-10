@@ -55,6 +55,11 @@ datasetPathAudio = Path to extract audio files. Audio files will be deleted so w
 dbChunk = Chunk of video files to get from database at a time.
 time_to_wait_before_deleting_files = Time to wait before deleting files in seconds. If the program is stopped abruptly please delete any audio files created in the execution folder.
 
+[extractAudioFeatures]
+datasetPathAudio = /home/gamal/Datasets/Dataset1/Audio
+dbChunk = 240
+time_to_wait_before_deleting_files = 60
+
 [fineTuneStableDiffusionTesting] DEPREACATED
 use_video_in_configuration = 1
 video_path = /home/gamal/Datasets/Dataset1/Video/blhA_I4zjvE_15.600000_22.333333.mp4

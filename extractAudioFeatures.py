@@ -47,12 +47,13 @@ configParser.read(configFilePath)
 
 datasetPathVideo =  configParser.get('COMMON', 'datasetPathVideo')
 datasetPathDatabase =  configParser.get('COMMON', 'datasetPathDatabase') + '/dataset.db'
+datasetPathDatabaseAdditional =  configParser.get('COMMON', 'datasetPathDatabase') + '/datasetAdditional.db'
 cpus =  int(configParser.get('COMMON', 'cpus'))
 
-datasetPathAudio =  configParser.get('extractPyannoteTitaNet', 'datasetPathAudio')
+datasetPathAudio =  configParser.get('extractAudioFeatures', 'datasetPathAudio')
 
-p =  configParser.get('extractPyannoteTitaNet', 'dbChunk')
-ttwbdf =  int(configParser.get('extractPyannoteTitaNet', 'time_to_wait_before_deleting_files'))
+p =  configParser.get('extractAudioFeatures', 'dbChunk')
+ttwbdf =  int(configParser.get('extractAudioFeatures', 'time_to_wait_before_deleting_files'))
 
 print("Video dataset at " + datasetPathVideo )
 
@@ -60,8 +61,8 @@ import os
 os.environ["HSA_OVERRIDE_GFX_VERSION"] = "10.3.0"
 os.environ["ROCM_PATH"] = "/opt/rocm"
 
-
 con = sl.connect(datasetPathDatabase)  # Connection to databases
+
 print('------------------- ABOUT TO START --------------------')
 #TODO what if two files have the same name in the same batch
 
@@ -72,6 +73,7 @@ import librosa
  
 def extractAudio(rows):
     con2 = sl.connect(datasetPathDatabase)
+    conAdditional = sl.connect(datasetPathDatabaseAdditional)  # Connection to databases
     #print(rows)
 
     for row in rows:
@@ -140,20 +142,22 @@ def extractAudio(rows):
             cc = np.vstack((brick,F))
             emb = np.hstack((cc,lff))
 
-            emb= np.rot90(emb)
-            # 228 * 128 (note that this is sequenctial 228 timesframes, 128 features)
+            emb= np.transpose(emb)
+            # 190 * 128 (note that this is sequenctial 190 timesframes, 128 features)
 
-            print(emb.shape)
+            #print(emb.shape)
 
             embeddingsPickle = pickle.dumps(emb)
             #update audio embeddings into database
-            sql = ''' UPDATE AUDIO SET ''' + '''AUDIO_FEATURES  = ? WHERE VIDEO_ID = ? AND AUDIO_LENGTH = ?'''
+            sql = ''' INSERT INTO AUDIO (VIDEO_ID,AUDIO_LENGTH,AUDIO_FEATURES) VALUES(?,?,?)'''
+            #print(emb.shape)
             
-            
-            cur = con2.cursor()
-            data = [embeddingsPickle,rowId,audio_length]
+            cur = conAdditional.cursor()
+            data = [rowId,audio_length,embeddingsPickle]
             cur.execute(sql, data)
-            con2.commit()
+            conAdditional.commit()
+            cur.close()
+            #print(emb.shape)
 
             # Will delete those files after a little bit
             ftd = [absPathAudio,path_var_len_audio,os.path.basename(path_var_len_audio),path_var_len_audio_temp]
@@ -161,11 +165,12 @@ def extractAudio(rows):
             tDelete.start()
             
         sql = '''UPDATE VIDEO SET AUDIO_PRE = 3 WHERE ID = ?'''
-
+        cur2 = con2.cursor()
         data = [rowId]
-        cur.execute(sql, data)
+        cur2.execute(sql, data)
         con2.commit()
-        cur.close()
+        cur2.close()
+        #print(emb.shape)
 
 
            
