@@ -2,7 +2,7 @@ import numpy as np
 from PIL import Image
 import torch
 
-def train_batch_unet1(input,output,model_filename,sub_epochs,batch_size,sample_every,save_model_every,image_size,unet_dim):
+def train_batch_unet1(input,output,model_filename,sub_epochs,batch_size,sample_every,save_model_every,image_size,unet_dim,unet1_image_size):
     from torch.utils.data import TensorDataset, DataLoader
 
     print("Training Unet No. 1")
@@ -81,7 +81,7 @@ def train_batch_unet1(input,output,model_filename,sub_epochs,batch_size,sample_e
 
     imagen = Imagen(
         unets = (unet1, unet2),
-        image_sizes = (image_size, image_size),
+        image_sizes = (unet1_image_size, image_size),
         timesteps = 1000,
         cond_drop_prob = 0.1
     ).cuda()
@@ -140,7 +140,7 @@ def train_batch_unet1(input,output,model_filename,sub_epochs,batch_size,sample_e
     trainer.save(model_filename)
 
 
-def train_batch_unet2(input,output,model_filename,sub_epochs,batch_size,sample_every,save_model_every,image_size,unet_dim):
+def train_batch_unet2(input,output,model_filename,sub_epochs,batch_size,sample_every,save_model_every,image_size,unet_dim,unet1_image_size):
     from torch.utils.data import TensorDataset, DataLoader
 
     print("Training Unet No. 2")
@@ -218,7 +218,7 @@ def train_batch_unet2(input,output,model_filename,sub_epochs,batch_size,sample_e
 
     imagen = Imagen(
         unets = (unet1, unet2),
-        image_sizes = (image_size, image_size),
+        image_sizes = (unet1_image_size, image_size),
         timesteps = 1000,
         cond_drop_prob = 0.1
     ).cuda()

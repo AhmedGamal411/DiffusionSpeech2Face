@@ -7,6 +7,7 @@ resizeImageTo = 32
 audio_embs_options = wav2vec or openl3
 audio_embs = pyannoteTitaNet
 unet_dim = 64
+unet1_image_size = 8
 insert_amd_env_vars = 1
 HSA_OVERRIDE_GFX_VERSION = 10.3.0
 ROCM_PATH = /opt/rocm
@@ -67,17 +68,19 @@ time_to_wait_before_deleting_files = 180
 dev_mode = 0
 
 [train_imagen]
-model_filename = imagen_two_unets_pyannote_nemo
+model_filename = imagen_features
 audio_length_used = 24
-epochs = 10
-sub_epochs = 10000
-sample_every = 1000
-save_model_every = 5000
-batch_size = 50
+epochs = 1
+sample_every_offset = 2
+save_every_offset = 2
+sub_epochs = 100
+sample_every = 200
+save_model_every = 200
+batch_size = 4
 continue_from_epoch = 1
 continue_from_offset = 0
 continue_from_epoch_and_offset_flag = 0
-db_chunk = 10000
+db_chunk = 12
 
 [test_imagen]
 video_path = /home/gamal/vsc/DiffusionSpeech2Face/v.mp4
