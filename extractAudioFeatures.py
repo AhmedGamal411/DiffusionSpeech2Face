@@ -206,12 +206,12 @@ while(contLoop):
         dataGotten = dataGotten[rowsPerProcess:]    # Deletes the rows that are going to be sent from dataGotten
         #print(rows)
         contLoop = True # Continue to get data from database since data length is not 0
-        extractAudio(rows)
-        #proc = Process(target=extractAudio, args=(rows,))   # spawn a process
-        #procs.append(proc)
-        #proc.start()
-    #for proc in procs:  # wait for all processes to finish
-        #proc.join()
+        #extractAudio(rows)
+        proc = Process(target=extractAudio, args=(rows,))   # spawn a process
+        procs.append(proc)
+        proc.start()
+    for proc in procs:  # wait for all processes to finish
+        proc.join()
     
 print('----------------------------------------------------------------      FINISHED      -----------------------------------------')
 
