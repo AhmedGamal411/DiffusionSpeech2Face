@@ -62,7 +62,8 @@ if(recreateDb != 0):
             FACE_PATH TEXT,
             VIDEO_ID INTEGER,
             FACE_NORM_PATH TEXT,
-            LATENT_REP BLOB
+            LATENT_REP BLOB,
+            VGG_BLURRED INTEGER
         );
     """)
 

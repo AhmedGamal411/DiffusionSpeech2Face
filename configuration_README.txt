@@ -96,6 +96,14 @@ ethnicity = black
 gender = man
 language = English
 
+
+[extractVggBlurred]
+dbChunk = 20
+boxBlurMin = 4
+boxBlurMax = 14
+gaussianBlurMin=2
+gaussianBlurMax=6
+
 conda activate ds2f_pre
 dbCreateAndPopulate
 extractAudio
