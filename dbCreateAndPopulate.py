@@ -92,6 +92,12 @@ if(recreateDb != 0):
         
     """)
 
+    con.execute("""
+        CREATE INDEX FACE_VGG_BLURRED_IDX ON FACE (VGG_BLURRED);
+        
+    """)
+
+
 
 
 
