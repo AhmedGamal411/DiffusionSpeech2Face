@@ -6,7 +6,7 @@ cpus=8
 resizeImageTo = 128
 audio_embs_options = wav2vec or openl3
 audio_embs = pyannoteTitaNet
-unet_dim = 64
+unet_dim = 128
 unet1_image_size = 32
 insert_amd_env_vars = 0
 HSA_OVERRIDE_GFX_VERSION = 10.3.0
@@ -58,7 +58,7 @@ time_to_wait_before_deleting_files = 60
 
 [extractAudioFeatures]
 datasetPathAudio = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Audio
-dbChunk = 240
+dbChunk = 250
 time_to_wait_before_deleting_files = 60
 
 [fineTuneStableDiffusionTesting]
@@ -68,7 +68,7 @@ time_to_wait_before_deleting_files = 180
 dev_mode = 0
 
 [train_imagen]
-model_filename = imagen_live
+model_filename = imagen_live128
 audio_length_used = 24
 epochs = 1
 sample_every_offset = 2
@@ -79,7 +79,7 @@ save_model_every = 200
 batch_size = 4
 continue_from_epoch = 0
 continue_from_offset = 0
-continue_from_epoch_and_offset_flag = 0
+continue_from_epoch_and_offset_flag = 1
 db_chunk = 500
 
 [test_imagen]
@@ -97,7 +97,7 @@ gender = man
 language = English
 
 [extractVggBlurred]
-dbChunk = 20
+dbChunk = 200
 boxBlurMin = 4
 boxBlurMax = 14
 gaussianBlurMin=2
