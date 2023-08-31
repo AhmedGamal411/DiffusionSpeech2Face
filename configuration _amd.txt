@@ -68,7 +68,7 @@ time_to_wait_before_deleting_files = 180
 dev_mode = 0
 
 [train_imagen]
-model_filename = imagen_features
+model_filename = imagen_features_vgg
 audio_length_used = 24
 epochs = 1
 sample_every_offset = 2

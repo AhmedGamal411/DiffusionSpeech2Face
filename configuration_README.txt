@@ -105,11 +105,32 @@ gaussianBlurMin=2
 gaussianBlurMax=6
 
 conda activate ds2f_pre
-dbCreateAndPopulate
-extractAudio
-extractFaces
-extractPyannoteTitaNetInit.txt
-train_imagen_all
+python dbCreateAndPopulate.py
+python dbCreateAdditional.py
+python dbCreateFacesBlurred.py
+python extractAudio.py
+python extractFaces.py
+
+until python extractPyannoteTitaNet.py
+do
+    echo "Restarting"
+    sleep 2
+done
+
+until python extractAudioFeatures.py
+do
+    echo "Restarting"
+    sleep 2
+done
+
+until python extractVggBlurred.py
+do
+    echo "Restarting"
+    sleep 2
+done
+
+train_imagen_all_u1.ipynb
+train_imagen_all_u2.ipynb
 
 
 
