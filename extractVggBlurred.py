@@ -73,7 +73,7 @@ con = sl.connect(datasetPathDatabase)  # Connection to databases
 print('------------------- ABOUT TO START --------------------')
 
 
-model = VGG19(weights='imagenet', include_top=False, pooling="avg")
+model = VGG19(weights='imagenet', include_top=False)
  
 def extractVggBlurred(rows):
     con2 = sl.connect(datasetPathDatabase)
@@ -106,21 +106,22 @@ def extractVggBlurred(rows):
         imBlurred.save(picFile)
 
         img_path = picFile
-        img = image.load_img(img_path)
+        img = image.load_img(img_path, target_size=(224, 224))
         x = image.img_to_array(img)
         x = np.expand_dims(x, axis=0)
         x = preprocess_input(x)
 
-        features = model.predict(x) #
+        features = model.predict(x) #(1,7,7,512)
+        #features = features.reshape(-1, features.shape[-1]) #(49,512)
 
 
         im.close()
         imBlurred.close()
         img.close()
         os.remove(picFile)
-        #print(features.shape) (1, 512)
-        #print("max:" + str(features.max())) max is 114
-        #print("min:" + str(features.min())) min is 0
+        #print(features.shape) #(49, 512)
+        #print("max:" + str(features.max())) #max is 72
+        #print("min:" + str(features.min())) #min is 0
         embeddingsPickle = pickle.dumps(features)
 
         #update audio embeddings into database
@@ -132,7 +133,7 @@ def extractVggBlurred(rows):
         conAdditional.commit()
         cur.close()
         #print(emb.shape)
-            
+
         sql = '''UPDATE FACE SET VGG_BLURRED = 1 WHERE ID = ?'''
         cur2 = con2.cursor()
         data = [rowId]
@@ -140,6 +141,8 @@ def extractVggBlurred(rows):
         con2.commit()
         cur2.close()
         #print(emb.shape)
+            
+
 
 
         data = con.execute("SELECT FACES_PRE FROM VIDEO WHERE ID = " + str(videoId))
