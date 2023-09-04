@@ -36,9 +36,11 @@ import torch
 import numpy as np
 from PIL import Image,ImageFilter
 import random
-from tensorflow.keras.applications.vgg19 import VGG19
-from tensorflow.keras.preprocessing import image
-from tensorflow.keras.applications.vgg19 import preprocess_input
+from transformers import ViTImageProcessor, ViTModel
+#from tensorflow.keras.applications.vgg19 import VGG19
+#from tensorflow.keras.preprocessing import image
+#from tensorflow.keras.applications.vgg19 import preprocess_input
+
 import os
 
 start_time = time.time()    # To measure execution time in seconds
@@ -73,7 +75,9 @@ con = sl.connect(datasetPathDatabase)  # Connection to databases
 print('------------------- ABOUT TO START --------------------')
 
 
-model = VGG19(weights='imagenet', include_top=False)
+#model = VGG19(weights='imagenet', include_top=False)
+processor = ViTImageProcessor.from_pretrained('google/vit-base-patch16-224-in21k')
+model = ViTModel.from_pretrained('google/vit-base-patch16-224-in21k')
  
 def extractVggBlurred(rows):
     con2 = sl.connect(datasetPathDatabase)
@@ -86,7 +90,7 @@ def extractVggBlurred(rows):
         rowId = row[0]          # id in database
         videoId = row[2]          # id in database
 
-        im = Image.open(absPathFace)
+        im = Image.open(absPathFace).convert('RGB')
 
         blurOption = random.randint(1, 3)
 
@@ -98,27 +102,33 @@ def extractVggBlurred(rows):
             imBlurred = im.filter(ImageFilter.BoxBlur(random.randint(int(boxBlurMin/2),int(boxBlurMax/2)))).filter(
                 ImageFilter.GaussianBlur(random.randint(int(gaussianBlurMin/2),int(gaussianBlurMax/2)))) 
 
-        directory = "extractVggBlurred"
-        picFile = directory + "/pic.png"
-        if not os.path.exists(directory):
-            os.makedirs(directory)
+        #directory = "extractVggBlurred"
+        #picFile = directory + "/pic.png"
+        #if not os.path.exists(directory):
+        #    os.makedirs(directory)
 
-        imBlurred.save(picFile)
+        #imBlurred.save(picFile)
 
-        img_path = picFile
-        img = image.load_img(img_path, target_size=(224, 224))
-        x = image.img_to_array(img)
-        x = np.expand_dims(x, axis=0)
-        x = preprocess_input(x)
+        #img_path = picFile
+        inputs = processor(images=imBlurred, return_tensors="pt")
+        outputs = model(**inputs)
+        last_hidden_states = outputs.last_hidden_state
+        features = last_hidden_states.cpu().detach().numpy()
+        #print(last_hidden_states.cpu().detach().numpy().min()) #(1,197,768) max=1.23 min=-1.23
+        
+        #img = image.load_img(img_path, target_size=(224, 224))
+        #x = image.img_to_array(img)
+        #x = np.expand_dims(x, axis=0)
+        #x = preprocess_input(x)
 
-        features = model.predict(x) #(1,7,7,512)
+        #features = model.predict(x) #(1,7,7,512)
         #features = features.reshape(-1, features.shape[-1]) #(49,512)
 
 
         im.close()
         imBlurred.close()
-        img.close()
-        os.remove(picFile)
+        #mg.close()
+        #os.remove(picFile)
         #print(features.shape) #(49, 512)
         #print("max:" + str(features.max())) #max is 72
         #print("min:" + str(features.min())) #min is 0

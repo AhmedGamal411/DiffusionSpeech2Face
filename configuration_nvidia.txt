@@ -102,3 +102,8 @@ boxBlurMin = 4
 boxBlurMax = 14
 gaussianBlurMin=2
 gaussianBlurMax=6
+
+[extractAudioSpectogramTransformer]
+datasetPathAudio = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Audio
+dbChunk = 240
+time_to_wait_before_deleting_files = 60
