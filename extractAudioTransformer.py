@@ -198,7 +198,7 @@ while(contLoop):
     #print(data.fetchall())
     dataGotten = data.fetchall()
     procs = []
-    while(len(dataGotten) > 0):
+    if(len(dataGotten) > 0):
         contLoop = True # Continue to get data from database since data length is not 0
         #extractAudio(rows)
         extractAudio(dataGotten)

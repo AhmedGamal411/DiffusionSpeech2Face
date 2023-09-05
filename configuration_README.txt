@@ -104,7 +104,7 @@ boxBlurMax = 14
 gaussianBlurMin=2
 gaussianBlurMax=6
 
-conda activate ds2f_pre
+
 python dbCreateAndPopulate.py
 python dbCreateAdditional.py
 python dbCreateFacesBlurred.py
@@ -124,6 +124,12 @@ do
 done
 
 until python extractVggBlurred.py
+do
+    echo "Restarting"
+    sleep 2
+done
+
+until python extractAudioTransformer.py
 do
     echo "Restarting"
     sleep 2
