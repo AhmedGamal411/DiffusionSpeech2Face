@@ -128,7 +128,7 @@ def extractAudio(rows):
                 subprocess.call(command, shell=True)
                 command = "ffmpeg -nostats -loglevel 0 -y -ss 0 -t "+str(audio_length)+" -i \"" + path_var_len_audio_temp + "\" \"" + path_var_len_audio + "\""
                 subprocess.call(command, shell=True)
-
+            print(path_var_len_audio)
             samplerate, data = wavfile.read(path_var_len_audio)
             data = data.astype(np.float32)
 
@@ -142,7 +142,7 @@ def extractAudio(rows):
             
 
             emb = last_hidden_states.cpu().detach().numpy()
-
+            
             embeddingsPickle = pickle.dumps(emb) # -17 to 17
             #update audio embeddings into database
             sql = ''' INSERT INTO AUDIO_TRANS (VIDEO_ID,AUDIO_LENGTH,AUDIO_FEATURES) VALUES(?,?,?)'''
@@ -187,10 +187,10 @@ def delFiles(filesToDelete):
 contLoop = True # Flag to continue to get chunks of videos from database
 offset = 0
 while(contLoop):
-    data = con.execute("SELECT * FROM VIDEO WHERE AUDIO_PRE = 3 AND FACES_PRE in (1,2) ORDER BY ID ASC LIMIT " + p + " OFFSET " + str(offset))
+    data = con.execute("SELECT * FROM VIDEO WHERE AUDIO_PRE = 3 AND FACES_PRE in (1,2) ORDER BY ID ASC LIMIT " + p )
     contLoop = False
     offset = offset + int(p)
-    print("Got chunk of videos from database. Extracting audio and audio features...")
+    print("Got chunk of videos from database. Extracting audio transformer features...")
     # TODO write time
     
     #print(data.fetchall())
