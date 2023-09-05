@@ -145,7 +145,7 @@ def extractAudio(rows):
             
             embeddingsPickle = pickle.dumps(emb) # -17 to 17
             #update audio embeddings into database
-            sql = ''' INSERT INTO AUDIO_TRANS (VIDEO_ID,AUDIO_LENGTH,AUDIO_FEATURES) VALUES(?,?,?)'''
+            sql = ''' INSERT INTO AUDIO_TRANSFORMER (VIDEO_ID,AUDIO_LENGTH,AUDIO_FEATURES) VALUES(?,?,?)'''
             #print(emb.shape)
             
             cur = conAdditional.cursor()
@@ -155,18 +155,20 @@ def extractAudio(rows):
             cur.close()
             #print(emb.shape)
 
+            sql = '''UPDATE VIDEO SET AUDIO_PRE = 4 WHERE ID = ?'''
+            cur2 = con2.cursor()
+            data = [rowId]
+            cur2.execute(sql, data)
+            con2.commit()
+            cur2.close()
+            #print(emb.shape)
+
             # Will delete those files after a little bit
             ftd = [absPathAudio,path_var_len_audio,os.path.basename(path_var_len_audio),path_var_len_audio_temp]
             tDelete = Thread(target=delFiles, args=(ftd,))   # spawn a process
             tDelete.start()
             
-        sql = '''UPDATE VIDEO SET AUDIO_PRE = 4 WHERE ID = ?'''
-        cur2 = con2.cursor()
-        data = [rowId]
-        cur2.execute(sql, data)
-        con2.commit()
-        cur2.close()
-        #print(emb.shape)
+
 
 
            

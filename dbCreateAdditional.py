@@ -57,28 +57,22 @@ if(recreateDb != 0):
     """)
 
     con.execute("""
-        CREATE TABLE AUDIO_TRANS (
+        CREATE TABLE AUDIO_TRANSFORMER (
             ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
             VIDEO_ID INTEGER NOT NULL,
             AUDIO_LENGTH INTEGER,
-            SPEAKER_EMB BLOB,
-            LANG TEXT,
-            AUDIO_EMB BLOB,
-            AUDIO_EMB2 BLOB,
-            WAV_TO_VEC BLOB,
-            PYANNOTE_TITANET BLOB,
             AUDIO_FEATURES BLOB
         );
     """)
 
 
     con.execute("""
-        CREATE INDEX AUDIO_TRANS_VIDEO_ID_IDX ON AUDIO_TRANS (VIDEO_ID);
+        CREATE INDEX AUDIO_TRANSFORMER_VIDEO_ID_IDX ON AUDIO_TRANSFORMER (VIDEO_ID);
         
     """)
 
     con.execute("""
-        CREATE INDEX AUDIO_TRANS_AUDIO_LENGTH_IDX ON AUDIO_TRANS (AUDIO_LENGTH);
+        CREATE INDEX AUDIO_TRANSFORMER_AUDIO_LENGTH_IDX ON AUDIO_TRANSFORMER (AUDIO_LENGTH);
         
     """)
 

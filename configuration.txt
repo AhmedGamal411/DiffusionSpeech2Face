@@ -78,7 +78,7 @@ sample_every = 600
 save_model_every = 600
 batch_size = 4
 continue_from_epoch = 0
-continue_from_offset = 0
+continue_from_offset = 500
 continue_from_epoch_and_offset_flag = 1
 db_chunk = 500
 
