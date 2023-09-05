@@ -70,12 +70,12 @@ dev_mode = 0
 [train_imagen]
 model_filename = imagen_features_vgg
 audio_length_used = 24
-epochs = 1
+epochs = 10
 sample_every_offset = 2
 save_every_offset = 2
-sub_epochs = 100
-sample_every = 200
-save_model_every = 200
+sub_epochs = 200
+sample_every = 400
+save_model_every = 400
 batch_size = 4
 continue_from_epoch = 1
 continue_from_offset = 0
