@@ -60,9 +60,8 @@ ttwbdf =  int(configParser.get('extractAudioSpectogramTransformer', 'time_to_wai
 
 print("Video dataset at " + datasetPathVideo )
 
-processor = AutoProcessor.from_pretrained("MIT/ast-finetuned-audioset-10-10-0.4593")
-
-model = ASTModel.from_pretrained("MIT/ast-finetuned-audioset-10-10-0.4593")
+processor = AutoProcessor.from_pretrained("MIT/ast-finetuned-audioset-16-16-0.442")
+model = ASTModel.from_pretrained("MIT/ast-finetuned-audioset-16-16-0.442")
 
 import os
 os.environ["HSA_OVERRIDE_GFX_VERSION"] = "10.3.0"
