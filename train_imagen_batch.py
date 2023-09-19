@@ -121,6 +121,7 @@ def train_batch_unet1(input,output,model_filename,sub_epochs,batch_size,sample_e
         trainer.load(model_filename)
 
     import math
+    import random
 
     for i in range(sub_epochs):
         loss = trainer.train_step(unet_number = 1, max_batch_size = batch_size)
@@ -131,8 +132,9 @@ def train_batch_unet1(input,output,model_filename,sub_epochs,batch_size,sample_e
             print(f'valid loss: {valid_loss}')
 
         if not (i % sample_every) and trainer.is_main: # is_main makes sure this can run in distributed
-            images = trainer.sample(text_embeds=input[:1, :],stop_at_unet_number=1,batch_size = 1, return_pil_images = True) # returns List[Image]
-            images[0].save('imagen-samples' + '/' + str(seconds) + f'/sample-{i // 100}.png')
+            cond_scale = random.uniform(1.1, 9.9)
+            images = trainer.sample(text_embeds=input[:1, :],stop_at_unet_number=1,batch_size = 1, return_pil_images = True,cond_scale=cond_scale) # returns List[Image]
+            images[0].save('imagen-samples' + '/' + str(seconds) + f'/sample-{i // 100}'+'-'+str(int(cond_scale))+'-'+'.png')
 
         if not (i % save_model_every):
             trainer.save(model_filename)
@@ -258,6 +260,7 @@ def train_batch_unet2(input,output,model_filename,sub_epochs,batch_size,sample_e
         trainer.load(model_filename)
 
     import math
+    import random
 
     for i in range(sub_epochs): 
         loss = trainer.train_step(unet_number = 2, max_batch_size = batch_size)
@@ -268,8 +271,9 @@ def train_batch_unet2(input,output,model_filename,sub_epochs,batch_size,sample_e
             print(f'valid loss: {valid_loss}')
 
         if not (i % sample_every) and trainer.is_main: # is_main makes sure this can run in distributed
-            images = trainer.sample(text_embeds=input[:1, :],batch_size = 1, return_pil_images = True) # returns List[Image]
-            images[0].save('imagen-samples' + '/' + str(seconds) + f'/sample-{i // 100}.png')
+            cond_scale = random.uniform(1.1, 9.9)
+            images = trainer.sample(text_embeds=input[:1, :],batch_size = 1, return_pil_images = True,cond_scale=cond_scale) # returns List[Image]
+            images[0].save('imagen-samples' + '/' + str(seconds) + f'/sample-{i // 100}'+'-'+str(int(cond_scale))+'-'+'.png')
 
         if not (i % save_model_every):
             trainer.save(model_filename)
