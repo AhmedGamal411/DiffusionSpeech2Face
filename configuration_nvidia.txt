@@ -95,13 +95,27 @@ age = 25
 ethnicity = black 
 gender = man
 language = English
+image_guide_path = /home/gamal/vsc/DiffusionSpeech2Face/a12.png
+blur_or_pixelate = 1
+boxBlurMin = 4
+boxBlurMax = 14
+gaussianBlurMin=4
+gaussianBlurMax=8
+pix_to_min = 8
+pix_to_max = 24
+ignore_age = 1
+ignore_ethnicity = 1
+ignore_gender = 1
+ignore_language = 1
 
 [extractVggBlurred]
 dbChunk = 200
 boxBlurMin = 4
 boxBlurMax = 14
-gaussianBlurMin=2
-gaussianBlurMax=6
+gaussianBlurMin=4
+gaussianBlurMax=8
+pix_to_min = 8
+pix_to_max = 24
 
 [extractAudioSpectogramTransformer]
 datasetPathAudio = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Audio

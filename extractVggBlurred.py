@@ -66,6 +66,9 @@ boxBlurMax =  int(configParser.get('extractVggBlurred', 'boxBlurMax'))
 gaussianBlurMin =  int(configParser.get('extractVggBlurred', 'gaussianBlurMin'))
 gaussianBlurMax =  int(configParser.get('extractVggBlurred', 'gaussianBlurMax'))
 
+pix_to_min =  int(configParser.get('extractVggBlurred', 'pix_to_min'))
+pix_to_max =  int(configParser.get('extractVggBlurred', 'pix_to_max'))
+
 import os
 os.environ["HSA_OVERRIDE_GFX_VERSION"] = "10.3.0"
 os.environ["ROCM_PATH"] = "/opt/rocm"
@@ -92,15 +95,22 @@ def extractVggBlurred(rows):
 
         im = Image.open(absPathFace).convert('RGB')
 
-        blurOption = random.randint(1, 3)
+        blurOption = random.randint(1, 6)
 
         if(blurOption==1):
             imBlurred = im.filter(ImageFilter.BoxBlur(random.randint(boxBlurMin, boxBlurMax))) # 4 to 14
         elif(blurOption==2):
-            imBlurred = im.filter(ImageFilter.GaussianBlur(random.randint(gaussianBlurMin, gaussianBlurMax))) # 2 to 6
+            imBlurred = im.filter(ImageFilter.GaussianBlur(random.randint(gaussianBlurMin, gaussianBlurMax))) # 4 to 8
         elif(blurOption==3):
             imBlurred = im.filter(ImageFilter.BoxBlur(random.randint(int(boxBlurMin/2),int(boxBlurMax/2)))).filter(
                 ImageFilter.GaussianBlur(random.randint(int(gaussianBlurMin/2),int(gaussianBlurMax/2)))) 
+        elif(blurOption==4 or blurOption==5 or blurOption==6):
+            pix_to = random.randint(int(pix_to_min), int(pix_to_max))
+            imBlurred = im.resize((pix_to,pix_to), resample=Image.Resampling.BILINEAR) # 8 to 24
+            imBlurred = imBlurred.resize(im.size, Image.Resampling.NEAREST)
+            #print('pixalated')
+
+
 
         #directory = "extractVggBlurred"
         #picFile = directory + "/pic.png"
