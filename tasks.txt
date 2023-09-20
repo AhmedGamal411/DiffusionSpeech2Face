@@ -32,3 +32,7 @@ get normalization factor min max normaliztion
 24/05/2023 Dr Zaki
 use openl3
 input ( 0words - some words - all words)
+
+
+- Face inversion (face of a person, voice of another)
+- Increase blur
