@@ -51,4 +51,4 @@ def extract_audio_features(q,path_var_len_audio,output_folder):
 
 
     with open(output_folder + '/' + 'audio_features.pickle', 'wb') as handle:
-        pickle.dump(embeddingsPickle, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        pickle.dump(embeddingsPickle, handle)

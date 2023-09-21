@@ -51,6 +51,7 @@ def extract_vision_transformer(q,output_folder,image_guide_path,blur_or_pixelate
         #imBlurred.save(picFile)
 
         #img_path = picFile
+    imBlurred.save(output_folder + '/' + 'guide.png')
     inputs = processor(images=imBlurred, return_tensors="pt")
     outputs = model(**inputs)
     last_hidden_states = outputs.last_hidden_state
@@ -81,4 +82,4 @@ def extract_vision_transformer(q,output_folder,image_guide_path,blur_or_pixelate
 
 
     with open(output_folder + '/' + 'image_features.pickle', 'wb') as handle:
-        pickle.dump(embeddingsPickle, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        pickle.dump(embeddingsPickle, handle)
