@@ -128,6 +128,10 @@ ignore_age = 1
 ignore_ethnicity = 1
 ignore_gender = 1
 ignore_language = 1
+faceDetectionDeepFaceBackend = 4
+test_datasetPathFaces = /home/gamal/Datasets/Dataset1Test/FacesTest
+expandFaceVerticalRatio = 0.4
+expandFaceHorizontalRatio=0.5
 
 [extractVggBlurred]
 dbChunk = 20

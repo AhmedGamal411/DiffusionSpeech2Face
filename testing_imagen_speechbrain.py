@@ -24,8 +24,13 @@ def extract_speechbrain_embeddings(q,path_var_len_audio):
 
 
     classifier = EncoderClassifier.from_hparams(source="speechbrain/spkrec-ecapa-voxceleb")
+    classifierLang = EncoderClassifier.from_hparams(source="speechbrain/lang-id-commonlanguage_ecapa", savedir="pretrained_models/lang-id-commonlanguage_ecapa")
     # Extract speaker embeddings
     signal, fs = torchaudio.load(path_var_len_audio)
     embeddings = classifier.encode_batch(signal)
     embeddingsPickle = pickle.dumps(embeddings.cpu().detach().numpy())
     q.put(embeddingsPickle)
+
+    out_prob, score, index, text_lab = classifierLang.classify_file(path_var_len_audio)
+    lang = text_lab[0]
+    q.put(lang)
