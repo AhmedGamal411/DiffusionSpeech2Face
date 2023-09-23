@@ -147,6 +147,9 @@ def extract_face(q,absPathVideo,resizeImageTo,fddfb,output_folder,
     face_analysis_objs = DeepFace.analyze(img_path = absPathFace, 
           actions = ['age', 'gender', 'race'],enforce_detection = False)
     
+    embedding_objs = DeepFace.represent(absPathFace)
+    embedding = embedding_objs[0]["embedding"]
+    
     if(len(face_analysis_objs) == 1):
         gender = face_analysis_objs[0]['dominant_gender']
         ethnicity = face_analysis_objs[0]['dominant_race']
@@ -162,5 +165,11 @@ def extract_face(q,absPathVideo,resizeImageTo,fddfb,output_folder,
     q.put(age)
 
     os.remove(absPathFrame)
+
+    #embeddingsPickle = pickle.dumps(embedding)
+    #print(embedding)
+
+    with open(output_folder + '/' + 'vgg.pickle', 'wb') as handle:
+        pickle.dump(embedding, handle)
 
 

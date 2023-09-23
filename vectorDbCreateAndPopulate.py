@@ -42,7 +42,8 @@ df = pd.DataFrame()
 i = 0
 for file in files_to_insert:
     df = df.append({'id': i, 'video_path': file, 'face_path': '', 
-        'blurred_face_path': '', 'features_path': '', 'vector' : np.random.rand(128),'stage': ''}, ignore_index=True)
+        'blurred_face_path': '', 'features_path': '', 'user' : ''
+        ,'vector' : np.random.rand(1),'stage': ''}, ignore_index=True)
     i = i +1
 
 db.create_table("video", df)
