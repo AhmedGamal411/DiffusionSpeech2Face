@@ -147,7 +147,7 @@ def extract_face(q,absPathVideo,resizeImageTo,fddfb,output_folder,
     face_analysis_objs = DeepFace.analyze(img_path = absPathFace, 
           actions = ['age', 'gender', 'race'],enforce_detection = False)
     
-    embedding_objs = DeepFace.represent(absPathFace)
+    embedding_objs = DeepFace.represent(absPathFace,enforce_detection = False)
     embedding = embedding_objs[0]["embedding"]
     
     if(len(face_analysis_objs) == 1):
@@ -170,6 +170,32 @@ def extract_face(q,absPathVideo,resizeImageTo,fddfb,output_folder,
     #print(embedding)
 
     with open(output_folder + '/' + 'vgg.pickle', 'wb') as handle:
+        pickle.dump(embedding, handle)
+
+
+def extract_face_rep(q,face_file,image_size,output_folder):
+
+
+    # Loading configurations
+    configParser = configparser.RawConfigParser()   
+    configFilePath = r'configuration.txt'
+    configParser.read(configFilePath)
+
+
+    insert_amd_env_vars =  int(configParser.get('COMMON', 'insert_amd_env_vars'))
+    HSA_OVERRIDE_GFX_VERSION =  configParser.get('COMMON', 'HSA_OVERRIDE_GFX_VERSION')
+    ROCM_PATH =  configParser.get('COMMON', 'ROCM_PATH')
+
+    if(insert_amd_env_vars != 0):
+        os.environ["HSA_OVERRIDE_GFX_VERSION"] = HSA_OVERRIDE_GFX_VERSION
+        os.environ["ROCM_PATH"] = ROCM_PATH
+
+    
+    embedding_objs = DeepFace.represent(face_file,enforce_detection = False)
+    embedding = embedding_objs[0]["embedding"]
+    
+
+    with open(output_folder + '/' + 'vgg_generated_face.pickle', 'wb') as handle:
         pickle.dump(embedding, handle)
 
 

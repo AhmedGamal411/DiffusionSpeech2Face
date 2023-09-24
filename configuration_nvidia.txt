@@ -137,6 +137,7 @@ ignore_language = 1
 expandFaceVerticalRatio = 0.4
 expandFaceHorizontalRatio=0.5
 faceDetectionDeepFaceBackend=4
+generated_face_table_name = audio_image_guide_only
 
 [extractVggBlurred]
 dbChunk = 200
