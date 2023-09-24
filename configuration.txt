@@ -114,6 +114,7 @@ ignore_language = 1
 
 [evaluate_imagen]
 test_datasetpathfaces = /media/gamal/Passport/Datasets/VoxCeleb2Test/Voxceleb2TestFaces
+test_datasetpathgeneratedfaces = /media/gamal/Passport/Datasets/VoxCeleb2Test/Voxceleb2TestGeneratedFaces
 test_datasetpathfeatures = /media/gamal/Passport/Datasets/VoxCeleb2Test/Voxceleb2TestFeatures
 test_datasetpathguides = /media/gamal/Passport/Datasets/VoxCeleb2Test/Voxceleb2TestGuides
 time_to_wait_before_deleting_files = 180

@@ -114,6 +114,7 @@ ignore_language = 1
 
 [evaluate_imagen]
 test_datasetpathfaces = /home/gamal/Datasets/Dataset1Test/FacesTest
+test_datasetpathgeneratedfaces = /home/gamal/Datasets/Dataset1Test/GeneratedFacesTest
 test_datasetpathfeatures = /home/gamal/Datasets/Dataset1Test/FeaturesTest
 test_datasetpathguide = /home/gamal/Datasets/Dataset1Test/GuidesTest
 time_to_wait_before_deleting_files = 180
