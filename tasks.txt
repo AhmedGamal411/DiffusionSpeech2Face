@@ -36,3 +36,6 @@ input ( 0words - some words - all words)
 
 - Face inversion (face of a person, voice of another)
 - Increase blur
+
+
+https://github.com/lucidrains/parti-pytorch

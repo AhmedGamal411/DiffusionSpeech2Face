@@ -21,6 +21,11 @@ import lancedb
 uri = datasetPathDatabase
 db = lancedb.connect(uri)
 
+try:
+  db.drop_table("video")
+except:
+  print("")
+
 
 files_to_insert = []
 
@@ -41,7 +46,9 @@ import numpy as np
 df = pd.DataFrame()
 i = 0
 for file in files_to_insert:
-    df = df.append({'id': i, 'video_path': file, 'face_path': '', 'user' : '',
+    p_small = pathlib.Path(os.path.dirname(file))
+    p_big = p_small.parent.absolute()
+    df = df.append({'id': i, 'video_path': file, 'face_path': '', 'user' : str(p_big.name),
         'blurred_face_path': '', 'features_path': ''
         ,'vector' : np.random.rand(1),'stage': ''}, ignore_index=True)
     i = i +1
