@@ -152,3 +152,7 @@ pix_to_max = 24
 datasetPathAudio = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Audio
 dbChunk = 240
 time_to_wait_before_deleting_files = 60
+
+[vae]
+base_dir = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2VQVAETrain
+no_images_used = 4800

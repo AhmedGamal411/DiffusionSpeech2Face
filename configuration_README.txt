@@ -145,3 +145,6 @@ train_imagen_all_u2.ipynb
 
     pip install protobuf==3.9.2
     pip install protobuf
+
+
+    find . -maxdepth 1 -type f -print0 | head -z -n 10000 | xargs -0 -r -- cp -t "/media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2VQVAETrain" --
