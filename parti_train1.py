@@ -21,7 +21,7 @@ vit_vae = VitVQGanVAE(
 trainer = VQGanVAETrainer(
     vit_vae,
     folder = '/media/gamal/Passport/Datasets/VoxCeleb2Test/Voxceleb2TestFaces',
-    num_train_steps = 100000,
+    num_train_steps = 100,
     lr = 3e-4,
     batch_size = 4,
     grad_accum_every = 8,
@@ -32,3 +32,5 @@ trainer = VQGanVAETrainer(
 )
 
 trainer.train()
+
+vit_vae.enco
