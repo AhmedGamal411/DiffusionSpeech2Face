@@ -154,5 +154,12 @@ dbChunk = 240
 time_to_wait_before_deleting_files = 60
 
 [vae]
+model_name = /media/gamal/Passport/parti/vae/vae.pt
 base_dir = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2VQVAETrain
-no_images_used = 4800
+no_images_used = 10000
+boxBlurMin = 4
+boxBlurMax = 14
+gaussianBlurMin=4
+gaussianBlurMax=8
+pix_to_min = 8
+pix_to_max = 4800
