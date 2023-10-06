@@ -2,7 +2,7 @@ import numpy as np
 from PIL import Image
 import torch
 
-def train_batch_unet1(input,output,model_filename,sub_epochs,batch_size,sample_every,save_model_every,image_size,unet_dim,unet1_image_size):
+def train_batch_unet1(input,input2,output,model_filename,sub_epochs,batch_size,sample_every,save_model_every,image_size,unet_dim,timesteps,begin_with_image_size,unet1_image_size):
     from torch.utils.data import TensorDataset, DataLoader
 
     print("Training Unet No. 1")
@@ -11,11 +11,17 @@ def train_batch_unet1(input,output,model_filename,sub_epochs,batch_size,sample_e
     input = torch.from_numpy(input)
     input = input.to(torch.float)
 
+    input2 = torch.from_numpy(input2)
+    input2 = input2.to(torch.float)
+
     output = torch.from_numpy(output)
     output = output.to(torch.float)
 
     input = input.squeeze()
+    input2 = input2.squeeze()
     output = output.squeeze()
+
+
 
     my_dataset = TensorDataset(output,input) # create your datset
     my_dataloader = DataLoader(my_dataset) # create your dataloader
@@ -39,11 +45,13 @@ def train_batch_unet1(input,output,model_filename,sub_epochs,batch_size,sample_e
     ground_truth = ground_truth.astype(np.uint8)
     ground_truth = Image.fromarray(ground_truth)
 
-    from imagen_pytorch import Unet, Imagen, ImagenTrainer
+    from imagen_pytorch import Unet, Imagen, ImagenTrainer,NullUnet
     from imagen_pytorch.data import Dataset
 
     # unets for unconditional imagen
 
+
+    unet0 = NullUnet()  # add a placeholder "null" unet for the base unet
 
     unet1 = Unet(
         dim = unet_dim,
@@ -63,6 +71,24 @@ def train_batch_unet1(input,output,model_filename,sub_epochs,batch_size,sample_e
         layer_cross_attns = (False, False, False, True)
     )
 
+    #unet1 = Unet(
+    #    dim = unet_dim,
+    #    cond_dim = 512,
+    #    dim_mults = (1, 2, 4, 8),
+    #    num_resnet_blocks = 3,
+    #    layer_attns = (False, True, True, True),
+    #    layer_cross_attns = (False, True, True, True)
+    #)
+
+    #unet2 = Unet(
+    #    dim = unet_dim,
+    #    cond_dim = 512,
+    #    dim_mults = (1, 2, 4, 8),
+    #    num_resnet_blocks = (2, 4, 8, 8),
+    #    layer_attns = (False, False, False, True),
+    #    layer_cross_attns = (False, False, False, True)
+    #)
+
     #unet = Unet(
     #    dim = 32,
     #    dim_mults = (1, 2, 4, 8),
@@ -80,9 +106,9 @@ def train_batch_unet1(input,output,model_filename,sub_epochs,batch_size,sample_e
     #)
 
     imagen = Imagen(
-        unets = (unet1, unet2),
-        image_sizes = (unet1_image_size, image_size),
-        timesteps = 1000,
+        unets = (unet0,unet1, unet2),
+        image_sizes = (begin_with_image_size,unet1_image_size, image_size),
+        timesteps = timesteps,
         cond_drop_prob = 0.1
     ).cuda()
 
@@ -96,7 +122,7 @@ def train_batch_unet1(input,output,model_filename,sub_epochs,batch_size,sample_e
 
 
 
-    trainer.add_train_dataset(my_dataset, batch_size = batch_size * 8)
+    trainer.add_train_dataset(my_dataset, batch_size = batch_size * 16)
 
     # working training loop
 
@@ -124,16 +150,17 @@ def train_batch_unet1(input,output,model_filename,sub_epochs,batch_size,sample_e
     import random
 
     for i in range(sub_epochs):
-        loss = trainer.train_step(unet_number = 1, max_batch_size = batch_size)
+        loss = trainer.train_step(unet_number = 2,max_batch_size = batch_size)
         #print(f'loss: {loss}')
 
         if not (i % 50):
-            valid_loss = trainer.valid_step(unet_number = 1, max_batch_size =  batch_size)
+            valid_loss = trainer.valid_step(unet_number = 2, max_batch_size =  batch_size)
             print(f'valid loss: {valid_loss}')
 
         if not (i % sample_every) and trainer.is_main: # is_main makes sure this can run in distributed
-            cond_scale = random.uniform(1.1, 9.9)
-            images = trainer.sample(text_embeds=input[:1, :],stop_at_unet_number=1,batch_size = 1, return_pil_images = True,cond_scale=cond_scale) # returns List[Image]
+            cond_scale = random.uniform(5.1, 9.9)
+            images = trainer.sample(text_embeds=input[:1, :],start_image_or_video = input2[:1,:],start_at_unet_number = 2
+                                    ,stop_at_unet_number=2,batch_size = 1, return_pil_images = True,cond_scale=cond_scale) # returns List[Image]
             images[0].save('imagen-samples' + '/' + str(seconds) + f'/sample-{i // 100}'+'-'+str(int(cond_scale))+'-'+'.png')
 
         if not (i % save_model_every):
@@ -142,19 +169,26 @@ def train_batch_unet1(input,output,model_filename,sub_epochs,batch_size,sample_e
     trainer.save(model_filename)
 
 
-def train_batch_unet2(input,output,model_filename,sub_epochs,batch_size,sample_every,save_model_every,image_size,unet_dim,unet1_image_size):
+def train_batch_unet2(input,input2,output,model_filename,sub_epochs,batch_size,sample_every,save_model_every,image_size,unet_dim,timesteps,begin_with_image_size,unet1_image_size):
     from torch.utils.data import TensorDataset, DataLoader
 
     print("Training Unet No. 2")
 
+    
     input = torch.from_numpy(input)
     input = input.to(torch.float)
+
+    input2 = torch.from_numpy(input2)
+    input2 = input2.to(torch.float)
 
     output = torch.from_numpy(output)
     output = output.to(torch.float)
 
     input = input.squeeze()
+    input2 = input2.squeeze()
     output = output.squeeze()
+
+
 
     my_dataset = TensorDataset(output,input) # create your datset
     my_dataloader = DataLoader(my_dataset) # create your dataloader
@@ -178,11 +212,13 @@ def train_batch_unet2(input,output,model_filename,sub_epochs,batch_size,sample_e
     ground_truth = ground_truth.astype(np.uint8)
     ground_truth = Image.fromarray(ground_truth)
 
-    from imagen_pytorch import Unet, Imagen, ImagenTrainer
+    from imagen_pytorch import Unet, Imagen, ImagenTrainer,NullUnet
     from imagen_pytorch.data import Dataset
 
     # unets for unconditional imagen
 
+
+    unet0 = NullUnet()  # add a placeholder "null" unet for the base unet
 
     unet1 = Unet(
         dim = unet_dim,
@@ -202,6 +238,24 @@ def train_batch_unet2(input,output,model_filename,sub_epochs,batch_size,sample_e
         layer_cross_attns = (False, False, False, True)
     )
 
+    #unet1 = Unet(
+    #    dim = unet_dim,
+    #    cond_dim = 512,
+    #    dim_mults = (1, 2, 4, 8),
+    #    num_resnet_blocks = 3,
+    #    layer_attns = (False, True, True, True),
+    #    layer_cross_attns = (False, True, True, True)
+    #)
+
+    #unet2 = Unet(
+    #    dim = unet_dim,
+    #    cond_dim = 512,
+    #    dim_mults = (1, 2, 4, 8),
+    #    num_resnet_blocks = (2, 4, 8, 8),
+    #    layer_attns = (False, False, False, True),
+    #    layer_cross_attns = (False, False, False, True)
+    #)
+
     #unet = Unet(
     #    dim = 32,
     #    dim_mults = (1, 2, 4, 8),
@@ -219,9 +273,9 @@ def train_batch_unet2(input,output,model_filename,sub_epochs,batch_size,sample_e
     #)
 
     imagen = Imagen(
-        unets = (unet1, unet2),
-        image_sizes = (unet1_image_size, image_size),
-        timesteps = 1000,
+        unets = (unet0,unet1, unet2),
+        image_sizes = (begin_with_image_size,unet1_image_size, image_size),
+        timesteps = timesteps,
         cond_drop_prob = 0.1
     ).cuda()
 
@@ -235,7 +289,7 @@ def train_batch_unet2(input,output,model_filename,sub_epochs,batch_size,sample_e
 
 
 
-    trainer.add_train_dataset(my_dataset, batch_size = batch_size * 8)
+    trainer.add_train_dataset(my_dataset, batch_size = batch_size * 16)
 
     # working training loop
 
@@ -262,17 +316,18 @@ def train_batch_unet2(input,output,model_filename,sub_epochs,batch_size,sample_e
     import math
     import random
 
-    for i in range(sub_epochs): 
-        loss = trainer.train_step(unet_number = 2, max_batch_size = batch_size)
+    for i in range(sub_epochs):
+        loss = trainer.train_step(unet_number = 3,max_batch_size = batch_size)
         #print(f'loss: {loss}')
 
         if not (i % 50):
-            valid_loss = trainer.valid_step(unet_number = 2, max_batch_size = batch_size)
+            valid_loss = trainer.valid_step(unet_number = 3, max_batch_size =  batch_size)
             print(f'valid loss: {valid_loss}')
 
         if not (i % sample_every) and trainer.is_main: # is_main makes sure this can run in distributed
-            cond_scale = random.uniform(1.1, 9.9)
-            images = trainer.sample(text_embeds=input[:1, :],batch_size = 1, return_pil_images = True,cond_scale=cond_scale) # returns List[Image]
+            cond_scale = random.uniform(5.1, 9.9)
+            images = trainer.sample(text_embeds=input[:1, :],start_image_or_video = input2[:1,:],start_at_unet_number = 2
+                                    ,stop_at_unet_number=3,batch_size = 1, return_pil_images = True,cond_scale=cond_scale) # returns List[Image]
             images[0].save('imagen-samples' + '/' + str(seconds) + f'/sample-{i // 100}'+'-'+str(int(cond_scale))+'-'+'.png')
 
         if not (i % save_model_every):

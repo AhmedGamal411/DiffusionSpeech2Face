@@ -199,3 +199,50 @@ def extract_face_rep(q,face_file,image_size,output_folder):
         pickle.dump(embedding, handle)
 
 
+def extract_face_attributes(q,absPathFace):
+
+
+    # Loading configurations
+    configParser = configparser.RawConfigParser()   
+    configFilePath = r'configuration.txt'
+    configParser.read(configFilePath)
+
+
+    insert_amd_env_vars =  int(configParser.get('COMMON', 'insert_amd_env_vars'))
+    HSA_OVERRIDE_GFX_VERSION =  configParser.get('COMMON', 'HSA_OVERRIDE_GFX_VERSION')
+    ROCM_PATH =  configParser.get('COMMON', 'ROCM_PATH')
+
+    if(insert_amd_env_vars != 0):
+        os.environ["HSA_OVERRIDE_GFX_VERSION"] = HSA_OVERRIDE_GFX_VERSION
+        os.environ["ROCM_PATH"] = ROCM_PATH
+
+    backends = [
+        'opencv', 
+        'ssd', 
+        'dlib', 
+        'mtcnn', 
+        'retinaface', 
+        'mediapipe'
+    ]
+
+
+
+
+    face_analysis_objs = DeepFace.analyze(img_path = absPathFace, 
+          actions = ['age', 'gender', 'race'],enforce_detection = False)
+    
+    
+    if(len(face_analysis_objs) == 1):
+        gender = face_analysis_objs[0]['dominant_gender']
+        ethnicity = face_analysis_objs[0]['dominant_race']
+        age = face_analysis_objs[0]['age']
+    
+    else:
+        gender = 'Error'
+        ethnicity = 'Error'
+        age = 'Error'
+
+    q.put(gender)
+    q.put(ethnicity)
+    q.put(age)
+

@@ -1,24 +1,26 @@
 [COMMON]
-datasetPathVideo = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Video
-datasetPathDatabase = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Database
-test_datasetPathVideo = /media/gamal/Passport/Datasets/VoxCeleb2Test/Voxceleb2TestVideo
-test_datasetPathDatabase = /media/gamal/Passport/Datasets/VoxCeleb2Test/Voxceleb2TestDatabase
+datasetPathVideo = /home/gamal/Datasets/Dataset1/Video
+datasetPathDatabase = /home/gamal/Datasets/Dataset1/Database
+test_datasetPathVideo = /home/gamal/Datasets/Dataset1Test/VideoTest
+test_datasetPathDatabase = /home/gamal/Datasets/Dataset1Test/DatabaseTest
 cuda=1
 cpus=8
-resizeImageTo = 128
+resizeImageTo = 32
+begin_with_image_size = 8
 audio_embs_options = wav2vec or openl3
 audio_embs = pyannoteTitaNet
-unet_dim = 128
-unet1_image_size = 32
-insert_amd_env_vars = 0
+unet_dim = 64
+unet1_image_size = 16
+insert_amd_env_vars = 1
 HSA_OVERRIDE_GFX_VERSION = 10.3.0
 ROCM_PATH = /opt/rocm
+timesteps = 256
 
 [dbCreateAndPopulate]
-recreateDb=0
+recreateDb=1
 
 [extractAudio]
-datasetPathAudio = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Audio
+datasetPathAudio = /home/gamal/Datasets/Dataset1/Audio
 dbChunk = 240
 time_to_wait_before_deleting_files = 60
 
@@ -29,8 +31,8 @@ expandFaceHorizontalRatio=0.5
 faceDetectionDeepFaceBackend=4
 parallelism = 5
 parallelismFrames = 1
-datasetPathFrames = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Frames
-datasetPathFaces = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Faces
+datasetPathFrames = /home/gamal/Datasets/Dataset1/Frames
+datasetPathFaces = /home/gamal/Datasets/Dataset1/Faces
 
 [fineTuneStableDiffusionTraining]
 db_chunk = 50000
@@ -41,56 +43,69 @@ continue_from_epoch_and_offset = 0
 unconditional_guidance_scale = 40
 
 [extractOpenL3]
-datasetPathAudio = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Audio
+datasetPathAudio = /home/gamal/Datasets/Dataset1/Audio
 dbChunk = 240
 time_to_wait_before_deleting_files = 60
 openl3_mode_options = stable or imagen
 openl3_mode = imagen
 
 [extractWavToVec]
-datasetPathAudio = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Audio
+datasetPathAudio = /home/gamal/Datasets/Dataset1/Audio
 dbChunk = 240
 time_to_wait_before_deleting_files = 60
-audio_length_wav2vec = 5
+audio_length_wav2vec = 6
 
 [extractPyannoteTitaNet]
-datasetPathAudio = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Audio
+datasetPathAudio = /home/gamal/Datasets/Dataset1/Audio
 dbChunk = 240
 time_to_wait_before_deleting_files = 60
+use_auth_token = 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
 
 [extractAudioFeatures]
-datasetPathAudio = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Audio
-dbChunk = 250
+datasetPathAudio = /home/gamal/Datasets/Dataset1/Audio
+dbChunk = 240
 time_to_wait_before_deleting_files = 60
 
 [fineTuneStableDiffusionTesting]
 use_video_in_configuration = 1
-video_path = /home/gamal/vsc/DiffusionSpeech2Face/v.mp4
+video_path = /home/gamal/Datasets/Dataset1/Video/blhA_I4zjvE_15.600000_22.333333.mp4
 time_to_wait_before_deleting_files = 180
 dev_mode = 0
 
 [train_imagen]
-model_filename = imagen_live128
+model_filename = imagen_features_low_res_asis
 audio_length_used = 24
 epochs = 1
 sample_every_offset = 1
 save_every_offset = 1
-sub_epochs = 100
-sample_every = 600
-save_model_every = 600
+sub_epochs = 250
+sample_every = 4000
+save_model_every = 4000
 batch_size = 4
-continue_from_epoch = 0
-continue_from_offset = 189500
-continue_from_epoch_and_offset_flag = 1
-db_chunk = 500
+continue_from_epoch = 1
+continue_from_offset = 0
+continue_from_epoch_and_offset_flag = 0
+db_chunk = 12
 c_unte2 = 54500
-c_unite1 = 189500
+c_unite1 = 77000
+ignore_speaker_embedding = 0
+ignore_speech_brain = 0
+ignore_pyannote_titanet_speakernet = 0
+ignore_audio_features = 0
+ignore_pyAudioAnalysis = 0
+ignore_librosa = 0
+ignore_image_guide = 0
+ignore_additional_attributes = 0
+ignore_age = 0
+ignore_gender = 0
+ignore_ethnicity = 0
+ignore_language_spoken = 0
 
 [test_imagen]
-video_path = /home/gamal/vsc/DiffusionSpeech2Face/v.mp4
+video_path = /home/gamal/vsc/DiffusionSpeech2Face/old/v.mp4
 time_to_wait_before_deleting_files = 180
 audio_length_used = 24
-model_filename = imagen_live128
+model_filename = imagen_features_low_res_asis
 openl3_mode_options = stable or imagen
 openl3_mode = imagen
 folder = imagen-test-folder
@@ -99,67 +114,75 @@ age = 25
 ethnicity = black 
 gender = man
 language = English
-image_guide_path = /home/gamal/vsc/DiffusionSpeech2Face/a12.png
+image_guide_path = /home/gamal/vsc/DiffusionSpeech2Face/old/a12.png
 blur_or_pixelate = 1
 boxBlurMin = 4
 boxBlurMax = 14
-gaussianBlurMin=4
-gaussianBlurMax=8
+gaussianBlurMin=2
+gaussianBlurMax=6
 pix_to_min = 8
-pix_to_max = 24
-ignore_age = 1
-ignore_ethnicity = 1
-ignore_gender = 1
-ignore_language = 1
+pix_to_max = 16
+low_res_image = /home/gamal/vsc/DiffusionSpeech2Face/old/a12.png
+skip_speaker_embedding = 0
+skip_speech_brain = 0
+skip_pyannote_titanet_speakernet = 0
+skip_audio_features = 0
+skip_pyAudioAnalysis = 0
+skip_librosa = 0
+skip_image_guide = 0
+skip_additional_attributes = 0
+skip_age = 0
+skip_gender = 0
+skip_ethnicity = 0
+skip_language_spoken = 0
 
 [evaluate_imagen]
-test_datasetpathfaces = /media/gamal/Passport/Datasets/VoxCeleb2Test/Voxceleb2TestFaces
-test_datasetpathgeneratedfaces = /media/gamal/Passport/Datasets/VoxCeleb2Test/Voxceleb2TestGeneratedFaces
-test_datasetpathfeatures = /media/gamal/Passport/Datasets/VoxCeleb2Test/Voxceleb2TestFeatures
-test_datasetpathguides = /media/gamal/Passport/Datasets/VoxCeleb2Test/Voxceleb2TestGuides
+test_datasetpathfaces = /home/gamal/Datasets/Dataset1Test/FacesTest
+test_datasetpathgeneratedfaces = /home/gamal/Datasets/Dataset1Test/GeneratedFacesTest
+test_datasetpathfeatures = /home/gamal/Datasets/Dataset1Test/FeaturesTest
+test_datasetpathguides = /home/gamal/Datasets/Dataset1Test/GuidesTest
 time_to_wait_before_deleting_files = 180
 audio_length_used = 24
-model_filename = imagen_live128
+model_filename = imagen_features_low_res_asis
 openl3_mode_options = stable or imagen
 openl3_mode = imagen
 folder = imagen-test-folder
 number_of_images = 2
 boxBlurMin = 4
 boxBlurMax = 14
-gaussianBlurMin=4
-gaussianBlurMax=8
+gaussianBlurMin=2
+gaussianBlurMax=6
 pix_to_min = 8
-pix_to_max = 24
+pix_to_max = 16
 ignore_age = 1
-ignore_ethnicity = 1
-ignore_gender = 1
-ignore_language = 1
 expandFaceVerticalRatio = 0.4
 expandFaceHorizontalRatio=0.5
 faceDetectionDeepFaceBackend=4
 generated_face_table_name = audio_image_guide_only
+skip_speaker_embedding = 0
+skip_speech_brain = 0
+skip_pyannote_titanet_speakernet = 0
+skip_audio_features = 0
+skip_pyAudioAnalysis = 0
+skip_librosa = 0
+skip_image_guide = 0
+skip_additional_attributes = 0
+skip_age = 0
+skip_gender = 0
+skip_ethnicity = 0
+skip_language_spoken = 0
+evaluation_result_file = /home/gamal/Datasets/Dataset1Test/results.txt
 
 [extractVggBlurred]
-dbChunk = 200
+dbChunk = 20
 boxBlurMin = 4
 boxBlurMax = 14
-gaussianBlurMin=4
-gaussianBlurMax=8
+gaussianBlurMin=2
+gaussianBlurMax=6
 pix_to_min = 8
-pix_to_max = 24
+pix_to_max = 16
 
 [extractAudioSpectogramTransformer]
-datasetPathAudio = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Audio
+datasetPathAudio = /home/gamal/Datasets/Dataset1/Audio
 dbChunk = 240
 time_to_wait_before_deleting_files = 60
-
-[vae]
-model_name = /media/gamal/Passport/parti/vae/vae.pt
-base_dir = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2VQVAETrain
-no_images_used = 10000
-boxBlurMin = 4
-boxBlurMax = 14
-gaussianBlurMin=4
-gaussianBlurMax=8
-pix_to_min = 8
-pix_to_max = 4800

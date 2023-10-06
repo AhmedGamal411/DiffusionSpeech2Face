@@ -52,6 +52,7 @@ cpus =  int(configParser.get('COMMON', 'cpus'))
 datasetPathAudio =  configParser.get('extractPyannoteTitaNet', 'datasetPathAudio')
 
 p =  configParser.get('extractPyannoteTitaNet', 'dbChunk')
+use_auth_token =  configParser.get('extractPyannoteTitaNet', 'use_auth_token')
 ttwbdf =  int(configParser.get('extractPyannoteTitaNet', 'time_to_wait_before_deleting_files'))
 
 print("Video dataset at " + datasetPathVideo )
@@ -67,7 +68,7 @@ print('------------------- ABOUT TO START --------------------')
 
 from pyannote.audio import Model
 model = Model.from_pretrained("pyannote/embedding", 
-                              use_auth_token="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")
+                              use_auth_token=use_auth_token)
 from pyannote.audio import Inference
 
 inference0 = Inference(model, window="sliding",

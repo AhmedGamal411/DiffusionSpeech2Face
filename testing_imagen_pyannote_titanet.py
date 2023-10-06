@@ -14,8 +14,9 @@ import os
 import configparser
 
 
-def extract_pyannote_titanet_embeddings(q,path_var_len_audio,audio_embs,audio_length,openl3_mode):
+def extract_pyannote_titanet_embeddings(q,path_var_len_audio,audio_embs,audio_length,openl3_mode,output_folder):
 
+    print('a')
     # Loading configurations
     configParser = configparser.RawConfigParser()   
     configFilePath = r'configuration.txt'
@@ -29,7 +30,10 @@ def extract_pyannote_titanet_embeddings(q,path_var_len_audio,audio_embs,audio_le
         os.environ["HSA_OVERRIDE_GFX_VERSION"] = HSA_OVERRIDE_GFX_VERSION
         os.environ["ROCM_PATH"] = ROCM_PATH
 
+    use_auth_token =  configParser.get('extractPyannoteTitaNet', 'use_auth_token')
 
+
+    print('b')
     model = None
     inference0 = None
     inference1 = None
@@ -49,9 +53,10 @@ def extract_pyannote_titanet_embeddings(q,path_var_len_audio,audio_embs,audio_le
         model = bundle.get_model().to(device)
 
     elif(audio_embs == 'pyannoteTitaNet'):
+        print('c')
         from pyannote.audio import Model
         model = Model.from_pretrained("pyannote/embedding", 
-                                    use_auth_token="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")
+                                    use_auth_token=use_auth_token)
         from pyannote.audio import Inference
 
         inference0 = Inference(model, window="sliding",
@@ -66,11 +71,11 @@ def extract_pyannote_titanet_embeddings(q,path_var_len_audio,audio_embs,audio_le
                             duration=12, step=4 ,device=torch.device(0))
         inference5 = Inference(model, window="sliding",
                             duration=24, step=8 ,device=torch.device(0))
-
+        print('d')
         import nemo.collections.asr as nemo_asr
         speaker_model = nemo_asr.models.EncDecSpeakerLabelModel.from_pretrained("nvidia/speakerverification_en_titanet_large")
         speaker_model2 = nemo_asr.models.EncDecSpeakerLabelModel.from_pretrained(model_name="speakerverification_speakernet")
-
+        print('e')
 
     else:
         raise ValueError('''Specify an audio embedding scheme from the available options in the 
@@ -114,13 +119,15 @@ def extract_pyannote_titanet_embeddings(q,path_var_len_audio,audio_embs,audio_le
         embeddingsPickle2 = pickle.dumps(emb)
 
     elif(audio_embs == 'pyannoteTitaNet'):
-        path_var_len_audio = "v.mp3"
+        #path_var_len_audio = "v.mp3"
+        print('f')
         emb0 = inference0(path_var_len_audio).data
         emb1 = inference1(path_var_len_audio).data
         emb2 = inference2(path_var_len_audio).data
         emb3 = inference3(path_var_len_audio).data
         emb4 = inference4(path_var_len_audio).data
         emb5 = inference5(path_var_len_audio).data
+        print('g')
 
         emb = np.vstack((emb0,emb1))
         emb = np.vstack((emb,emb2))
@@ -135,6 +142,7 @@ def extract_pyannote_titanet_embeddings(q,path_var_len_audio,audio_embs,audio_le
         c = np.pad(c, (160), 'constant', constant_values=(0))
         c = c * 10.0
         emb = np.vstack((emb,c))
+        print('h')
     
 
         embSpeakerNet = speaker_model2.get_embedding(path_var_len_audio)
@@ -144,5 +152,12 @@ def extract_pyannote_titanet_embeddings(q,path_var_len_audio,audio_embs,audio_le
         c = c * 1.0
         emb = np.vstack((emb,c))
 
+        print('i')
+
         embeddingsPickle2 = pickle.dumps(emb)
-        q.put(embeddingsPickle2)
+        #q.put(embeddingsPickle2)
+
+        with open(output_folder + '/' + 'audio_emb_pyannote_titanet.pickle', 'wb') as handle:
+            pickle.dump(embeddingsPickle2, handle)
+
+        print('j')
