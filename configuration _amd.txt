@@ -170,7 +170,7 @@ skip_age = 0
 skip_gender = 0
 skip_ethnicity = 0
 skip_language_spoken = 0
-evaluation_result_file = /home/gamal/Datasets/Dataset1Test/results.txt
+evaluation_results_folder = /home/gamal/Datasets/Dataset1Test
 
 [extractVggBlurred]
 dbChunk = 20
