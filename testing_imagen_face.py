@@ -46,15 +46,10 @@ def resizeImage(im, size):
     image_n = image.resize((x_n,y_n), Image.ANTIALIAS)       
     return image_n
 
-def make_square(im, min_size, fill_color=(0, 0, 0, 0)):
-    x, y = im.size
-    size = max(min_size, x, y)
-    new_im = Image.new('RGBA', (size, size), fill_color)
-    new_im.paste(im, (int((size - x) / 2), int((size - y) / 2)))
-    return new_im
+
 
 def extract_face(q,absPathVideo,resizeImageTo,fddfb,output_folder,
-                           efvr,efhr):
+                           efvr,efhr, auto_zoom = True):
 
 
     # Loading configurations
@@ -137,7 +132,16 @@ def extract_face(q,absPathVideo,resizeImageTo,fddfb,output_folder,
                     crop_img_start_col :crop_img_end_col]
     
     crop_img = resizeImage(crop_img,resizeImageTo)
-    crop_img = make_square(crop_img,resizeImageTo)
+
+    if(auto_zoom):
+        w_s = resizeImageTo / (1+2 * 0.4)
+        h_s = resizeImageTo / (1+2 * 0.4)
+
+        crop_img = crop_img.crop((0.2*w_s, 0.0*h_s, 1.6*w_s, 1.4*h_s))
+
+        crop_img = crop_img.resize((resizeImageTo,resizeImageTo))
+
+
 
     absPathFace = output_folder + "/" + "face.png"
 
