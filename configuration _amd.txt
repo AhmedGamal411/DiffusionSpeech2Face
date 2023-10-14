@@ -74,6 +74,7 @@ dev_mode = 0
 
 [train_imagen]
 model_filename = imagen_features_low_res_asis
+imagen_samples_folder = /media/gamal/Passport/active_models/imagen_features_low_res_asis_16
 audio_length_used = 24
 epochs = 1
 sample_every_offset = 1
