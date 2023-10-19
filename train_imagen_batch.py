@@ -148,11 +148,13 @@ def train_batch_unet1(input,input2,output,model_filename,sub_epochs,batch_size,s
 
     import math
     import random
-
+    import pickle
+    loss_list = []
     for i in range(sub_epochs):
         loss = trainer.train_step(unet_number = 2,max_batch_size = batch_size)
         if not (i % 10):
             print(f'loss: {loss}')
+            loss_list.append(loss)
 
         if not (i % 50):
             valid_loss = trainer.valid_step(unet_number = 2, max_batch_size =  batch_size)
@@ -168,6 +170,8 @@ def train_batch_unet1(input,input2,output,model_filename,sub_epochs,batch_size,s
             trainer.save(model_filename)
 
     trainer.save(model_filename)
+    with open('loss_list_1_temp.pickle', 'wb') as handle:
+        pickle.dump(loss_list, handle)
 
 
 def train_batch_unet2(input,input2,output,model_filename,sub_epochs,batch_size,sample_every,save_model_every,image_size,unet_dim,timesteps,begin_with_image_size,unet1_image_size,imagen_samples,sample_probability):
@@ -246,7 +250,7 @@ def train_batch_unet2(input,input2,output,model_filename,sub_epochs,batch_size,s
     #    num_resnet_blocks = 3,
     #    layer_attns = (False, True, True, True),
     #    layer_cross_attns = (False, True, True, True)
-    #)
+    #)loss_list.append(loss)
 
     #unet2 = Unet(
     #    dim = unet_dim,
@@ -316,11 +320,13 @@ def train_batch_unet2(input,input2,output,model_filename,sub_epochs,batch_size,s
 
     import math
     import random
-
+    import pickle
+    loss_list = []
     for i in range(sub_epochs):
         loss = trainer.train_step(unet_number = 3,max_batch_size = batch_size)
         if not (i % 10):
             print(f'loss: {loss}')
+            loss_list.append(loss)
 
         if not (i % 50):
             valid_loss = trainer.valid_step(unet_number = 3, max_batch_size =  batch_size)
@@ -336,3 +342,5 @@ def train_batch_unet2(input,input2,output,model_filename,sub_epochs,batch_size,s
             trainer.save(model_filename)
 
     trainer.save(model_filename)
+    with open('loss_list_2_temp.pickle', 'wb') as handle:
+        pickle.dump(loss_list, handle)
