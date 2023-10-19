@@ -12,8 +12,8 @@ datasetPathVideo =  configParser.get('COMMON', 'datasetPathVideo')
 
 vit_vae = VitVQGanVAE(
     dim = 256,               # dimensions
-    image_size = 256,        # target image size
-    patch_size = 16,         # size of the patches in the image attending to each other
+    image_size = 128,        # target image size
+    patch_size = 256,         # size of the patches in the image attending to each other
     num_layers = 3           # number of layers
 ).cuda()
 
@@ -21,7 +21,7 @@ vit_vae = VitVQGanVAE(
 trainer = VQGanVAETrainer(
     vit_vae,
     folder = '/media/gamal/Passport/Datasets/VoxCeleb2Test/Voxceleb2TestFaces',
-    num_train_steps = 100,
+    num_train_steps = 100000,
     lr = 3e-4,
     batch_size = 4,
     grad_accum_every = 8,
@@ -32,5 +32,3 @@ trainer = VQGanVAETrainer(
 )
 
 trainer.train()
-
-vit_vae.enco

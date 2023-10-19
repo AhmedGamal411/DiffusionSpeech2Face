@@ -81,6 +81,7 @@ sample_every_offset = 1
 save_every_offset = 1
 sub_epochs = 250
 sample_every = 4000
+sample_probability = 20
 save_model_every = 4000
 batch_size = 4
 continue_from_epoch = 1
