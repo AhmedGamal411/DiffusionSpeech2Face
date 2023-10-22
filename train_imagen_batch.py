@@ -115,7 +115,7 @@ def train_batch_unet1(input,input2,output,model_filename,sub_epochs,batch_size,s
 
     trainer = ImagenTrainer(
         imagen = imagen,
-        split_valid_from_train = True # whether to split the validation dataset from the training
+        split_valid_from_train = False # whether to split the validation dataset from the training
     ).cuda()
 
     # instantiate your dataloader, which returns the necessary inputs to the DDPM as tuple in the order of images, text embeddings, then text masks. in this case, only images is returned as it is unconditional training
@@ -147,15 +147,15 @@ def train_batch_unet1(input,input2,output,model_filename,sub_epochs,batch_size,s
     import random
     import pickle
     loss_list = []
-    for i in range(sub_epochs):
+    for i in range(1):
         loss = trainer.train_step(unet_number = 2,max_batch_size = batch_size)
         if not (i % 10):
             print(f'loss: {loss}')
             loss_list.append(loss)
 
-        if not (i % 50):
-            valid_loss = trainer.valid_step(unet_number = 2, max_batch_size =  batch_size)
-            print(f'valid loss: {valid_loss}')
+        #if not (i % 50):
+        #    valid_loss = trainer.valid_step(unet_number = 2, max_batch_size =  batch_size)
+        #    print(f'valid loss: {valid_loss}')
 
         if not (i % sample_every) and trainer.is_main and random.choices([True, False], weights=[sample_probability, 100-sample_probability])[0]: # is_main makes sure this can run in distributed
             cond_scale = random.uniform(5.1, 9.9)
@@ -287,7 +287,7 @@ def train_batch_unet2(input,input2,output,model_filename,sub_epochs,batch_size,s
 
     trainer = ImagenTrainer(
         imagen = imagen,
-        split_valid_from_train = True # whether to split the validation dataset from the training
+        split_valid_from_train = False # whether to split the validation dataset from the training
     ).cuda()
 
     # instantiate your dataloader, which returns the necessary inputs to the DDPM as tuple in the order of images, text embeddings, then text masks. in this case, only images is returned as it is unconditional training
@@ -318,15 +318,15 @@ def train_batch_unet2(input,input2,output,model_filename,sub_epochs,batch_size,s
     import random
     import pickle
     loss_list = []
-    for i in range(sub_epochs):
+    for i in range(1):
         loss = trainer.train_step(unet_number = 3,max_batch_size = batch_size)
         if not (i % 10):
             print(f'loss: {loss}')
             loss_list.append(loss)
 
-        if not (i % 50):
-            valid_loss = trainer.valid_step(unet_number = 3, max_batch_size =  batch_size)
-            print(f'valid loss: {valid_loss}')
+        #if not (i % 50):
+        #    valid_loss = trainer.valid_step(unet_number = 3, max_batch_size =  batch_size)
+        #    print(f'valid loss: {valid_loss}')
 
         if not (i % sample_every) and trainer.is_main and random.choices([True, False], weights=[sample_probability, 100-sample_probability])[0]: # is_main makes sure this can run in distributed
             cond_scale = random.uniform(5.1, 9.9)
