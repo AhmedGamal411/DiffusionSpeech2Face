@@ -2,7 +2,7 @@ import numpy as np
 from PIL import Image
 import torch
 
-def train_batch_unet1(input,input2,output,model_filename,sub_epochs,batch_size,sample_every,save_model_every,image_size,unet_dim,timesteps,begin_with_image_size,unet1_image_size):
+def train_batch_unet1(input,input2,output,model_filename,sub_epochs,batch_size,sample_every,save_model_every,image_size,unet_dim,timesteps,begin_with_image_size,unet1_image_size,imagen_samples,sample_probability):
     from torch.utils.data import TensorDataset, DataLoader
 
     print("Training Unet No. 1")
@@ -115,7 +115,7 @@ def train_batch_unet1(input,input2,output,model_filename,sub_epochs,batch_size,s
 
     trainer = ImagenTrainer(
         imagen = imagen,
-        split_valid_from_train = True # whether to split the validation dataset from the training
+        split_valid_from_train = False # whether to split the validation dataset from the training
     ).cuda()
 
     # instantiate your dataloader, which returns the necessary inputs to the DDPM as tuple in the order of images, text embeddings, then text masks. in this case, only images is returned as it is unconditional training
@@ -129,15 +129,12 @@ def train_batch_unet1(input,input2,output,model_filename,sub_epochs,batch_size,s
     import os
     import time
 
-    if not os.path.exists('imagen-samples'):
-        os.makedirs('imagen-samples')
+    if not os.path.exists(imagen_samples):
+        os.makedirs(imagen_samples)
 
     now =time.time()
     seconds = now
-    if not os.path.exists(str(seconds)):
-        os.makedirs('imagen-samples/' + str(seconds))
 
-    ground_truth.save('imagen-samples' + '/' + str(seconds) + '/ground_truth.png')
 
     from pathlib import Path
 
@@ -148,28 +145,36 @@ def train_batch_unet1(input,input2,output,model_filename,sub_epochs,batch_size,s
 
     import math
     import random
-
-    for i in range(sub_epochs):
+    import pickle
+    loss_list = []
+    for i in range(1):
         loss = trainer.train_step(unet_number = 2,max_batch_size = batch_size)
-        #print(f'loss: {loss}')
+        if not (i % 10):
+            print(f'loss: {loss}')
+            loss_list.append(loss)
 
-        if not (i % 50):
-            valid_loss = trainer.valid_step(unet_number = 2, max_batch_size =  batch_size)
-            print(f'valid loss: {valid_loss}')
+        #if not (i % 50):
+        #    valid_loss = trainer.valid_step(unet_number = 2, max_batch_size =  batch_size)
+        #    print(f'valid loss: {valid_loss}')
 
-        if not (i % sample_every) and trainer.is_main: # is_main makes sure this can run in distributed
+        if not (i % sample_every) and trainer.is_main and random.choices([True, False], weights=[sample_probability, 100-sample_probability])[0]: # is_main makes sure this can run in distributed
             cond_scale = random.uniform(5.1, 9.9)
+            if not os.path.exists(str(seconds)):
+                os.makedirs(imagen_samples + "/" + str(seconds))
+            ground_truth.save(imagen_samples + '/' + str(seconds) + '/ground_truth.png')
             images = trainer.sample(text_embeds=input[:1, :],start_image_or_video = input2[:1,:],start_at_unet_number = 2
                                     ,stop_at_unet_number=2,batch_size = 1, return_pil_images = True,cond_scale=cond_scale) # returns List[Image]
-            images[0].save('imagen-samples' + '/' + str(seconds) + f'/sample-{i // 100}'+'-'+str(int(cond_scale))+'-'+'.png')
+            images[0].save(imagen_samples + '/' + str(seconds) + f'/sample-{i // 100}'+'-'+str(int(cond_scale))+'-'+'.png')
 
         if not (i % save_model_every):
             trainer.save(model_filename)
 
     trainer.save(model_filename)
+    with open('loss_list_1_temp.pickle', 'wb') as handle:
+        pickle.dump(loss_list, handle)
 
 
-def train_batch_unet2(input,input2,output,model_filename,sub_epochs,batch_size,sample_every,save_model_every,image_size,unet_dim,timesteps,begin_with_image_size,unet1_image_size):
+def train_batch_unet2(input,input2,output,model_filename,sub_epochs,batch_size,sample_every,save_model_every,image_size,unet_dim,timesteps,begin_with_image_size,unet1_image_size,imagen_samples,sample_probability):
     from torch.utils.data import TensorDataset, DataLoader
 
     print("Training Unet No. 2")
@@ -245,7 +250,7 @@ def train_batch_unet2(input,input2,output,model_filename,sub_epochs,batch_size,s
     #    num_resnet_blocks = 3,
     #    layer_attns = (False, True, True, True),
     #    layer_cross_attns = (False, True, True, True)
-    #)
+    #)loss_list.append(loss)
 
     #unet2 = Unet(
     #    dim = unet_dim,
@@ -282,7 +287,7 @@ def train_batch_unet2(input,input2,output,model_filename,sub_epochs,batch_size,s
 
     trainer = ImagenTrainer(
         imagen = imagen,
-        split_valid_from_train = True # whether to split the validation dataset from the training
+        split_valid_from_train = False # whether to split the validation dataset from the training
     ).cuda()
 
     # instantiate your dataloader, which returns the necessary inputs to the DDPM as tuple in the order of images, text embeddings, then text masks. in this case, only images is returned as it is unconditional training
@@ -296,15 +301,11 @@ def train_batch_unet2(input,input2,output,model_filename,sub_epochs,batch_size,s
     import os
     import time
 
-    if not os.path.exists('imagen-samples'):
-        os.makedirs('imagen-samples')
+    if not os.path.exists(imagen_samples):
+        os.makedirs(imagen_samples)
 
     now =time.time()
     seconds = now
-    if not os.path.exists(str(seconds)):
-        os.makedirs('imagen-samples/' + str(seconds))
-
-    ground_truth.save('imagen-samples' + '/' + str(seconds) + '/ground_truth.png')
 
     from pathlib import Path
 
@@ -315,22 +316,32 @@ def train_batch_unet2(input,input2,output,model_filename,sub_epochs,batch_size,s
 
     import math
     import random
-
-    for i in range(sub_epochs):
+    import pickle
+    loss_list = []
+    for i in range(1):
         loss = trainer.train_step(unet_number = 3,max_batch_size = batch_size)
-        #print(f'loss: {loss}')
+        if not (i % 10):
+            print(f'loss: {loss}')
+            loss_list.append(loss)
 
-        if not (i % 50):
-            valid_loss = trainer.valid_step(unet_number = 3, max_batch_size =  batch_size)
-            print(f'valid loss: {valid_loss}')
+        #if not (i % 50):
+        #    valid_loss = trainer.valid_step(unet_number = 3, max_batch_size =  batch_size)
+        #    print(f'valid loss: {valid_loss}')
 
-        if not (i % sample_every) and trainer.is_main: # is_main makes sure this can run in distributed
+        if not (i % sample_every) and trainer.is_main and random.choices([True, False], weights=[sample_probability, 100-sample_probability])[0]: # is_main makes sure this can run in distributed
             cond_scale = random.uniform(5.1, 9.9)
+            if not os.path.exists(str(seconds)):
+                os.makedirs(imagen_samples + "/" + str(seconds))
+
+            ground_truth.save(imagen_samples + '/' + str(seconds) + '/ground_truth.png')
+
             images = trainer.sample(text_embeds=input[:1, :],start_image_or_video = input2[:1,:],start_at_unet_number = 2
                                     ,stop_at_unet_number=3,batch_size = 1, return_pil_images = True,cond_scale=cond_scale) # returns List[Image]
-            images[0].save('imagen-samples' + '/' + str(seconds) + f'/sample-{i // 100}'+'-'+str(int(cond_scale))+'-'+'.png')
+            images[0].save(imagen_samples + '/' + str(seconds) + f'/sample-{i // 100}'+'-'+str(int(cond_scale))+'-'+'.png')
 
         if not (i % save_model_every):
             trainer.save(model_filename)
 
     trainer.save(model_filename)
+    with open('loss_list_2_temp.pickle', 'wb') as handle:
+        pickle.dump(loss_list, handle)

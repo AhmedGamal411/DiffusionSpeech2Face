@@ -37,7 +37,8 @@ if(recreateDb != 0):
             ETHNICITY INTEGER,
             GENDER INTEGER,
             AUDIO_PRE INTEGER,
-            FACES_PRE INTEGER
+            FACES_PRE INTEGER,
+            TRAINED INTEGER
         );
     """)
 
@@ -94,6 +95,11 @@ if(recreateDb != 0):
 
     con.execute("""
         CREATE INDEX FACE_VGG_BLURRED_IDX ON FACE (VGG_BLURRED);
+        
+    """)
+
+    con.execute("""
+        CREATE INDEX VIDEO_TRAINED_IDX ON VIDEO (TRAINED);
         
     """)
 
