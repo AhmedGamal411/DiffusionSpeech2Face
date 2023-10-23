@@ -2,14 +2,16 @@ import numpy as np
 from PIL import Image
 import torch
 
-def train_batch_unet1(input,input2,output,model_filename,sub_epochs,batch_size,sample_every,save_model_every,image_size,unet_dim,timesteps,begin_with_image_size,unet1_image_size,imagen_samples,sample_probability):
-    from torch.utils.data import TensorDataset, DataLoader
 
+def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_size,sample_every,save_model_every,image_size,unet_dim,timesteps,begin_with_image_size,unet1_image_size,imagen_samples,sample_probability):
+    from torch.utils.data import TensorDataset, DataLoader
+    import time
     print("Training Unet No. 1")
 
-    
-    input = torch.from_numpy(input)
-    input = input.to(torch.float)
+
+    input0 = torch.from_numpy(input0)
+    input0 = input0.to(torch.float)
+
 
     input2 = torch.from_numpy(input2)
     input2 = input2.to(torch.float)
@@ -17,14 +19,17 @@ def train_batch_unet1(input,input2,output,model_filename,sub_epochs,batch_size,s
     output = torch.from_numpy(output)
     output = output.to(torch.float)
 
-    input = input.squeeze()
+    input0 = input0.squeeze()
     input2 = input2.squeeze()
     output = output.squeeze()
 
 
 
-    my_dataset = TensorDataset(output,input) # create your datset
+
+    my_dataset = TensorDataset(output,input0) # create your datset
+    
     my_dataloader = DataLoader(my_dataset) # create your dataloader
+    
 
 
 
@@ -40,10 +45,17 @@ def train_batch_unet1(input,input2,output,model_filename,sub_epochs,batch_size,s
         t5_encode_text(texts="Hi how have you been my love, what is the largest embedding that I can get here in egypt, is there any bigger or smaller than this i wonder").max()
 
     ground_truth = output[0].cpu().detach().numpy()
+    
+
     ground_truth = np.moveaxis(ground_truth, 0, -1)
+    
+
     ground_truth = ground_truth * 255
     ground_truth = ground_truth.astype(np.uint8)
+
     ground_truth = Image.fromarray(ground_truth)
+    
+
 
     from imagen_pytorch import Unet, Imagen, ImagenTrainer,NullUnet
     from imagen_pytorch.data import Dataset
@@ -78,7 +90,7 @@ def train_batch_unet1(input,input2,output,model_filename,sub_epochs,batch_size,s
     #    num_resnet_blocks = 3,
     #    layer_attns = (False, True, True, True),
     #    layer_cross_attns = (False, True, True, True)
-    #)
+    #)loss_list.append(loss)
 
     #unet2 = Unet(
     #    dim = unet_dim,
@@ -111,6 +123,7 @@ def train_batch_unet1(input,input2,output,model_filename,sub_epochs,batch_size,s
         timesteps = timesteps,
         cond_drop_prob = 0.1
     ).cuda()
+    
 
 
     trainer = ImagenTrainer(
@@ -118,12 +131,15 @@ def train_batch_unet1(input,input2,output,model_filename,sub_epochs,batch_size,s
         split_valid_from_train = False # whether to split the validation dataset from the training
     ).cuda()
 
+    
+
+
     # instantiate your dataloader, which returns the necessary inputs to the DDPM as tuple in the order of images, text embeddings, then text masks. in this case, only images is returned as it is unconditional training
 
-
+    
 
     trainer.add_train_dataset(my_dataset, batch_size = batch_size * 16)
-
+    
     # working training loop
 
     import os
@@ -147,11 +163,12 @@ def train_batch_unet1(input,input2,output,model_filename,sub_epochs,batch_size,s
     import random
     import pickle
     loss_list = []
-    for i in range(1):
+    for i in range(inner_epochs):
+        
         loss = trainer.train_step(unet_number = 2,max_batch_size = batch_size)
         if not (i % 10):
             print(f'loss: {loss}')
-            loss_list.append(loss)
+        loss_list.append(loss)
 
         #if not (i % 50):
         #    valid_loss = trainer.valid_step(unet_number = 2, max_batch_size =  batch_size)
@@ -162,26 +179,32 @@ def train_batch_unet1(input,input2,output,model_filename,sub_epochs,batch_size,s
             if not os.path.exists(str(seconds)):
                 os.makedirs(imagen_samples + "/" + str(seconds))
             ground_truth.save(imagen_samples + '/' + str(seconds) + '/ground_truth.png')
-            images = trainer.sample(text_embeds=input[:1, :],start_image_or_video = input2[:1,:],start_at_unet_number = 2
+            
+            images = trainer.sample(text_embeds=input0[:1, :],start_image_or_video = input2[:1,:],start_at_unet_number = 2
                                     ,stop_at_unet_number=2,batch_size = 1, return_pil_images = True,cond_scale=cond_scale) # returns List[Image]
+
             images[0].save(imagen_samples + '/' + str(seconds) + f'/sample-{i // 100}'+'-'+str(int(cond_scale))+'-'+'.png')
 
-        if not (i % save_model_every):
-            trainer.save(model_filename)
+        #if not (i % save_model_every):
+        #    trainer.save(model_filename)
+    
 
     trainer.save(model_filename)
+    
+
     with open('loss_list_1_temp.pickle', 'wb') as handle:
         pickle.dump(loss_list, handle)
 
 
-def train_batch_unet2(input,input2,output,model_filename,sub_epochs,batch_size,sample_every,save_model_every,image_size,unet_dim,timesteps,begin_with_image_size,unet1_image_size,imagen_samples,sample_probability):
+
+def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_size,sample_every,save_model_every,image_size,unet_dim,timesteps,begin_with_image_size,unet1_image_size,imagen_samples,sample_probability):
     from torch.utils.data import TensorDataset, DataLoader
 
     print("Training Unet No. 2")
 
     
-    input = torch.from_numpy(input)
-    input = input.to(torch.float)
+    input0 = torch.from_numpy(input0)
+    input0 = input0.to(torch.float)
 
     input2 = torch.from_numpy(input2)
     input2 = input2.to(torch.float)
@@ -189,13 +212,13 @@ def train_batch_unet2(input,input2,output,model_filename,sub_epochs,batch_size,s
     output = torch.from_numpy(output)
     output = output.to(torch.float)
 
-    input = input.squeeze()
+    input0 = input0.squeeze()
     input2 = input2.squeeze()
     output = output.squeeze()
 
 
 
-    my_dataset = TensorDataset(output,input) # create your datset
+    my_dataset = TensorDataset(output,input0) # create your datset
     my_dataloader = DataLoader(my_dataset) # create your dataloader
 
 
@@ -318,11 +341,11 @@ def train_batch_unet2(input,input2,output,model_filename,sub_epochs,batch_size,s
     import random
     import pickle
     loss_list = []
-    for i in range(1):
+    for i in range(inner_epochs):
         loss = trainer.train_step(unet_number = 3,max_batch_size = batch_size)
         if not (i % 10):
             print(f'loss: {loss}')
-            loss_list.append(loss)
+        loss_list.append(loss)
 
         #if not (i % 50):
         #    valid_loss = trainer.valid_step(unet_number = 3, max_batch_size =  batch_size)
@@ -335,12 +358,12 @@ def train_batch_unet2(input,input2,output,model_filename,sub_epochs,batch_size,s
 
             ground_truth.save(imagen_samples + '/' + str(seconds) + '/ground_truth.png')
 
-            images = trainer.sample(text_embeds=input[:1, :],start_image_or_video = input2[:1,:],start_at_unet_number = 2
+            images = trainer.sample(text_embeds=input0[:1, :],start_image_or_video = input2[:1,:],start_at_unet_number = 2
                                     ,stop_at_unet_number=3,batch_size = 1, return_pil_images = True,cond_scale=cond_scale) # returns List[Image]
             images[0].save(imagen_samples + '/' + str(seconds) + f'/sample-{i // 100}'+'-'+str(int(cond_scale))+'-'+'.png')
 
-        if not (i % save_model_every):
-            trainer.save(model_filename)
+        #if not (i % save_model_every):
+        #    trainer.save(model_filename)
 
     trainer.save(model_filename)
     with open('loss_list_2_temp.pickle', 'wb') as handle:
