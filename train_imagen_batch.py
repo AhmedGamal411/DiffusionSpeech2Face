@@ -263,7 +263,7 @@ def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_siz
 
         yhat = savgol_filter(loss_total, 1000, 3)
         plt.plot(np.arange(len(loss_total[1000::])) + 1000,yhat[1000::],'r')
-        plt.title("Training Loss without the first 1000 training samples")
+        plt.title("Training Loss")
         plt.xlabel("Training Sample (~x" + str(int(dask_chunk)) + ")")
         plt.ylabel("MSE Loss")
         
@@ -524,7 +524,7 @@ def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_siz
 
         yhat = savgol_filter(loss_total, 1000, 3)
         plt.plot(np.arange(len(loss_total[1000::])) + 1000,yhat[1000::],'r')
-        plt.title("Training Loss without the first 1000 training samples")
+        plt.title("Training Loss")
         plt.xlabel("Training Sample (~x" + str(int(dask_chunk)) + ")")
         plt.ylabel("MSE Loss")
         
