@@ -1,12 +1,16 @@
 import numpy as np
 from PIL import Image
 import torch
+from matplotlib import pyplot as plt
+from scipy.signal import savgol_filter
 
 
-def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_size,sample_every,save_model_every,image_size,unet_dim,timesteps,begin_with_image_size,unet1_image_size,imagen_samples,sample_probability):
+def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_size,sample_every,save_model_every,image_size,unet_dim,timesteps,begin_with_image_size,unet1_image_size,imagen_samples,sample_probability,dask_chunk):
     from torch.utils.data import TensorDataset, DataLoader
     import time
+    UNET = 1
     print("Training Unet No. 1")
+    
 
 
     input0 = torch.from_numpy(input0)
@@ -195,12 +199,94 @@ def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_siz
     with open('loss_list_1_temp.pickle', 'wb') as handle:
         pickle.dump(loss_list, handle)
 
+    if(UNET == 1):
+        with open('loss_list_1_temp.pickle', 'rb') as handle:
+            loss_list = pickle.load(handle)
+    else:
+        with open('loss_list_2_temp.pickle', 'rb') as handle:
+            loss_list = pickle.load(handle)
+    
+    if(UNET == 1):
+        my_file = Path(model_filename + 'loss_total_1.picke')
+        if my_file.is_file():
+            with open(model_filename + 'loss_total_1.picke', 'rb') as handle:
+                loss_total = pickle.load(handle)
+        else:
+            loss_total = []
+    else:
+        my_file = Path(model_filename + 'loss_total_2.picke')
+        if my_file.is_file():
+            with open(model_filename + 'loss_total_2.picke', 'rb') as handle:
+                loss_total = pickle.load(handle)
+        else:
+            loss_total = []
+    
+    #print(loss_list)
+    #print(loss_total)
+    loss_total.extend(loss_list)
+
+    if(UNET == 1):
+        with open(model_filename +'loss_total_1.picke', 'wb') as handle:
+            pickle.dump(loss_total, handle)
+    else:
+        with open(model_filename +'loss_total_2.picke', 'wb') as handle:
+            pickle.dump(loss_total, handle)
 
 
-def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_size,sample_every,save_model_every,image_size,unet_dim,timesteps,begin_with_image_size,unet1_image_size,imagen_samples,sample_probability):
+    fig = plt.figure()
+    plt.plot(loss_total)
+    plt.title("Training Loss")
+    plt.xlabel("Training Sample (~x" + str(int(dask_chunk)) + ")")
+    plt.ylabel("MSE Loss")
+    
+
+
+    if(os.path.isfile(model_filename + 'loss_1_plot.png')):
+        os.remove(model_filename + 'loss_1_plot.png')
+    if(UNET == 1):
+        if(os.path.isfile(model_filename + 'loss_1_plot.png')):
+            os.remove(model_filename + 'loss_1_plot.png')
+        fig.savefig(model_filename + 'loss_1_plot.png')
+    else:
+        if(os.path.isfile(model_filename + 'loss_2_plot.png')):
+            os.remove(model_filename + 'loss_2_plot.png')
+        fig.savefig(model_filename + 'loss_2_plot.png')
+    plt.close()
+
+    fig = plt.figure()
+    plt.plot(loss_list[1000::],'.')
+    yhat = savgol_filter(loss_list, 1000, 3)
+
+    plt.axvline(x=0,linestyle='--',color='green',label='100 inner epochs')
+    #plt.axvline(x=4842-1000,linestyle='--',color='purple',label='10 inner epochs')
+    plt.legend(bbox_to_anchor = (1.0, 1), loc = 'upper right')
+
+    plt.plot(yhat[1000::],'r')
+    plt.title("Training Loss without the first 1000 training samples")
+    plt.xlabel("Training Sample (~x" + str(int(dask_chunk)) + ")")
+    plt.ylabel("MSE Loss")
+    
+
+
+    if(os.path.isfile(model_filename + 'loss_zoomed_1_plot.png')):
+        os.remove(model_filename + 'loss_zoomed_1_plot.png')
+    if(UNET == 1):
+        if(os.path.isfile(model_filename + 'loss_zoomed_1_plot.png')):
+            os.remove(model_filename + 'loss_zoomed_1_plot.png')
+        fig.savefig(model_filename + 'loss_zoomed_1_plot.png')
+    else:
+        if(os.path.isfile(model_filename + 'loss_zoomed_2_plot.png')):
+            os.remove(model_filename + 'loss_zoomed_2_plot.png')
+        fig.savefig(model_filename + 'loss_zoomed_2_plot.png')
+    plt.close()
+
+
+
+def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_size,sample_every,save_model_every,image_size,unet_dim,timesteps,begin_with_image_size,unet1_image_size,imagen_samples,sample_probability,dask_chunk):
     from torch.utils.data import TensorDataset, DataLoader
 
     print("Training Unet No. 2")
+    UNET = 2
 
     
     input0 = torch.from_numpy(input0)
@@ -310,7 +396,7 @@ def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_siz
 
     trainer = ImagenTrainer(
         imagen = imagen,
-        split_valid_from_train = False # whether to split the validation dataset from the training
+        split_valid_from_traprocin = False # whether to split the validation dataset from the training
     ).cuda()
 
     # instantiate your dataloader, which returns the necessary inputs to the DDPM as tuple in the order of images, text embeddings, then text masks. in this case, only images is returned as it is unconditional training
@@ -368,3 +454,84 @@ def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_siz
     trainer.save(model_filename)
     with open('loss_list_2_temp.pickle', 'wb') as handle:
         pickle.dump(loss_list, handle)
+
+    if(UNET == 1):
+        with open('loss_list_1_temp.pickle', 'rb') as handle:
+            loss_list = pickle.load(handle)
+    else:
+        with open('loss_list_2_temp.pickle', 'rb') as handle:
+            loss_list = pickle.load(handle)
+    
+    if(UNET == 1):
+        my_file = Path(model_filename + 'loss_total_1.picke')
+        if my_file.is_file():
+            with open(model_filename + 'loss_total_1.picke', 'rb') as handle:
+                loss_total = pickle.load(handle)
+        else:
+            loss_total = []
+    else:
+        my_file = Path(model_filename + 'loss_total_2.picke')
+        if my_file.is_file():
+            with open(model_filename + 'loss_total_2.picke', 'rb') as handle:
+                loss_total = pickle.load(handle)
+        else:
+            loss_total = []
+    
+    #print(loss_list)
+    #print(loss_total)
+    loss_total.extend(loss_list)
+
+    if(UNET == 1):
+        with open(model_filename +'loss_total_1.picke', 'wb') as handle:
+            pickle.dump(loss_total, handle)
+    else:
+        with open(model_filename +'loss_total_2.picke', 'wb') as handle:
+            pickle.dump(loss_total, handle)
+
+
+    fig = plt.figure()
+    plt.plot(loss_total)
+    plt.title("Training Loss")
+    plt.xlabel("Training Sample (~x" + str(int(dask_chunk)) + ")")
+    plt.ylabel("MSE Loss")
+    
+
+
+    if(os.path.isfile(model_filename + 'loss_1_plot.png')):
+        os.remove(model_filename + 'loss_1_plot.png')
+    if(UNET == 1):
+        if(os.path.isfile(model_filename + 'loss_1_plot.png')):
+            os.remove(model_filename + 'loss_1_plot.png')
+        fig.savefig(model_filename + 'loss_1_plot.png')
+    else:
+        if(os.path.isfile(model_filename + 'loss_2_plot.png')):
+            os.remove(model_filename + 'loss_2_plot.png')
+        fig.savefig(model_filename + 'loss_2_plot.png')
+    plt.close()
+
+    fig = plt.figure()
+    plt.plot(loss_list[1000::],'.')
+
+    #plt.axvline(x=0,linestyle='--',color='green',label='100 inner epochs')
+    #plt.axvline(x=4842-1000,linestyle='--',color='purple',label='10 inner epochs')
+    #plt.legend(bbox_to_anchor = (1.0, 1), loc = 'upper right')
+
+    yhat = savgol_filter(loss_list, 1000, 3)
+    plt.plot(yhat[1000::],'r')
+    plt.title("Training Loss without the first 1000 training samples")
+    plt.xlabel("Training Sample (~x" + str(int(dask_chunk)) + ")")
+    plt.ylabel("MSE Loss")
+    
+
+
+    if(os.path.isfile(model_filename + 'loss_zoomed_1_plot.png')):
+        os.remove(model_filename + 'loss_zoomed_1_plot.png')
+    if(UNET == 1):
+        if(os.path.isfile(model_filename + 'loss_zoomed_1_plot.png')):
+            os.remove(model_filename + 'loss_zoomed_1_plot.png')
+        fig.savefig(model_filename + 'loss_zoomed_1_plot.png')
+    else:
+        if(os.path.isfile(model_filename + 'loss_zoomed_2_plot.png')):
+            os.remove(model_filename + 'loss_zoomed_2_plot.png')
+        fig.savefig(model_filename + 'loss_zoomed_2_plot.png')
+    plt.close()
