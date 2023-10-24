@@ -255,14 +255,14 @@ def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_siz
 
     try:
         fig = plt.figure()
-        plt.plot(loss_total[1000::],'.')
+        plt.plot(np.arange(len(loss_total[1000::])) + 1000,loss_total[1000::],'.')
+
+        #plt.axvline(x=1000,linestyle='--',color='green',label='100 inner epochs')
+        #plt.axvline(x=4842,linestyle='--',color='purple',label='10 inner epochs')
+        #plt.legend(bbox_to_anchor = (1.0, 1), loc = 'upper right')
+
         yhat = savgol_filter(loss_total, 1000, 3)
-
-        plt.axvline(x=0,linestyle='--',color='green',label='100 inner epochs')
-        #plt.axvline(x=4842-1000,linestyle='--',color='purple',label='10 inner epochs')
-        plt.legend(bbox_to_anchor = (1.0, 1), loc = 'upper right')
-
-        plt.plot(yhat[1000::],'r')
+        plt.plot(np.arange(len(loss_total[1000::])) + 1000,yhat[1000::],'r')
         plt.title("Training Loss without the first 1000 training samples")
         plt.xlabel("Training Sample (~x" + str(int(dask_chunk)) + ")")
         plt.ylabel("MSE Loss")
@@ -516,14 +516,14 @@ def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_siz
     try:
 
         fig = plt.figure()
-        plt.plot(loss_total[1000::],'.')
+        plt.plot(np.arange(len(loss_total[1000::])) + 1000,loss_total[1000::],'.')
 
-        #plt.axvline(x=0,linestyle='--',color='green',label='100 inner epochs')
-        #plt.axvline(x=4842-1000,linestyle='--',color='purple',label='10 inner epochs')
+        #plt.axvline(x=1000,linestyle='--',color='green',label='100 inner epochs')
+        #plt.axvline(x=4842,linestyle='--',color='purple',label='10 inner epochs')
         #plt.legend(bbox_to_anchor = (1.0, 1), loc = 'upper right')
 
         yhat = savgol_filter(loss_total, 1000, 3)
-        plt.plot(yhat[1000::],'r')
+        plt.plot(np.arange(len(loss_total[1000::])) + 1000,yhat[1000::],'r')
         plt.title("Training Loss without the first 1000 training samples")
         plt.xlabel("Training Sample (~x" + str(int(dask_chunk)) + ")")
         plt.ylabel("MSE Loss")
