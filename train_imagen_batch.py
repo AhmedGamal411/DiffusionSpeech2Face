@@ -253,32 +253,35 @@ def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_siz
         fig.savefig(model_filename + 'loss_2_plot.png')
     plt.close()
 
-    fig = plt.figure()
-    plt.plot(loss_list[1000::],'.')
-    yhat = savgol_filter(loss_list, 1000, 3)
+    try:
+        fig = plt.figure()
+        plt.plot(loss_total[1000::],'.')
+        yhat = savgol_filter(loss_total, 1000, 3)
 
-    plt.axvline(x=0,linestyle='--',color='green',label='100 inner epochs')
-    #plt.axvline(x=4842-1000,linestyle='--',color='purple',label='10 inner epochs')
-    plt.legend(bbox_to_anchor = (1.0, 1), loc = 'upper right')
+        plt.axvline(x=0,linestyle='--',color='green',label='100 inner epochs')
+        #plt.axvline(x=4842-1000,linestyle='--',color='purple',label='10 inner epochs')
+        plt.legend(bbox_to_anchor = (1.0, 1), loc = 'upper right')
 
-    plt.plot(yhat[1000::],'r')
-    plt.title("Training Loss without the first 1000 training samples")
-    plt.xlabel("Training Sample (~x" + str(int(dask_chunk)) + ")")
-    plt.ylabel("MSE Loss")
-    
+        plt.plot(yhat[1000::],'r')
+        plt.title("Training Loss without the first 1000 training samples")
+        plt.xlabel("Training Sample (~x" + str(int(dask_chunk)) + ")")
+        plt.ylabel("MSE Loss")
+        
 
 
-    if(os.path.isfile(model_filename + 'loss_zoomed_1_plot.png')):
-        os.remove(model_filename + 'loss_zoomed_1_plot.png')
-    if(UNET == 1):
         if(os.path.isfile(model_filename + 'loss_zoomed_1_plot.png')):
             os.remove(model_filename + 'loss_zoomed_1_plot.png')
-        fig.savefig(model_filename + 'loss_zoomed_1_plot.png')
-    else:
-        if(os.path.isfile(model_filename + 'loss_zoomed_2_plot.png')):
-            os.remove(model_filename + 'loss_zoomed_2_plot.png')
-        fig.savefig(model_filename + 'loss_zoomed_2_plot.png')
-    plt.close()
+        if(UNET == 1):
+            if(os.path.isfile(model_filename + 'loss_zoomed_1_plot.png')):
+                os.remove(model_filename + 'loss_zoomed_1_plot.png')
+            fig.savefig(model_filename + 'loss_zoomed_1_plot.png')
+        else:
+            if(os.path.isfile(model_filename + 'loss_zoomed_2_plot.png')):
+                os.remove(model_filename + 'loss_zoomed_2_plot.png')
+            fig.savefig(model_filename + 'loss_zoomed_2_plot.png')
+        plt.close()
+    except:
+        pass
 
 
 
@@ -509,29 +512,34 @@ def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_siz
         fig.savefig(model_filename + 'loss_2_plot.png')
     plt.close()
 
-    fig = plt.figure()
-    plt.plot(loss_list[1000::],'.')
 
-    #plt.axvline(x=0,linestyle='--',color='green',label='100 inner epochs')
-    #plt.axvline(x=4842-1000,linestyle='--',color='purple',label='10 inner epochs')
-    #plt.legend(bbox_to_anchor = (1.0, 1), loc = 'upper right')
+    try:
 
-    yhat = savgol_filter(loss_list, 1000, 3)
-    plt.plot(yhat[1000::],'r')
-    plt.title("Training Loss without the first 1000 training samples")
-    plt.xlabel("Training Sample (~x" + str(int(dask_chunk)) + ")")
-    plt.ylabel("MSE Loss")
-    
+        fig = plt.figure()
+        plt.plot(loss_total[1000::],'.')
+
+        #plt.axvline(x=0,linestyle='--',color='green',label='100 inner epochs')
+        #plt.axvline(x=4842-1000,linestyle='--',color='purple',label='10 inner epochs')
+        #plt.legend(bbox_to_anchor = (1.0, 1), loc = 'upper right')
+
+        yhat = savgol_filter(loss_total, 1000, 3)
+        plt.plot(yhat[1000::],'r')
+        plt.title("Training Loss without the first 1000 training samples")
+        plt.xlabel("Training Sample (~x" + str(int(dask_chunk)) + ")")
+        plt.ylabel("MSE Loss")
+        
 
 
-    if(os.path.isfile(model_filename + 'loss_zoomed_1_plot.png')):
-        os.remove(model_filename + 'loss_zoomed_1_plot.png')
-    if(UNET == 1):
         if(os.path.isfile(model_filename + 'loss_zoomed_1_plot.png')):
             os.remove(model_filename + 'loss_zoomed_1_plot.png')
-        fig.savefig(model_filename + 'loss_zoomed_1_plot.png')
-    else:
-        if(os.path.isfile(model_filename + 'loss_zoomed_2_plot.png')):
-            os.remove(model_filename + 'loss_zoomed_2_plot.png')
-        fig.savefig(model_filename + 'loss_zoomed_2_plot.png')
-    plt.close()
+        if(UNET == 1):
+            if(os.path.isfile(model_filename + 'loss_zoomed_1_plot.png')):
+                os.remove(model_filename + 'loss_zoomed_1_plot.png')
+            fig.savefig(model_filename + 'loss_zoomed_1_plot.png')
+        else:
+            if(os.path.isfile(model_filename + 'loss_zoomed_2_plot.png')):
+                os.remove(model_filename + 'loss_zoomed_2_plot.png')
+            fig.savefig(model_filename + 'loss_zoomed_2_plot.png')
+        plt.close()
+    except:
+        pass
