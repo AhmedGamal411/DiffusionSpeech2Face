@@ -258,8 +258,8 @@ def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_siz
         fig = plt.figure()
         plt.plot(np.arange(len(loss_total[1000::])) + 1000,loss_total[1000::],'.')
 
-        plt.axvline(x=1000,linestyle='--',color='green',label='1000 inner epochs - 100000 unique sample')
-        plt.axvline(x=17000,linestyle='--',color='purple',label='100 inner epochs')
+        plt.axvline(x=1000,linestyle='--',color='green',label='1000 inner epochs - 100000 unique samples')
+        plt.axvline(x=17000,linestyle='--',color='purple',label='100 inner epochs - 900000 unique samples' )
         plt.legend(bbox_to_anchor = (1.0, 1), loc = 'upper right')
 
         yhat = savgol_filter(loss_total, 1000, 3)
@@ -285,7 +285,7 @@ def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_siz
 
         fig = plt.figure()
         smoothed = yhat[1000::]
-        smoothed = savgol_filter(smoothed, 10000, 2)
+        smoothed = savgol_filter(smoothed, 500, 1)
         price_series = pd.Series(smoothed)
         price_series = price_series.pct_change().to_numpy()
         plt.plot(price_series)
@@ -573,7 +573,7 @@ def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_siz
 
         fig = plt.figure()
         smoothed = yhat[1000::]
-        smoothed = savgol_filter(smoothed, 10000, 2)
+        smoothed = savgol_filter(smoothed, 500, 1)
         price_series = pd.Series(smoothed)
         price_series = price_series.pct_change().to_numpy()
         plt.plot(price_series)
