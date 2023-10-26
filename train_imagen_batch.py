@@ -3,6 +3,7 @@ from PIL import Image
 import torch
 from matplotlib import pyplot as plt
 from scipy.signal import savgol_filter
+import pandas as pd
 
 
 def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_size,sample_every,save_model_every,image_size,unet_dim,timesteps,begin_with_image_size,unet1_image_size,imagen_samples,sample_probability,dask_chunk):
@@ -79,7 +80,7 @@ def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_siz
     )
 
     unet2 = Unet(
-        dim = unet_dim,
+        dim = 128,
         cond_dim = 512,
         dim_mults = (1, 2, 4, 8),
         num_resnet_blocks = (2, 4, 8, 8),
@@ -257,9 +258,9 @@ def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_siz
         fig = plt.figure()
         plt.plot(np.arange(len(loss_total[1000::])) + 1000,loss_total[1000::],'.')
 
-        #plt.axvline(x=1000,linestyle='--',color='green',label='100 inner epochs')
-        #plt.axvline(x=4842,linestyle='--',color='purple',label='10 inner epochs')
-        #plt.legend(bbox_to_anchor = (1.0, 1), loc = 'upper right')
+        plt.axvline(x=1000,linestyle='--',color='green',label='1000 inner epochs - 100000 unique sample')
+        plt.axvline(x=17000,linestyle='--',color='purple',label='100 inner epochs')
+        plt.legend(bbox_to_anchor = (1.0, 1), loc = 'upper right')
 
         yhat = savgol_filter(loss_total, 1000, 3)
         plt.plot(np.arange(len(loss_total[1000::])) + 1000,yhat[1000::],'r')
@@ -279,6 +280,33 @@ def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_siz
             if(os.path.isfile(model_filename + 'loss_zoomed_2_plot.png')):
                 os.remove(model_filename + 'loss_zoomed_2_plot.png')
             fig.savefig(model_filename + 'loss_zoomed_2_plot.png')
+        plt.close()
+
+
+        fig = plt.figure()
+        smoothed = yhat[1000::]
+        smoothed = savgol_filter(smoothed, 10000, 2)
+        price_series = pd.Series(smoothed)
+        price_series = price_series.pct_change().to_numpy()
+        plt.plot(price_series)
+        plt.axhline(linestyle='--',color='red')
+        plt.axvline(x=1000,linestyle='--',color='green',label='100 inner epochs')
+        plt.axvline(x=17000,linestyle='--',color='purple',label='1000 inner epochs')
+        plt.legend(loc = 'lower center')
+        plt.title("Smoothed Rate of Change of Training Loss")
+        plt.xlabel("Training Sample (~x" + str(int(dask_chunk)) + ")")
+        plt.ylabel("Rate of Change")
+        #plt.show()
+        if(os.path.isfile(model_filename + 'loss_roc_1_plot.png')):
+            os.remove(model_filename + 'loss_roc_1_plot.png')
+        if(UNET == 1):
+            if(os.path.isfile(model_filename + 'loss_roc_1_plot.png')):
+                os.remove(model_filename + 'loss_roc_1_plot.png')
+            fig.savefig(model_filename + 'loss_roc_1_plot.png')
+        else:
+            if(os.path.isfile(model_filename + 'loss_roc_2_plot.png')):
+                os.remove(model_filename + 'loss_roc_2_plot.png')
+            fig.savefig(model_filename + 'loss_roc_2_plot.png')
         plt.close()
     except:
         pass
@@ -347,7 +375,7 @@ def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_siz
     )
 
     unet2 = Unet(
-        dim = unet_dim,
+        dim = 128,
         cond_dim = 512,
         dim_mults = (1, 2, 4, 8),
         num_resnet_blocks = (2, 4, 8, 8),
@@ -399,7 +427,7 @@ def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_siz
 
     trainer = ImagenTrainer(
         imagen = imagen,
-        split_valid_from_traprocin = False # whether to split the validation dataset from the training
+        split_valid_from_train = False # whether to split the validation dataset from the training
     ).cuda()
 
     # instantiate your dataloader, which returns the necessary inputs to the DDPM as tuple in the order of images, text embeddings, then text masks. in this case, only images is returned as it is unconditional training
@@ -540,6 +568,33 @@ def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_siz
             if(os.path.isfile(model_filename + 'loss_zoomed_2_plot.png')):
                 os.remove(model_filename + 'loss_zoomed_2_plot.png')
             fig.savefig(model_filename + 'loss_zoomed_2_plot.png')
+        plt.close()
+
+
+        fig = plt.figure()
+        smoothed = yhat[1000::]
+        smoothed = savgol_filter(smoothed, 10000, 2)
+        price_series = pd.Series(smoothed)
+        price_series = price_series.pct_change().to_numpy()
+        plt.plot(price_series)
+        plt.axhline(linestyle='--',color='red')
+        plt.axvline(x=1000,linestyle='--',color='green',label='100 inner epochs')
+        plt.axvline(x=17000,linestyle='--',color='purple',label='1000 inner epochs')
+        plt.legend(loc = 'lower center')
+        plt.title("Smoothed Rate of Change of Training Loss")
+        plt.xlabel("Training Sample (~x" + str(int(dask_chunk)) + ")")
+        plt.ylabel("Rate of Change")
+        #plt.show()
+        if(os.path.isfile(model_filename + 'loss_roc_2_plot.png')):
+            os.remove(model_filename + 'loss_roc_2_plot.png')
+        if(UNET == 1):
+            if(os.path.isfile(model_filename + 'loss_roc_1_plot.png')):
+                os.remove(model_filename + 'loss_roc_1_plot.png')
+            fig.savefig(model_filename + 'loss_roc_1_plot.png')
+        else:
+            if(os.path.isfile(model_filename + 'loss_roc_2_plot.png')):
+                os.remove(model_filename + 'loss_roc_2_plot.png')
+            fig.savefig(model_filename + 'loss_roc_2_plot.png')
         plt.close()
     except:
         pass
