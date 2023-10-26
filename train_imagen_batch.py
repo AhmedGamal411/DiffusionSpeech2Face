@@ -260,6 +260,7 @@ def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_siz
 
         plt.axvline(x=1000,linestyle='--',color='green',label='1000 inner epochs - 100000 unique samples')
         plt.axvline(x=17000,linestyle='--',color='purple',label='100 inner epochs - 900000 unique samples' )
+        plt.axvline(x=23100,linestyle='-.',color='black',label='1st epoch')
         plt.legend(bbox_to_anchor = (1.0, 1), loc = 'upper right')
 
         yhat = savgol_filter(loss_total, 1000, 3)
@@ -292,6 +293,7 @@ def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_siz
         plt.axhline(linestyle='--',color='red')
         plt.axvline(x=1000,linestyle='--',color='green',label='100 inner epochs')
         plt.axvline(x=17000,linestyle='--',color='purple',label='1000 inner epochs')
+        plt.axvline(x=23100,linestyle='-.',color='black',label='1st epoch')
         plt.legend(loc = 'lower center')
         plt.title("Smoothed Rate of Change of Training Loss")
         plt.xlabel("Training Sample (~x" + str(int(dask_chunk)) + ")")
