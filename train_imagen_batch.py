@@ -6,7 +6,7 @@ from scipy.signal import savgol_filter
 import pandas as pd
 
 
-def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_size,sample_every,save_model_every,image_size,unet_dim,timesteps,begin_with_image_size,unet1_image_size,imagen_samples,sample_probability,dask_chunk):
+def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_size,sample_every,save_model_every,image_size,unet1_dim,unet2_dim,timesteps,begin_with_image_size,unet1_image_size,imagen_samples,sample_probability,dask_chunk):
     from torch.utils.data import TensorDataset, DataLoader
     import time
     UNET = 1
@@ -71,7 +71,7 @@ def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_siz
     unet0 = NullUnet()  # add a placeholder "null" unet for the base unet
 
     unet1 = Unet(
-        dim = unet_dim,
+        dim = unet1_dim,
         cond_dim = 512,
         dim_mults = (1, 2, 4, 8),
         num_resnet_blocks = 3,
@@ -80,7 +80,7 @@ def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_siz
     )
 
     unet2 = Unet(
-        dim = 128,
+        dim = unet2_dim,
         cond_dim = 512,
         dim_mults = (1, 2, 4, 8),
         num_resnet_blocks = (2, 4, 8, 8),
@@ -89,7 +89,7 @@ def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_siz
     )
 
     #unet1 = Unet(
-    #    dim = unet_dim,
+    
     #    cond_dim = 512,
     #    dim_mults = (1, 2, 4, 8),
     #    num_resnet_blocks = 3,
@@ -98,7 +98,7 @@ def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_siz
     #)loss_list.append(loss)
 
     #unet2 = Unet(
-    #    dim = unet_dim,
+    
     #    cond_dim = 512,
     #    dim_mults = (1, 2, 4, 8),
     #    num_resnet_blocks = (2, 4, 8, 8),
@@ -187,7 +187,6 @@ def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_siz
             
             images = trainer.sample(text_embeds=input0[:1, :],start_image_or_video = input2[:1,:],start_at_unet_number = 2
                                     ,stop_at_unet_number=2,batch_size = 1, return_pil_images = True,cond_scale=cond_scale) # returns List[Image]
-
             images[0].save(imagen_samples + '/' + str(seconds) + f'/sample-{i // 100}'+'-'+str(int(cond_scale))+'-'+'.png')
 
         #if not (i % save_model_every):
@@ -315,7 +314,7 @@ def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_siz
 
 
 
-def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_size,sample_every,save_model_every,image_size,unet_dim,timesteps,begin_with_image_size,unet1_image_size,imagen_samples,sample_probability,dask_chunk):
+def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_size,sample_every,save_model_every,image_size,unet1_dim,unet2_dim,timesteps,begin_with_image_size,unet1_image_size,imagen_samples,sample_probability,dask_chunk):
     from torch.utils.data import TensorDataset, DataLoader
 
     print("Training Unet No. 2")
@@ -368,7 +367,7 @@ def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_siz
     unet0 = NullUnet()  # add a placeholder "null" unet for the base unet
 
     unet1 = Unet(
-        dim = unet_dim,
+        dim = unet1_dim,
         cond_dim = 512,
         dim_mults = (1, 2, 4, 8),
         num_resnet_blocks = 3,
@@ -377,7 +376,7 @@ def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_siz
     )
 
     unet2 = Unet(
-        dim = 128,
+        dim = unet2_dim,
         cond_dim = 512,
         dim_mults = (1, 2, 4, 8),
         num_resnet_blocks = (2, 4, 8, 8),
@@ -386,7 +385,7 @@ def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_siz
     )
 
     #unet1 = Unet(
-    #    dim = unet_dim,
+    
     #    cond_dim = 512,
     #    dim_mults = (1, 2, 4, 8),
     #    num_resnet_blocks = 3,
@@ -395,7 +394,7 @@ def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_siz
     #)loss_list.append(loss)
 
     #unet2 = Unet(
-    #    dim = unet_dim,
+    
     #    cond_dim = 512,
     #    dim_mults = (1, 2, 4, 8),
     #    num_resnet_blocks = (2, 4, 8, 8),

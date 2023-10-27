@@ -14,22 +14,10 @@ from pyAudioAnalysis import ShortTermFeatures
 import librosa
 
 
-def extract_audio_features(q,path_var_len_audio,output_folder):
 
+def extract_audio_features_per_row(row):
 
-    # Loading configurations
-    configParser = configparser.RawConfigParser()   
-    configFilePath = r'configuration.txt'
-    configParser.read(configFilePath)
-
-    insert_amd_env_vars =  int(configParser.get('COMMON', 'insert_amd_env_vars'))
-    HSA_OVERRIDE_GFX_VERSION =  configParser.get('COMMON', 'HSA_OVERRIDE_GFX_VERSION')
-    ROCM_PATH =  configParser.get('COMMON', 'ROCM_PATH')
-
-    if(insert_amd_env_vars != 0):
-        os.environ["HSA_OVERRIDE_GFX_VERSION"] = HSA_OVERRIDE_GFX_VERSION
-        os.environ["ROCM_PATH"] = ROCM_PATH
-
+    path_var_len_audio = row['path_var_len_audio']
 
     [Fs, x] = audioBasicIO.read_audio_file(path_var_len_audio)
     F, f_names = ShortTermFeatures.feature_extraction(x, Fs, int(0.5*Fs), int(0.3*Fs))
@@ -47,8 +35,31 @@ def extract_audio_features(q,path_var_len_audio,output_folder):
     # 190 * 128 (note that this is sequenctial 190 timesframes, 128 features)
 
     embeddingsPickle = pickle.dumps(emb)
+
+    return embeddingsPickle
+
+
+def extract_audio_features(dataGotten,output_folder):
+
+
+    # Loading configurations
+    configParser = configparser.RawConfigParser()   
+    configFilePath = r'configuration.txt'
+    configParser.read(configFilePath)
+
+    insert_amd_env_vars =  int(configParser.get('COMMON', 'insert_amd_env_vars'))
+    HSA_OVERRIDE_GFX_VERSION =  configParser.get('COMMON', 'HSA_OVERRIDE_GFX_VERSION')
+    ROCM_PATH =  configParser.get('COMMON', 'ROCM_PATH')
+
+    if(insert_amd_env_vars != 0):
+        os.environ["HSA_OVERRIDE_GFX_VERSION"] = HSA_OVERRIDE_GFX_VERSION
+        os.environ["ROCM_PATH"] = ROCM_PATH
+
     
+    dataGotten['AUDIO_FEATURES'] = dataGotten.apply(extract_audio_features_per_row,args=(),axis=1)
+
+    with open(output_folder + '/' + 'dataGotten4.pickle', 'wb') as handle:
+        pickle.dump(dataGotten, handle)
 
 
-    with open(output_folder + '/' + 'audio_features.pickle', 'wb') as handle:
-        pickle.dump(embeddingsPickle, handle)
+

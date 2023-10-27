@@ -28,8 +28,8 @@ import threading
 import time
 from multiprocessing import Process
 from threading import Thread
-
-
+import pandas as pd
+from math import nan
 
 
 def resizeImage(im, size):
@@ -46,10 +46,18 @@ def resizeImage(im, size):
     image_n = image.resize((x_n,y_n), Image.ANTIALIAS)       
     return image_n
 
+def make_square(im, min_size, fill_color=(0, 0, 0, 0)):
+    x, y = im.size
+    size = max(min_size, x, y)
+    new_im = Image.new('RGBA', (size, size), fill_color)
+    new_im.paste(im, (int((size - x) / 2), int((size - y) / 2)))
+    return new_im
 
 
-def extract_face(q,absPathVideo,resizeImageTo,fddfb,output_folder,
-                           efvr,efhr, auto_zoom = True):
+
+
+def extract_face(df_data,resizeImageTo,fddfb,output_folder,
+                           efvr,efhr, auto_zoom = True,start_at_frame = -1):
 
 
     # Loading configurations
@@ -66,6 +74,43 @@ def extract_face(q,absPathVideo,resizeImageTo,fddfb,output_folder,
         os.environ["HSA_OVERRIDE_GFX_VERSION"] = HSA_OVERRIDE_GFX_VERSION
         os.environ["ROCM_PATH"] = ROCM_PATH
 
+    df_data_sub= df_data.apply(extract_face_fn,args=(
+        start_at_frame,output_folder,resizeImageTo,fddfb,efvr,efhr,auto_zoom
+    ),axis=1)
+
+    df_data['gender'] = df_data_sub[0]
+    df_data['ethnicity'] = df_data_sub[1]
+    df_data['age'] = df_data_sub[2]
+    df_data['VGG'] = df_data_sub[3]
+
+    #print(df_data)
+
+    df_data = df_data[df_data['gender'].notna()]
+    df_data = df_data[df_data['ethnicity'].notna()]
+    df_data = df_data[df_data['age'].notna()]
+    df_data = df_data[df_data['VGG'].notna()]
+
+    with open(output_folder + '/' + 'df_data1.pickle', 'wb') as handle:
+        pickle.dump(df_data, handle)
+
+def extract_face_fn(row,start_at_frame,output_folder,resizeImageTo,fddfb,efvr,efhr,auto_zoom):
+    vidcap = cv2.VideoCapture(row['absPathVideo'])
+    framesNo = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT))
+    if(start_at_frame < 0):
+        frame_number = random.randint(1, framesNo - 1)
+    else:
+        frame_number = start_at_frame
+    frameNo=1
+    
+    absPathFrame = output_folder + "/" + str(row['index']) + "frame.png"
+
+    vidcap.set(cv2.CAP_PROP_POS_FRAMES, frame_number-1)
+    success,image = vidcap.read()
+    count = 1
+    cv2.imwrite(absPathFrame, image)     # save frame as PNG file
+
+    vidcap.release()
+
     backends = [
         'opencv', 
         'ssd', 
@@ -75,30 +120,25 @@ def extract_face(q,absPathVideo,resizeImageTo,fddfb,output_folder,
         'mediapipe'
     ]
 
-    vidcap = cv2.VideoCapture(absPathVideo)
-    framesNo = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT))
-    frame_number = random.randint(1, framesNo - 1)
-    frameNo=1
     
-    absPathFrame = output_folder + "/" + "frame.png"
-
-    vidcap.set(cv2.CAP_PROP_POS_FRAMES, frame_number-1)
-    success,image = vidcap.read()
-    count = 1
-    cv2.imwrite(absPathFrame, image)     # save frame as PNG file
-
-    vidcap.release()
 
 
-    face_objs = DeepFace.extract_faces(img_path = absPathFrame, 
-            target_size = (resizeImageTo, resizeImageTo),
-        detector_backend = backends[fddfb]
-    )
+    try:
+        face_objs = DeepFace.extract_faces(img_path = absPathFrame, 
+                target_size = (resizeImageTo, resizeImageTo),
+            detector_backend = backends[fddfb]
+        )
+    except:
+        os.remove(absPathFrame)
+        s = pd.Series([nan,nan,nan,nan])
+        return s
+    
+
 
     if(len(face_objs) == 0):
         os.remove(absPathFrame)
-        q.put('Error')
-        return
+        s = pd.Series([nan,nan,nan,nan])
+        return s
     
     # Gets biggest face in image (because images can have multiple faces)
     facial_area = None
@@ -132,27 +172,35 @@ def extract_face(q,absPathVideo,resizeImageTo,fddfb,output_folder,
                     crop_img_start_col :crop_img_end_col]
     
     crop_img = resizeImage(crop_img,resizeImageTo)
+    crop_img = make_square(crop_img,resizeImageTo)
 
     if(auto_zoom):
+
         w_s = resizeImageTo / (1+2 * 0.4)
         h_s = resizeImageTo / (1+2 * 0.4)
 
-        crop_img = crop_img.crop((0.2*w_s, 0.0*h_s, 1.6*w_s, 1.4*h_s))
-
+        #print(image.size)
+        crop_img = crop_img.crop((0.2*w_s,0.0*h_s,1.6*w_s,1.4*h_s))
         crop_img = crop_img.resize((resizeImageTo,resizeImageTo))
 
 
 
-    absPathFace = output_folder + "/" + "face.png"
+    #absPathFace = output_folder + "/" +str(index)+ "face.png"
 
     
-    crop_img.save(absPathFace)
+    crop_img.save(row['absPathFace'])
 
-    face_analysis_objs = DeepFace.analyze(img_path = absPathFace, 
-          actions = ['age', 'gender', 'race'],enforce_detection = False)
+    try:
+        face_analysis_objs = DeepFace.analyze(img_path = row['absPathFace'], 
+            actions = ['age', 'gender', 'race'],enforce_detection=False)
+        
+        embedding_objs = DeepFace.represent(row['absPathFace'],enforce_detection=False)
+        embedding = embedding_objs[0]["embedding"]
+    except:
+        os.remove(absPathFrame)
+        s = pd.Series([nan,nan,nan,nan])
+        return s
     
-    embedding_objs = DeepFace.represent(absPathFace,enforce_detection = False)
-    embedding = embedding_objs[0]["embedding"]
     
     if(len(face_analysis_objs) == 1):
         gender = face_analysis_objs[0]['dominant_gender']
@@ -160,21 +208,14 @@ def extract_face(q,absPathVideo,resizeImageTo,fddfb,output_folder,
         age = face_analysis_objs[0]['age']
     
     else:
-        gender = 'Error'
-        ethnicity = 'Error'
-        age = 'Error'
+        os.remove(absPathFrame)
+        s = pd.Series([nan,nan,nan,nan])
+        return s
 
-    q.put(gender)
-    q.put(ethnicity)
-    q.put(age)
 
     os.remove(absPathFrame)
-
-    #embeddingsPickle = pickle.dumps(embedding)
-    #print(embedding)
-
-    with open(output_folder + '/' + 'vgg.pickle', 'wb') as handle:
-        pickle.dump(embedding, handle)
+    s = pd.Series([gender,ethnicity,age,embedding])
+    return s
 
 
 def extract_face_rep(q,face_file,image_size,output_folder):

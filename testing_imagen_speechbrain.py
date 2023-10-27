@@ -5,10 +5,11 @@ import pickle
 
 import os
 import configparser
+import pandas as pd
+import torch
 
-
-def extract_speechbrain_embeddings(q,path_var_len_audio):
-
+def extract_speechbrain_embeddings(dataGotten,output_folder):
+    
     # Loading configurations
     configParser = configparser.RawConfigParser()   
     configFilePath = r'configuration.txt'
@@ -25,12 +26,26 @@ def extract_speechbrain_embeddings(q,path_var_len_audio):
 
     classifier = EncoderClassifier.from_hparams(source="speechbrain/spkrec-ecapa-voxceleb")
     classifierLang = EncoderClassifier.from_hparams(source="speechbrain/lang-id-commonlanguage_ecapa", savedir="pretrained_models/lang-id-commonlanguage_ecapa")
-    # Extract speaker embeddings
-    signal, fs = torchaudio.load(path_var_len_audio)
-    embeddings = classifier.encode_batch(signal)
-    embeddingsPickle = pickle.dumps(embeddings.cpu().detach().numpy())
-    q.put(embeddingsPickle)
 
-    out_prob, score, index, text_lab = classifierLang.classify_file(path_var_len_audio)
-    lang = text_lab[0]
-    q.put(lang)
+    
+
+    def torch_audio_load(row):
+        path_var_len_audio = row['path_var_len_audio']
+        signal, fs = torchaudio.load(path_var_len_audio)
+        embeddings = classifier.encode_batch(signal)
+        embeddingsPickle = pickle.dumps(embeddings.cpu().detach().numpy())
+        return embeddingsPickle
+    
+        
+    
+    dataGotten['SPEAKER_EMB'] = dataGotten.apply(torch_audio_load,args=(),axis=1)
+
+    
+    def get_lang(row):
+        out_prob, score, index, text_lab = classifierLang.classify_file(row['path_var_len_audio'])
+        lang = text_lab[0]
+        return lang
+    dataGotten['caption_l'] = dataGotten.apply(get_lang,args=(),axis=1)
+
+    with open(output_folder + '/' + 'df_data2.pickle', 'wb') as handle:
+        pickle.dump(dataGotten, handle)

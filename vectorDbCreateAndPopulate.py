@@ -14,6 +14,7 @@ configFilePath = r'configuration.txt'
 configParser.read(configFilePath)
 
 datasetPathVideo =  configParser.get('COMMON', 'test_datasetPathVideo')
+scan_all_videos_for_eval =  bool(int(configParser.get('evaluate_imagen', 'scan_all_videos_for_eval')))
 datasetPathDatabase =  configParser.get('COMMON', 'test_datasetPathDatabase') + '/dataset.db'
 
 
@@ -28,18 +29,24 @@ except:
 
 
 files_to_insert = []
+root_files = []
 
 
-for root, dirs, files in os.walk(datasetPathVideo):
+for root, dirs, files in sorted(os.walk(datasetPathVideo)):
     #tasks = [insertIntoDb(file,root) for file in files]
     # TODO split into chunks of say 4 files
     #await asyncio.wait(tasks)
     #await asyncio.gather(*tasks)
+    
     for file in files:
-        files_to_insert.append(root +'/'+ file)
-        print(root + file)
+        if(not(str(os.path.dirname(root)) in root_files) or scan_all_videos_for_eval):
+          files_to_insert.append(root +'/'+ file)
+          print(root +'/'+ file)
+          root_files.append(str(os.path.dirname(root)))
+    
 
-
+for root_file in root_files:
+  print(root_file)
 
 import pandas as pd
 import numpy as np

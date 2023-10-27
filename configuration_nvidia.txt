@@ -11,12 +11,14 @@ resizeImageTo = 128
 begin_with_image_size = 8
 audio_embs_options = wav2vec or openl3
 audio_embs = pyannoteTitaNet
-unet_dim = 192
+unet1_dim = 192
+unet2_dim = 128
 unet1_image_size = 32
 insert_amd_env_vars = 0
 HSA_OVERRIDE_GFX_VERSION = 10.3.0
 ROCM_PATH = /opt/rocm
 timesteps = 1000
+
 
 [dbCreateAndPopulate]
 recreateDb=0
@@ -142,6 +144,8 @@ skip_ethnicity = 0
 skip_language_spoken = 0
 
 [evaluate_imagen]
+scan_all_videos_for_eval=1
+face_recognition_on_unique_users_only=0
 test_datasetpathfaces = /media/gamal/Passport/Datasets/VoxCeleb2TestMin/Voxceleb2TestFaces
 test_datasetpathgeneratedfaces = /media/gamal/Passport/Datasets/VoxCeleb2TestMin/Voxceleb2TestGeneratedFaces
 test_datasetpathfeatures = /media/gamal/Passport/Datasets/VoxCeleb2TestMin/Voxceleb2TestFeatures
