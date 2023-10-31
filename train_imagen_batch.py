@@ -42,12 +42,12 @@ def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_siz
         from imagen_pytorch import Unet, Imagen, ImagenTrainer
         from imagen_pytorch.data import Dataset
         from imagen_pytorch.t5 import t5_encode_text
-        t5_encode_text(texts="Hi how have you been my love, what is the largest embedding that I can get here in egypt, is there any bigger or smaller than this i wonder").max()
+        t5_encode_text(texts="test").max()
     except:
         from imagen_pytorch import Unet, Imagen, ImagenTrainer
         from imagen_pytorch.data import Dataset
         from imagen_pytorch.t5 import t5_encode_text
-        t5_encode_text(texts="Hi how have you been my love, what is the largest embedding that I can get here in egypt, is there any bigger or smaller than this i wonder").max()
+        t5_encode_text(texts="test").max()
 
     ground_truth = output[0].cpu().detach().numpy()
     
@@ -345,12 +345,12 @@ def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_siz
         from imagen_pytorch import Unet, Imagen, ImagenTrainer
         from imagen_pytorch.data import Dataset
         from imagen_pytorch.t5 import t5_encode_text
-        t5_encode_text(texts="Hi how have you been my love, what is the largest embedding that I can get here in egypt, is there any bigger or smaller than this i wonder").max()
+        t5_encode_text(texts="test").max()
     except:
         from imagen_pytorch import Unet, Imagen, ImagenTrainer
         from imagen_pytorch.data import Dataset
         from imagen_pytorch.t5 import t5_encode_text
-        t5_encode_text(texts="Hi how have you been my love, what is the largest embedding that I can get here in egypt, is there any bigger or smaller than this i wonder").max()
+        t5_encode_text(texts="test").max()
 
     ground_truth = output[0].cpu().detach().numpy()
     ground_truth = np.moveaxis(ground_truth, 0, -1)
@@ -599,3 +599,153 @@ def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_siz
         plt.close()
     except:
         pass
+
+
+
+def sample_batch_unet1(input0,input2,model_filename,image_size,unet1_dim,unet2_dim,timesteps,begin_with_image_size,unet1_image_size,cond_scale,chunk,):
+    from torch.utils.data import TensorDataset, DataLoader
+    import time
+    import gc
+    import dask.array as da
+
+
+    
+
+
+
+    try:
+        from imagen_pytorch import Unet, Imagen, ImagenTrainer
+        from imagen_pytorch.data import Dataset
+        from imagen_pytorch.t5 import t5_encode_text
+        t5_encode_text(texts="test").max()
+    except:
+        from imagen_pytorch import Unet, Imagen, ImagenTrainer
+        from imagen_pytorch.data import Dataset
+        from imagen_pytorch.t5 import t5_encode_text
+        t5_encode_text(texts="test").max()
+
+
+
+    from imagen_pytorch import Unet, Imagen, ImagenTrainer,NullUnet
+    from imagen_pytorch.data import Dataset
+
+    # unets for unconditional imagen
+
+
+    unet0 = NullUnet()  # add a placeholder "null" unet for the base unet
+
+    unet1 = Unet(
+        dim = unet1_dim,
+        cond_dim = 512,
+        dim_mults = (1, 2, 4, 8),
+        num_resnet_blocks = 3,
+        layer_attns = (False, True, True, True),
+        layer_cross_attns = (False, True, True, True)
+    )
+
+    unet2 = Unet(
+        dim = unet2_dim,
+        cond_dim = 512,
+        dim_mults = (1, 2, 4, 8),
+        num_resnet_blocks = (2, 4, 8, 8),
+        layer_attns = (False, False, False, True),
+        layer_cross_attns = (False, False, False, True)
+    )
+
+    #)
+
+    imagen = Imagen(
+        unets = (unet0,unet1, unet2),
+        image_sizes = (begin_with_image_size,unet1_image_size, image_size),
+        timesteps = timesteps,
+        cond_drop_prob = 0.1
+    ).cuda()
+
+    trainer = ImagenTrainer(imagen)
+    
+
+
+    #trainer = ImagenTrainer(
+    #    imagen = imagen,
+    #    split_valid_from_train = False # whether to split the validation dataset from the training
+    #).cuda()
+
+    
+    # working training loop
+
+    import os
+    import time
+
+    now =time.time()
+    seconds = now
+
+
+    from pathlib import Path
+
+    my_file = Path(model_filename)
+    if my_file.is_file():
+        print('Using model file ' + model_filename)
+        trainer.load(model_filename)
+
+    import math
+    import random
+    import pickle
+
+    no_of_chunks = math.ceil(len(input0)/chunk)
+    input0_dask = da.from_array(input0,chunks=chunk)
+    input2_dask = da.from_array(input2,chunks=chunk)
+
+    #print(input0.shape)
+    #print(input2.shape)
+    
+    images_total = []
+
+    i = 0
+    while(True):
+
+        input0 = np.array(input0_dask.partitions[i:i+1])
+        input2 = np.array(input2_dask.partitions[i:i+1])
+
+        #print(input0.shape)
+        #print(input2.shape)
+
+        input0 = torch.from_numpy(input0)
+        input0 = input0.to(torch.float)
+
+
+        input2 = torch.from_numpy(input2)
+        input2 = input2.to(torch.float)
+
+        #print(input0.shape)
+        #print(input2.shape)
+    
+        images = trainer.sample(text_embeds=input0,start_image_or_video = input2,start_at_unet_number = 2
+                                ,stop_at_unet_number=3,batch_size = 1, return_pil_images = True,cond_scale=cond_scale) # returns List[Image]
+
+
+        images_total.extend(images)
+
+        #if not (i % save_model_every):
+        #    trainer.save(model_filename)
+
+        del input0
+        del images
+        del input2
+        gc.collect()
+    
+        #print(no_of_chunks)
+        #print(i)
+        i = i+1
+        if(i == no_of_chunks):
+            break
+    
+    #print(images_total)
+    try:
+        os.remove('evaluate_imagen2.tmp')
+    except:
+        pass
+    
+    with open('evaluate_imagen2.tmp', 'wb') as handle:
+        pickle.dump(images_total, handle)
+
+    
