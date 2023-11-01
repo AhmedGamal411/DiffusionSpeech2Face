@@ -218,63 +218,16 @@ def extract_face_fn(row,start_at_frame,output_folder,resizeImageTo,fddfb,efvr,ef
     return s
 
 
-def extract_face_rep(q,face_file,image_size,output_folder):
-
-
-    # Loading configurations
-    configParser = configparser.RawConfigParser()   
-    configFilePath = r'configuration.txt'
-    configParser.read(configFilePath)
-
-
-    insert_amd_env_vars =  int(configParser.get('COMMON', 'insert_amd_env_vars'))
-    HSA_OVERRIDE_GFX_VERSION =  configParser.get('COMMON', 'HSA_OVERRIDE_GFX_VERSION')
-    ROCM_PATH =  configParser.get('COMMON', 'ROCM_PATH')
-
-    if(insert_amd_env_vars != 0):
-        os.environ["HSA_OVERRIDE_GFX_VERSION"] = HSA_OVERRIDE_GFX_VERSION
-        os.environ["ROCM_PATH"] = ROCM_PATH
-
-    
-    embedding_objs = DeepFace.represent(face_file,enforce_detection = False)
-    embedding = embedding_objs[0]["embedding"]
-    
-
-    with open(output_folder + '/' + 'vgg_generated_face.pickle', 'wb') as handle:
-        pickle.dump(embedding, handle)
-
-
-def extract_face_attributes(q,absPathFace):
-
-
-    # Loading configurations
-    configParser = configparser.RawConfigParser()   
-    configFilePath = r'configuration.txt'
-    configParser.read(configFilePath)
-
-
-    insert_amd_env_vars =  int(configParser.get('COMMON', 'insert_amd_env_vars'))
-    HSA_OVERRIDE_GFX_VERSION =  configParser.get('COMMON', 'HSA_OVERRIDE_GFX_VERSION')
-    ROCM_PATH =  configParser.get('COMMON', 'ROCM_PATH')
-
-    if(insert_amd_env_vars != 0):
-        os.environ["HSA_OVERRIDE_GFX_VERSION"] = HSA_OVERRIDE_GFX_VERSION
-        os.environ["ROCM_PATH"] = ROCM_PATH
-
-    backends = [
-        'opencv', 
-        'ssd', 
-        'dlib', 
-        'mtcnn', 
-        'retinaface', 
-        'mediapipe'
-    ]
-
-
-
-
-    face_analysis_objs = DeepFace.analyze(img_path = absPathFace, 
-          actions = ['age', 'gender', 'race'],enforce_detection = False)
+def extract_face_attr_and_rep_fn(row):
+    try:
+        face_analysis_objs = DeepFace.analyze(img_path = row['face_path'], 
+            actions = ['age', 'gender', 'race'],enforce_detection=False)
+        
+        embedding_objs = DeepFace.represent(row['face_path'],enforce_detection=False)
+        embedding = embedding_objs[0]["embedding"]
+    except:
+        s = pd.Series([nan,nan,nan,nan])
+        return s
     
     
     if(len(face_analysis_objs) == 1):
@@ -283,11 +236,43 @@ def extract_face_attributes(q,absPathFace):
         age = face_analysis_objs[0]['age']
     
     else:
-        gender = 'Error'
-        ethnicity = 'Error'
-        age = 'Error'
+        s = pd.Series([nan,nan,nan,nan])
+        return s
 
-    q.put(gender)
-    q.put(ethnicity)
-    q.put(age)
+    s = pd.Series([gender,ethnicity,age,embedding])
+    return s
+
+def extract_face_attr_and_rep(df_data,output_folder):
+
+
+    # Loading configurations
+    configParser = configparser.RawConfigParser()   
+    configFilePath = r'configuration.txt'
+    configParser.read(configFilePath)
+
+
+    insert_amd_env_vars =  int(configParser.get('COMMON', 'insert_amd_env_vars'))
+    HSA_OVERRIDE_GFX_VERSION =  configParser.get('COMMON', 'HSA_OVERRIDE_GFX_VERSION')
+    ROCM_PATH =  configParser.get('COMMON', 'ROCM_PATH')
+
+    if(insert_amd_env_vars != 0):
+        os.environ["HSA_OVERRIDE_GFX_VERSION"] = HSA_OVERRIDE_GFX_VERSION
+        os.environ["ROCM_PATH"] = ROCM_PATH
+
+    df_data_sub = df_data.apply(extract_face_attr_and_rep_fn,args=(),axis=1)
+
+    df_data['gender'] = df_data_sub[0]
+    df_data['ethnicity'] = df_data_sub[1]
+    df_data['age'] = df_data_sub[2]
+    df_data['face_rep'] = df_data_sub[3]
+
+    #print(df_data)
+
+    df_data = df_data[df_data['gender'].notna()]
+    df_data = df_data[df_data['ethnicity'].notna()]
+    df_data = df_data[df_data['age'].notna()]
+    df_data = df_data[df_data['face_rep'].notna()]
+
+    with open(output_folder + '/' + 'df_data_100.pickle', 'wb') as handle:
+        pickle.dump(df_data, handle)
 
