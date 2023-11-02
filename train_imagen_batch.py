@@ -6,7 +6,7 @@ from scipy.signal import savgol_filter
 import pandas as pd
 
 
-def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_size,sample_every,save_model_every,image_size,unet1_dim,unet2_dim,timesteps,begin_with_image_size,unet1_image_size,imagen_samples,sample_probability,dask_chunk):
+def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_size,sample_every,save_model_every,image_size,unet1_dim,unet2_dim,timesteps,begin_with_image_size,unet1_image_size,imagen_samples,sample_probability,dask_chunk,ignore_image_guide):
     from torch.utils.data import TensorDataset, DataLoader
     import time
     UNET = 1
@@ -88,43 +88,23 @@ def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_siz
         layer_cross_attns = (False, False, False, True)
     )
 
-    #unet1 = Unet(
-    
-    #    cond_dim = 512,
-    #    dim_mults = (1, 2, 4, 8),
-    #    num_resnet_blocks = 3,
-    #    layer_attns = (False, True, True, True),
-    #    layer_cross_attns = (False, True, True, True)
-    #)loss_list.append(loss)
+    if(ignore_image_guide):
+        unets = (unet1, unet2)
+        image_sizes= (unet1_image_size, image_size)
+        unet_to_train = UNET #1
+        start_image_or_video = None
+    else:
+        unets = (unet0,unet1, unet2)
+        image_sizes= (begin_with_image_size,unet1_image_size, image_size)
+        unet_to_train = UNET + 1 #2
+        start_image_or_video = input2[:1,:]
 
-    #unet2 = Unet(
-    
-    #    cond_dim = 512,
-    #    dim_mults = (1, 2, 4, 8),
-    #    num_resnet_blocks = (2, 4, 8, 8),
-    #    layer_attns = (False, False, False, True),
-    #    layer_cross_attns = (False, False, False, True)
-    #)
-
-    #unet = Unet(
-    #    dim = 32,
-    #    dim_mults = (1, 2, 4, 8),
-    #    num_resnet_blocks = 1,
-    #    layer_attns = (False, False, False, True),
-    #    layer_cross_attns = False
-    #)
-
-    # imagen, which contains the unet above
-
-    #imagen = Imagen(
-    #    unets = unet,
-    #    image_sizes = 32,
-    #    timesteps = 1000
-    #)
+    #print(input2[:1,:])
+    #print(input2)
 
     imagen = Imagen(
-        unets = (unet0,unet1, unet2),
-        image_sizes = (begin_with_image_size,unet1_image_size, image_size),
+        unets = unets,
+        image_sizes = image_sizes,
         timesteps = timesteps,
         cond_drop_prob = 0.1
     ).cuda()
@@ -170,7 +150,7 @@ def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_siz
     loss_list = []
     for i in range(inner_epochs):
         
-        loss = trainer.train_step(unet_number = 2,max_batch_size = batch_size)
+        loss = trainer.train_step(unet_number = unet_to_train,max_batch_size = batch_size)
         if not (i % 10):
             print(f'loss: {loss}')
         loss_list.append(loss)
@@ -185,8 +165,8 @@ def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_siz
                 os.makedirs(imagen_samples + "/" + str(seconds))
             ground_truth.save(imagen_samples + '/' + str(seconds) + '/ground_truth.png')
             
-            images = trainer.sample(text_embeds=input0[:1, :],start_image_or_video = input2[:1,:],start_at_unet_number = 2
-                                    ,stop_at_unet_number=2,batch_size = 1, return_pil_images = True,cond_scale=cond_scale) # returns List[Image]
+            images = trainer.sample(text_embeds=input0[:1, :],start_image_or_video = start_image_or_video,start_at_unet_number = unet_to_train
+                                    ,stop_at_unet_number=unet_to_train,batch_size = 1, return_pil_images = True,cond_scale=cond_scale) # returns List[Image]
             images[0].save(imagen_samples + '/' + str(seconds) + f'/sample-{i // 100}'+'-'+str(int(cond_scale))+'-'+'.png')
 
         #if not (i % save_model_every):
@@ -314,7 +294,7 @@ def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_siz
 
 
 
-def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_size,sample_every,save_model_every,image_size,unet1_dim,unet2_dim,timesteps,begin_with_image_size,unet1_image_size,imagen_samples,sample_probability,dask_chunk):
+def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_size,sample_every,save_model_every,image_size,unet1_dim,unet2_dim,timesteps,begin_with_image_size,unet1_image_size,imagen_samples,sample_probability,dask_chunk,ignore_image_guide):
     from torch.utils.data import TensorDataset, DataLoader
 
     print("Training Unet No. 2")
@@ -384,43 +364,23 @@ def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_siz
         layer_cross_attns = (False, False, False, True)
     )
 
-    #unet1 = Unet(
-    
-    #    cond_dim = 512,
-    #    dim_mults = (1, 2, 4, 8),
-    #    num_resnet_blocks = 3,
-    #    layer_attns = (False, True, True, True),
-    #    layer_cross_attns = (False, True, True, True)
-    #)loss_list.append(loss)
+    if(ignore_image_guide):
+        unets = (unet1, unet2)
+        image_sizes= (unet1_image_size, image_size)
+        unet_to_train = UNET #2
+        start_image_or_video = None
+    else:
+        unets = (unet0,unet1, unet2)
+        image_sizes= (begin_with_image_size,unet1_image_size, image_size)
+        unet_to_train = UNET + 1 #3
+        start_image_or_video = input2[:1,:]
 
-    #unet2 = Unet(
-    
-    #    cond_dim = 512,
-    #    dim_mults = (1, 2, 4, 8),
-    #    num_resnet_blocks = (2, 4, 8, 8),
-    #    layer_attns = (False, False, False, True),
-    #    layer_cross_attns = (False, False, False, True)
-    #)
-
-    #unet = Unet(
-    #    dim = 32,
-    #    dim_mults = (1, 2, 4, 8),
-    #    num_resnet_blocks = 1,
-    #    layer_attns = (False, False, False, True),
-    #    layer_cross_attns = False
-    #)
-
-    # imagen, which contains the unet above
-
-    #imagen = Imagen(
-    #    unets = unet,
-    #    image_sizes = 32,
-    #    timesteps = 1000
-    #)
+    #print(input2[:1,:])
+    #print(input2)
 
     imagen = Imagen(
-        unets = (unet0,unet1, unet2),
-        image_sizes = (begin_with_image_size,unet1_image_size, image_size),
+        unets = unets,
+        image_sizes = image_sizes,
         timesteps = timesteps,
         cond_drop_prob = 0.1
     ).cuda()
@@ -460,7 +420,7 @@ def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_siz
     import pickle
     loss_list = []
     for i in range(inner_epochs):
-        loss = trainer.train_step(unet_number = 3,max_batch_size = batch_size)
+        loss = trainer.train_step(unet_number = unet_to_train,max_batch_size = batch_size)
         if not (i % 10):
             print(f'loss: {loss}')
         loss_list.append(loss)
@@ -476,8 +436,8 @@ def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_siz
 
             ground_truth.save(imagen_samples + '/' + str(seconds) + '/ground_truth.png')
 
-            images = trainer.sample(text_embeds=input0[:1, :],start_image_or_video = input2[:1,:],start_at_unet_number = 2
-                                    ,stop_at_unet_number=3,batch_size = 1, return_pil_images = True,cond_scale=cond_scale) # returns List[Image]
+            images = trainer.sample(text_embeds=input0[:1, :],start_image_or_video = start_image_or_video,start_at_unet_number = unet_to_train - 1
+                                    ,stop_at_unet_number=unet_to_train,batch_size = 1, return_pil_images = True,cond_scale=cond_scale) # returns List[Image]
             images[0].save(imagen_samples + '/' + str(seconds) + f'/sample-{i // 100}'+'-'+str(int(cond_scale))+'-'+'.png')
 
         #if not (i % save_model_every):
@@ -602,16 +562,11 @@ def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_siz
 
 
 
-def sample_batch_unet1(input0,input2,model_filename,image_size,unet1_dim,unet2_dim,timesteps,begin_with_image_size,unet1_image_size,cond_scale,chunk,):
+def sample_batch_unet(input0,input2,model_filename,image_size,unet1_dim,unet2_dim,timesteps,begin_with_image_size,unet1_image_size,cond_scale,chunk,ignore_image_guide):
     from torch.utils.data import TensorDataset, DataLoader
     import time
     import gc
     import dask.array as da
-
-
-    
-
-
 
     try:
         from imagen_pytorch import Unet, Imagen, ImagenTrainer
@@ -652,11 +607,22 @@ def sample_batch_unet1(input0,input2,model_filename,image_size,unet1_dim,unet2_d
         layer_cross_attns = (False, False, False, True)
     )
 
-    #)
+    if(ignore_image_guide):
+        unets = (unet1, unet2)
+        image_sizes= (unet1_image_size, image_size)
+        unet_to_stop_sample= 2
+    else:
+        unets = (unet0,unet1, unet2)
+        image_sizes= (begin_with_image_size,unet1_image_size, image_size)
+        unet_to_stop_sample = 3
+        
+
+    #print(input2[:1,:])
+    #print(input2)
 
     imagen = Imagen(
-        unets = (unet0,unet1, unet2),
-        image_sizes = (begin_with_image_size,unet1_image_size, image_size),
+        unets = unets,
+        image_sizes = image_sizes,
         timesteps = timesteps,
         cond_drop_prob = 0.1
     ).cuda()
@@ -718,9 +684,16 @@ def sample_batch_unet1(input0,input2,model_filename,image_size,unet1_dim,unet2_d
 
         #print(input0.shape)
         #print(input2.shape)
+
+
+        if(ignore_image_guide):
+            start_image_or_video = None
+        else:
+            start_image_or_video = input2
+
     
-        images = trainer.sample(text_embeds=input0,start_image_or_video = input2,start_at_unet_number = 2
-                                ,stop_at_unet_number=3,batch_size = 1, return_pil_images = True,cond_scale=cond_scale) # returns List[Image]
+        images = trainer.sample(text_embeds=input0,start_image_or_video = start_image_or_video,start_at_unet_number = unet_to_stop_sample - 1
+                                ,stop_at_unet_number=unet_to_stop_sample,batch_size = 1, return_pil_images = True,cond_scale=cond_scale) # returns List[Image]
 
 
         images_total.extend(images)
