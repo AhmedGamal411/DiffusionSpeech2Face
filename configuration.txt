@@ -18,6 +18,9 @@ insert_amd_env_vars = 1
 HSA_OVERRIDE_GFX_VERSION = 10.3.0
 ROCM_PATH = /opt/rocm
 timesteps = 256
+mask_git1_image_size = 64
+muse_image_size = 128
+muse_begin_with_image_size = 16
 
 
 [dbCreateAndPopulate]
@@ -226,7 +229,7 @@ sample_every_offset = 1
 save_every_offset = 1
 epochs = 1
 sub_epochs = 1
-inner_epochs = 1
+inner_epochs = 1000
 sample_every = 4000
 sample_probability = 100
 save_model_every = 4000

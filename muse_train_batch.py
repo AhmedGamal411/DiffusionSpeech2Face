@@ -61,6 +61,7 @@ def train_batch_maskgit1(input0,input2,output,model_filename,inner_epochs,batch_
         dim = 32,
         vq_codebook_dim = 8192,
         vq_codebook_size= 8192,
+        channels=3,
     ).cuda()
 
     vae.load(vae_file) # you will want to load the exponentially moving averaged VAE
@@ -72,12 +73,11 @@ def train_batch_maskgit1(input0,input2,output,model_filename,inner_epochs,batch_
     transformer = MaskGitTransformer(
         num_tokens = 8192,         # must be same as codebook size above
         seq_len = 1024,           # must be equivalent to fmap_size ** 2 in vae
-        dim = 512,                # model dimension
+        dim = 768,                # model dimension
         depth = 4,                # depth
         dim_head = 64,            # attention head dimension
         heads = 8,                # attention heads,
         ff_mult = 4,              # feedforward expansion factor
-        t5_name = 't5-small',     # name of your T5
     )
 
     # (2) pass your trained VAE and the base transformer to MaskGit
@@ -92,9 +92,17 @@ def train_batch_maskgit1(input0,input2,output,model_filename,inner_epochs,batch_
 
     # feed it into your maskgit instance, with return_loss set to True
 
+    print(output.shape)
+    print(input0.shape)
+    print(input2.shape)
+
+    output = output.cuda()
+    input0 = input0.cuda()
+    input2 = input2.cuda()
     loss = superres_maskgit(
-        images = output,
-        texts_embeds = input0
+        images_or_ids = output,
+        text_embeds = input0,
+        cond_images=input2
     )
 
 
@@ -128,11 +136,11 @@ def train_batch_maskgit1(input0,input2,output,model_filename,inner_epochs,batch_
     loss_list = []
     for i in range(inner_epochs):
 
-        loss = loss.backward()
+        loss_value = loss.backward(retain_graph=True)
 
         if not (i % 10):
-            print(f'loss: {loss}')
-        loss_list.append(loss)
+            print(f'loss: {loss_value}')
+        loss_list.append(loss_value)
 
         if not (i % sample_every) and random.choices([True, False], weights=[sample_probability, 100-sample_probability])[0]: # is_main makes sure this can run in distributed
             if not os.path.exists(str(seconds)):
@@ -140,13 +148,14 @@ def train_batch_maskgit1(input0,input2,output,model_filename,inner_epochs,batch_
             ground_truth.save(imagen_samples + '/' + str(seconds) + '/ground_truth.png')
             
             
-            images_gen = superres_maskgit.generate(
-                texts_embeds = input0[:1, :],
-                cond_images = start_image_or_video,  # conditioning images must be passed in for generating from superres
-                cond_scale = 3.
-            )
+            #images_gen = superres_maskgit.generate(
+            #    text_embeds = input0[:1, :],
+            #    cond_images = start_image_or_video,  # conditioning images must be passed in for generating from superres
+            #    cond_scale = 3.,
+            #    batch_size = 1
+            #)
 
-            images_gen[0].save(imagen_samples + '/' + str(seconds) + f'/sample-{i // 100}'+'-'+str(int(cond_scale))+'-'+'.png')
+            #images_gen[0].save(imagen_samples + '/' + str(seconds) + f'/sample-{i // 100}'+'-'+'-'+'.png')
 
 
     superres_maskgit.save(model_filename)
