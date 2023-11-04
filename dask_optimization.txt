@@ -22,3 +22,15 @@
 Training
 5000/5000/1/100 261878 - 4842
 5000/5000/1/10
+
+unet1 training took about 4 days:
+1000 inner --> one day
+100 inner --> 1 days
+1 inner --> 1 to 2 days
+batch 4
+acculumiation 4 * 16
+
+unet2 trainin took about 4 days took
+500 inner --> one day
+100 inner --> ?? day
+batch 
