@@ -24,12 +24,12 @@ def extract_speechbrain_embeddings(dataGotten,output_folder):
         os.environ["ROCM_PATH"] = ROCM_PATH
 
 
-    classifier = EncoderClassifier.from_hparams(source="speechbrain/spkrec-ecapa-voxceleb")
-    classifierLang = EncoderClassifier.from_hparams(source="speechbrain/lang-id-commonlanguage_ecapa", savedir="pretrained_models/lang-id-commonlanguage_ecapa")
-
+    classifier = EncoderClassifier.from_hparams(source="speechbrain/spkrec-ecapa-voxceleb",run_opts={"device":"cuda"})
+    classifierLang = EncoderClassifier.from_hparams(source="speechbrain/lang-id-commonlanguage_ecapa", savedir="pretrained_models/lang-id-commonlanguage_ecapa", run_opts={"device":"cuda"})
     
 
     def torch_audio_load(row):
+        print(row['ID'])
         path_var_len_audio = row['path_var_len_audio']
         signal, fs = torchaudio.load(path_var_len_audio)
         embeddings = classifier.encode_batch(signal)
@@ -42,6 +42,7 @@ def extract_speechbrain_embeddings(dataGotten,output_folder):
 
     
     def get_lang(row):
+        print(row['ID'])
         out_prob, score, index, text_lab = classifierLang.classify_file(row['path_var_len_audio'])
         lang = text_lab[0]
         return lang

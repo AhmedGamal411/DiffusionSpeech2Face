@@ -21,7 +21,7 @@ def extract_pyannote_titanet_embeddings_per_row(row,
                                                 inference0,inference1,inference2,inference3,
                                                 inference4,inference5,speaker_model,
                                                 speaker_model2):
-
+    print(row['ID'])
     path_var_len_audio = row['path_var_len_audio']
 
     emb0 = inference0(path_var_len_audio).data

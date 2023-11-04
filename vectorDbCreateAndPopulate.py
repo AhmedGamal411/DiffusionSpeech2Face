@@ -1,3 +1,6 @@
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+
 import pathlib
 import os
 import configparser
@@ -14,10 +17,10 @@ configFilePath = r'configuration.txt'
 configParser.read(configFilePath)
 
 datasetPathVideo =  configParser.get('COMMON', 'test_datasetPathVideo')
-scan_all_videos_for_eval =  bool(int(configParser.get('evaluate_imagen', 'scan_all_videos_for_eval')))
+videos_per_user =  int(configParser.get('evaluate_imagen', 'videos_per_user'))
 datasetPathDatabase =  configParser.get('COMMON', 'test_datasetPathDatabase') + '/dataset.db'
 
-
+import pandas as pd
 import lancedb
 uri = datasetPathDatabase
 db = lancedb.connect(uri)
@@ -30,6 +33,8 @@ except:
 
 files_to_insert = []
 root_files = []
+subroot_files = []
+user_count = {}
 
 
 for root, dirs, files in sorted(os.walk(datasetPathVideo)):
@@ -39,14 +44,18 @@ for root, dirs, files in sorted(os.walk(datasetPathVideo)):
     #await asyncio.gather(*tasks)
     
     for file in files:
-        if(not(str(os.path.dirname(root)) in root_files) or scan_all_videos_for_eval):
-          files_to_insert.append(root +'/'+ file)
-          print(root +'/'+ file)
-          root_files.append(str(os.path.dirname(root)))
-    
+      if(not((root) in subroot_files)):
+          user = os.path.basename(os.path.dirname(root))
 
-for root_file in root_files:
-  print(root_file)
+          if(user_count.get(user,0) < videos_per_user ):
+            user_count[user] = user_count.get(user,0) + 1
+            files_to_insert.append(root +'/'+ file)
+            subroot_files.append(root)
+            root_files.append(str(os.path.dirname(root)))
+    
+print(user_count)
+#for root_file in root_files:
+#  print(root_file)
 
 import pandas as pd
 import numpy as np

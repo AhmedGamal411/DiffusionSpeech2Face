@@ -16,6 +16,7 @@ import librosa
 
 
 def extract_audio_features_per_row(row):
+    print(row['ID'])
 
     path_var_len_audio = row['path_var_len_audio']
 
