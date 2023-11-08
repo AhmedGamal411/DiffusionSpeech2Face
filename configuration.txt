@@ -77,23 +77,23 @@ time_to_wait_before_deleting_files = 180
 dev_mode = 0
 
 [train_imagen]
-model_filename = imagen_features_low_res_asis_8
+model_filename = /media/gamal/Passport/checkpoint/noablation
 imagen_samples_folder = /media/gamal/Passport/active_models/imagen_features_low_res_asis_8
 audio_length_used = 24
 sample_every_offset = 1
 save_every_offset = 1
-epochs = 1
+epochs = 100000
 sub_epochs = 1
-inner_epochs = 1
+inner_epochs = 100
 sample_every = 100000
 sample_probability = 0
 save_model_every = 100000
-batch_size = 2
-db_chunk = 4000
-dask_chunk=4000
+batch_size = 4
+db_chunk = 5000
+dask_chunk=5000
 c_unte2 = 54500
 c_unite1 = 512000
-stop_at_no_of_samples = 780000
+stop_at_no_of_samples = 2000000
 aaaa = 238996
 ignore_speaker_embedding = 0
 ignore_speech_brain = 0
@@ -144,7 +144,7 @@ skip_ethnicity = 0
 skip_language_spoken = 0
 
 [evaluate_imagen]
-videos_per_user = 3
+videos_per_user = 1
 test_datasetpathfaces = /media/gamal/Passport/Datasets/VoxCeleb2Test/Voxceleb2TestFaces
 test_datasetpathgeneratedfaces = /media/gamal/Passport/Datasets/VoxCeleb2Test/Voxceleb2TestGeneratedFaces
 test_datasetpathfeatures = /media/gamal/Passport/Datasets/VoxCeleb2Test/Voxceleb2TestFeatures

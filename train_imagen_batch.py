@@ -234,13 +234,13 @@ def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_siz
 
     try:
         fig = plt.figure()
-        plt.plot(np.arange(len(loss_total[1000::])) + 1000,loss_total[1000::],'.')
+        plt.plot(np.arange(len(loss_total[1000::])) + 1000,loss_total[1000::],'.',zorder=-100)
 
         plt.axvline(x=1000,linestyle='--',color='green',label='1000 inner epochs')
         plt.axvline(x=17000,linestyle='--',color='purple',label='100 inner epochs - 100000 unique samples seen' )
         plt.axvline(x=23100,linestyle='-.',color='black',label='1 inner epoch - end of 1st epoch ')
         plt.legend(bbox_to_anchor = (1.0, 1), loc = 'upper right')
-
+        plt.grid()
         yhat = savgol_filter(loss_total, 1000, 3)
         plt.plot(np.arange(len(loss_total[1000::])) + 1000,yhat[1000::],'r')
         plt.title("Training Loss")
@@ -266,12 +266,13 @@ def train_batch_unet1(input0,input2,output,model_filename,inner_epochs,batch_siz
         smoothed = savgol_filter(smoothed, 500, 1)
         price_series = pd.Series(smoothed)
         price_series = price_series.pct_change().to_numpy()
-        plt.plot(np.arange(len(loss_total[1000::])) + 1000,price_series)
+        plt.plot(np.arange(len(loss_total[1000::])) + 1000,price_series,zorder=-100)
         plt.axhline(linestyle='--',color='red')
         plt.axvline(x=1000,linestyle='--',color='green',label='1000 inner epochs')
         plt.axvline(x=17000,linestyle='--',color='purple',label='100 inner epochs - 100000 unique samples seen' )
         plt.axvline(x=23100,linestyle='-.',color='black',label='1 inner epoch - end of 1st epoch ')
         plt.legend(loc = 'lower center')
+        plt.grid()
         plt.title("Smoothed Rate of Change of Training Loss")
         plt.xlabel("Training Sample (~x" + str(int(dask_chunk)) + ")")
         plt.ylabel("Rate of Change")
@@ -385,6 +386,7 @@ def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_siz
 
     trainer = ImagenTrainer(
         imagen = imagen,
+        lr = 1e-2,
         split_valid_from_train = False # whether to split the validation dataset from the training
     ).cuda()
 
@@ -501,7 +503,7 @@ def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_siz
     try:
 
         fig = plt.figure()
-        plt.plot(np.arange(len(loss_total[2000::])) + 2000,loss_total[2000::],'.')
+        plt.plot(np.arange(len(loss_total[2000::])) + 2000,loss_total[2000::],'.',zorder=-100)
 
         plt.axvline(x=2000,linestyle='--',color='green',label='500 inner epochs')
         plt.axvline(x=10000,linestyle='--',color='purple',label='100 inner epochs')
@@ -510,6 +512,7 @@ def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_siz
 
         yhat = savgol_filter(loss_total, 1000, 3)
         plt.plot(np.arange(len(loss_total[2000::])) + 2000,yhat[2000::],'r')
+        plt.grid()
         plt.title("Training Loss")
         plt.xlabel("Training Sample (~x" + str(int(dask_chunk)) + ")")
         plt.ylabel("MSE Loss")
@@ -533,13 +536,14 @@ def train_batch_unet2(input0,input2,output,model_filename,inner_epochs,batch_siz
         smoothed = savgol_filter(smoothed, 500, 1)
         price_series = pd.Series(smoothed)
         price_series = price_series.pct_change().to_numpy()
-        plt.plot(np.arange(len(loss_total[2000::])) + 2000,price_series)
+        plt.plot(np.arange(len(loss_total[2000::])) + 2000,price_series,zorder=-100)
         plt.axhline(linestyle='--',color='red')
         plt.axvline(x=2000,linestyle='--',color='green',label='500 inner epochs')
         plt.axvline(x=10000,linestyle='--',color='purple',label='100 inner epochs')
         plt.axvline(x=13500,linestyle='-.',color='black',label='1 inner epoch')
         plt.legend(bbox_to_anchor = (1.0, 1), loc = 'upper right')
         plt.legend(loc = 'lower center')
+        plt.grid()
         plt.title("Smoothed Rate of Change of Training Loss")
         plt.xlabel("Training Sample (~x" + str(int(dask_chunk)) + ")")
         plt.ylabel("Rate of Change")

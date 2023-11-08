@@ -219,6 +219,7 @@ def extract_face_fn(row,start_at_frame,output_folder,resizeImageTo,fddfb,efvr,ef
 
 
 def extract_face_attr_and_rep_fn(row):
+    #print(row['face_path'])
     try:
         face_analysis_objs = DeepFace.analyze(img_path = row['face_path'], 
             actions = ['age', 'gender', 'race'],enforce_detection=False)
