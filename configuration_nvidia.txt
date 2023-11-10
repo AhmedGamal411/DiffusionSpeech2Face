@@ -107,6 +107,7 @@ ignore_age = 0
 ignore_gender = 0
 ignore_ethnicity = 0
 ignore_language_spoken = 0
+dataloader_cache_size = 250
 
 [test_imagen]
 video_path = /media/gamal/Passport/Datasets/VoxCeleb2TestMin/Voxceleb2TestVideo/id00017/01dfn2spqyE/00001.mp4
