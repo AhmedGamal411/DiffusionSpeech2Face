@@ -80,18 +80,18 @@ time_to_wait_before_deleting_files = 180
 dev_mode = 0
 
 [train_imagen]
-model_filename = imagen_features_low_res_asis
+model_filename = /extension/checkpoint/imagen_features_low_res_asis
 imagen_samples_folder = /home/gamal/Datasets/SAMPLES
 audio_length_used = 24
 sample_every_offset = 1
 save_every_offset = 1
-epochs = 1
+epochs = 10000
 sub_epochs = 1
 inner_epochs = 1
 sample_every = 4000
 sample_probability = 100
-save_model_every = 4000
-batch_size = 4
+save_model_every = 50
+batch_size = 2
 db_chunk = 100
 dask_chunk=100
 c_unte2 = 54500
@@ -222,18 +222,18 @@ time_to_wait_before_deleting_files = 60
 
 
 [train_muse]
-model_filename = muse_features_low_res_asis
+model_filename = checkpoint/muse_features_low_res_asis
 imagen_samples_folder = /home/gamal/Datasets/SAMPLES
 audio_length_used = 24
 sample_every_offset = 1
 save_every_offset = 1
-epochs = 1
+epochs = 10000
 sub_epochs = 1
 inner_epochs = 1000
 sample_every = 4000
 sample_probability = 100
-save_model_every = 4000
-batch_size = 4
+save_model_every = 50
+batch_size = 2
 db_chunk = 5
 dask_chunk=5
 c_unte2 = 54500
