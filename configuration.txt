@@ -78,12 +78,12 @@ time_to_wait_before_deleting_files = 180
 dev_mode = 0
 
 [train_imagen]
-model_filename = /home/gamal/vsc/DiffusionSpeech2Face/checkpoint/noablation
+model_filename = /data_store/checkpoint/noablation
 imagen_samples_folder = /media/gamal/Passport/active_models/imagen_features_low_res_asis_8
 audio_length_used = 24
 override_image_path = 1
 override_image_path_string = /data_store/faces/dev/mp4
-override_leave_parent_level = 4
+override_leave_parent_level = 2
 max_checkpoints_keep = 2
 sample_every_offset = 1
 save_every_offset = 1
@@ -92,7 +92,7 @@ sub_epochs = 1
 inner_epochs = 100
 sample_every = 100000
 sample_probability = 0
-save_model_every = 75
+save_model_every = 250
 batch_size = 10
 batches_per_epoch = 250
 db_chunk = 5000
