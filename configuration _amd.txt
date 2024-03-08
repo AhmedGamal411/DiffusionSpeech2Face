@@ -102,6 +102,7 @@ ignore_speaker_embedding = 0
 ignore_speech_brain = 0
 ignore_pyannote_titanet_speakernet = 0
 ignore_audio_features = 0
+ignore_face_embs = 0
 ignore_pyAudioAnalysis = 0
 ignore_librosa = 0
 ignore_image_guide = 0
@@ -110,6 +111,11 @@ ignore_age = 0
 ignore_gender = 0
 ignore_ethnicity = 0
 ignore_language_spoken = 0
+dataloader_cache_size = 40
+override_image_path = 0
+override_image_path_string =  0
+override_leave_parent_level = 0
+max_checkpoints_keep = 1
 
 [test_imagen]
 video_path = /home/gamal/vsc/DiffusionSpeech2Face/old/v.mp4
@@ -152,12 +158,14 @@ face_recognition_on_unique_users_only=0
 test_datasetpathfaces = /home/gamal/Datasets/Dataset1Test/FacesTest
 test_datasetpathgeneratedfaces = /home/gamal/Datasets/Dataset1Test/GeneratedFacesTest
 test_datasetpathfeatures = /home/gamal/Datasets/Dataset1Test/FeaturesTest
+test_datasetpathfeatures2 = /home/gamal/Datasets/Dataset1Test/Features2Test
 test_datasetpathguides = /home/gamal/Datasets/Dataset1Test/GuidesTest
 test_datasetpathfaces_pooled = /home/gamal/Datasets/Dataset1Test/FacesPooled
 test_datasetpathgeneratedfaces_pooled = /home/gamal/Datasets/Dataset1Test/GeneratedFacesPooled
 test_datasetpathfaces_p = /media/gamal/Passport/Datasets/VoxCeleb2Test/Voxceleb2TestFaces
 test_datasetpathgeneratedfaces_p = /media/gamal/Passport/Datasets/VoxCeleb2Test/Voxceleb2TestGeneratedFaces
 test_datasetpathfeatures_p = /media/gamal/Passport/Datasets/VoxCeleb2Test/Voxceleb2TestFeatures
+test_datasetpathfeatures2_p = /media/gamal/Passport/Datasets/VoxCeleb2Test/Voxceleb2TestFeatures2
 test_datasetpathguides_p = /media/gamal/Passport/Datasets/VoxCeleb2Test/Voxceleb2TestGuides
 test_datasetpathfaces_pooled_p = /media/gamal/Passport/Datasets/VoxCeleb2Test/FacesPooled
 test_datasetpathgeneratedfaces_pooled_p = /media/gamal/Passport/Datasets/VoxCeleb2Test/FacesPooled
@@ -197,6 +205,7 @@ ignore_speaker_embedding = 0
 ignore_speech_brain = 0
 ignore_pyannote_titanet_speakernet = 0
 ignore_audio_features = 0
+ignore_face_embs = 0
 ignore_pyAudioAnalysis = 0
 ignore_librosa = 0
 ignore_image_guide = 0
@@ -214,6 +223,10 @@ gaussianBlurMin=2
 gaussianBlurMax=6
 pix_to_min = 8
 pix_to_max = 16
+
+[extractFacialEmb]
+dbChunk = 10
+
 
 [extractAudioSpectogramTransformer]
 datasetPathAudio = /home/gamal/Datasets/Dataset1/Audio
@@ -244,6 +257,7 @@ ignore_speaker_embedding = 0
 ignore_speech_brain = 0
 ignore_pyannote_titanet_speakernet = 0
 ignore_audio_features = 0
+ignore_face_embs = 0
 ignore_pyAudioAnalysis = 0
 ignore_librosa = 0
 ignore_image_guide = 0
@@ -253,3 +267,11 @@ ignore_gender = 0
 ignore_ethnicity = 0
 ignore_language_spoken = 0
 vae_file = /home/gamal/models/vae.12145000.pt
+
+
+[finetune_wav2vec2]
+model_weights_path = /home/gamal/models/model_weights.ckpt
+no_of_videos = 1092008
+batch_size = 2
+save_freq = 10
+no_of_epochs = 1
