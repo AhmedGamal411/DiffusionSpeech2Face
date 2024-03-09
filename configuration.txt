@@ -262,3 +262,10 @@ faces_folder=/media/gamal/Passport/Datasets/VoxCeleb2Test/Original Face
 image_guides_folder=/media/gamal/Passport/Datasets/VoxCeleb2Test/Image Guide
 results_folder=/media/gamal/Passport/stacked_results
 best_results_file=/media/gamal/Passport/stacked_results/best_results.png
+
+[finetune_wav2vec2]
+model_weights_path = /media/gamal/Passport/a2fe/model_weights-01.ckpt
+no_of_videos = 1092008
+batch_size = 6
+save_freq = 200
+no_of_epochs = 10
