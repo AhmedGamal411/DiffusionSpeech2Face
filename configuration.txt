@@ -269,3 +269,6 @@ no_of_videos = 1092008
 batch_size = 6
 save_freq = 200
 no_of_epochs = 10
+
+[extractFacialEmb]
+dbChunk = 200
