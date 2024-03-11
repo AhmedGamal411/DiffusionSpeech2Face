@@ -89,10 +89,10 @@ def extractFacialEmbeddings(rows):
 contLoop = True # Flag to continue to get chunks of videos from database
 while(contLoop):
     data = con.execute("""SELECT V.ID,F.ID,F.FACE_PATH FROM VIDEO V 
-      INNER JOIN FACE F ON V.ID = F.VIDEO_ID
+      INNER JOIN FACE F ON F.ID = (select ID from FACE f2 where f2.video_id = v.ID ORDER By ID limit 1)
       WHERE V.FACES_PRE IN (1,2) AND AUDIO_PRE IN (3,4) LIMIT """ + p )
     contLoop = False
-    print("Got chunk of FACES from database. Extracting VGG Face features...")
+    #print("Got chunk of FACES from database. Extracting VGG Face features...")
     dataGotten = data.fetchall()
     if(len(dataGotten) > 0):
         contLoop = True # Continue to get data from database since data length is not 0
