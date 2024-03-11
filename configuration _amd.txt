@@ -214,6 +214,7 @@ ignore_age = 0
 ignore_gender = 0
 ignore_ethnicity = 0
 ignore_language_spoken = 0
+model_weights_path = /home/gamal/models/model_weights.ckpt
 
 [extractVggBlurred]
 dbChunk = 20
