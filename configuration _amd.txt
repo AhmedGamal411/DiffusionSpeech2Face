@@ -271,8 +271,16 @@ vae_file = /home/gamal/models/vae.12145000.pt
 
 
 [finetune_wav2vec2]
-model_weights_path = /home/gamal/models/model_weights.ckpt
-no_of_videos = 1092008
+model_weights_path = /home/gamal/models/model_weights_custom.ckpt
+no_of_videos = 20
 batch_size = 2
 save_freq = 10
-no_of_epochs = 1
+no_of_epochs = 100
+
+[train_s2fe]
+model_weights_path = /home/gamal/models/model_weights_custom.ckpt
+no_of_videos = 20
+batch_size = 10
+save_freq = 10
+no_of_epochs = 1000
+validation_split = 0.1
