@@ -5,3 +5,5 @@ rocm-smi
 sudo kill -9 pid
 
 conda remove -n ENV_NAME --all
+
+test
