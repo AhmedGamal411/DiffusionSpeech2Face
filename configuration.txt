@@ -281,4 +281,4 @@ batch_size = 100
 save_freq = 30
 no_of_epochs = 200
 len_to_input = 160000
-validation_split = 0.1
+validation_split = 0.01
