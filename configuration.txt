@@ -272,3 +272,13 @@ no_of_epochs = 10
 
 [extractFacialEmb]
 dbChunk = 200
+
+
+[train_s2fe]
+model_weights_path = /media/gamal/Passport/a2fe/model_weights-01.ckpt
+no_of_videos = 1092008
+batch_size = 100
+save_freq = 30
+no_of_epochs = 200
+len_to_input = 160000
+validation_split = 0.1
