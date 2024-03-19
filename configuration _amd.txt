@@ -284,3 +284,12 @@ batch_size = 10
 save_freq = 10
 no_of_epochs = 1000
 validation_split = 0.1
+
+[train_s2fe_random_forest]
+audio_len = 10
+batch_size = 10
+epoch_size = 40
+no_of_videos = 40
+csv_folder = /home/gamal/models/
+model_path = /home/gamal/models/rfreg.pickle
+cpus_reg = 10
