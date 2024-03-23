@@ -154,6 +154,7 @@ videos_per_user = 1
 test_datasetpathfaces = /media/gamal/Passport/Datasets/VoxCeleb2Test/Voxceleb2TestFaces
 test_datasetpathgeneratedfaces = /media/gamal/Passport/Datasets/VoxCeleb2Test/Voxceleb2TestGeneratedFaces
 test_datasetpathfeatures = /media/gamal/Passport/Datasets/VoxCeleb2Test/Voxceleb2TestFeatures
+test_datasetPathFeatures2= /media/gamal/Passport/Datasets/VoxCeleb2Test/Voxceleb2TestFeatures2
 test_datasetpathguides = /media/gamal/Passport/Datasets/VoxCeleb2Test/Voxceleb2TestGuides
 test_datasetpathfaces_pooled = /media/gamal/Passport/Datasets/VoxCeleb2Test/FacesPooled
 test_datasetpathgeneratedfaces_pooled = /media/gamal/Passport/Datasets/VoxCeleb2Test/GeneratedFacesPooled
@@ -283,3 +284,12 @@ save_freq = 30
 no_of_epochs = 200
 len_to_input = 128000
 validation_split = 0.01
+
+[train_s2fe_random_forest]
+audio_len = 10
+batch_size = 100
+epoch_size = 10000
+no_of_videos = 1092008
+csv_folder = /media/gamal/Passport/a2fe/
+model_path = /media/gamal/Passport/a2fe/rfreg.pickle
+cpus_reg = 12
