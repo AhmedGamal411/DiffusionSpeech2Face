@@ -64,7 +64,7 @@ audio_length_wav2vec = 5
 datasetPathAudio = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Audio
 dbChunk = 240
 time_to_wait_before_deleting_files = 60
-use_auth_token = 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
+use_auth_token = TO_BE_GOTTEN
 
 [extractAudioFeatures]
 datasetPathAudio = /media/gamal/Passport/Datasets/VoxCeleb2/Voxceleb2Audio

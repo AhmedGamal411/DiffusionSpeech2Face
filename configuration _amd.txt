@@ -66,7 +66,7 @@ audio_length_wav2vec = 6
 datasetPathAudio = /home/gamal/Datasets/Dataset1/Audio
 dbChunk = 240
 time_to_wait_before_deleting_files = 60
-use_auth_token = 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
+use_auth_token = TO_BE_GOTTEN
 
 [extractAudioFeatures]
 datasetPathAudio = /home/gamal/Datasets/Dataset1/Audio
